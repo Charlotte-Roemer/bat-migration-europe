@@ -1,0 +1,16 @@
+<div class="main-content">	
+	
+	{{ partial "navbar.html" . }}
+	
+	<div class="main-content-window">
+		
+		<div class="tabs-list" id="tabs-list">
+			
+			{{ range (readDir "content") }}
+				<div id="content@{{ lower (replace (substr .Name 0 -3) " " "-") }}" style="display: none"></div>
+			{{ end }}
+			
+		</div>
+	</div>
+	
+</div>

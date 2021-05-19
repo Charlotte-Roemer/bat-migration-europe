@@ -1,0 +1,18 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="js/routes.js"></script>
+<script src="js/router.js"></script>
+<script src="js/collapser.js"></script>
+<script src="js/image_to_inline_svg.js"></script>
+
+<script src="js/wrapper.js"></script>
+
+
+{{ $options := (dict "targetPath" "css/hugo_minimalist_spa.css") }}
+{{ $style := resources.Get "sass/hugo_minimalist_spa.scss" | resources.ExecuteAsTemplate "hugo_minimalist_spa.style.scss" . | resources.ToCSS $options}}
+{{ $temp := $style.RelPermalink }}
+
+<link rel="stylesheet" type="text/css" href="css/hugo_minimalist_spa.css">
+
+{{ if (fileExists "layouts/partials/custom_imports.html") }}
+	{{ partial "custom_imports.html" . }}
+{{ end }}

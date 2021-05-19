@@ -1,0 +1,19 @@
+[github]
+	source = "images/social_media/github.svg"
+	target = "https://github.com/SAGGameDeveloper/hugo-minimalist-spa"
+	
+[linkedin]
+	source = "images/social_media/linkedin.svg"
+	target = "https://www.linkedin.com/in/sergio-abreu-garcía"
+	
+[telegram]
+	source = "images/social_media/telegram.svg"
+	target = "https://t.me/SAGGameDeveloper"
+	
+[email]
+	source = "images/social_media/email.svg"
+	target = "mailto:sergio@sag-dev.com"
+	
+[home]
+	source = "images/social_media/home.svg"
+	target = "https://sag-dev.com"

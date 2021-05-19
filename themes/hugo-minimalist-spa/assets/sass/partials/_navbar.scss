@@ -1,0 +1,43 @@
+.navbar {
+	display: flex;
+	justify-content: space-evenly;
+	
+	flex-direction: row;
+	text-align: center;
+	
+	min-height: 1.3rem;
+	@include respond-to(vertical-layout) { min-height: 0; }
+	
+	overflow: hidden;
+	
+	background-color: $color_navbar;
+	@include respond-to(vertical-layout) { width: 100%; }
+	
+	@include transition(max-height 0.7s);
+}
+
+.navbar-element {	
+	color: $color_navbar_elements;
+	font-family: 'default';
+	font-weight: 700;
+	
+	margin: 1.2rem 0 0.6rem 0;	
+	@include respond-to(vertical-layout) { margin: 0.3rem 0; }
+	
+	font-size: calc(1.3rem);
+	@include respond-to(vertical-layout) { font-size: calc(1.2rem); }
+	
+	@extend %navbar-element-transition;
+}
+
+.collapsible-menu {
+	fill: $color_navbar_elements;
+	align-self: center;
+	width: 1.5rem;
+	height: 1.5rem;
+	
+	.svg {
+		width: 100%;
+		height: 100%;
+	}
+}

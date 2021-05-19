@@ -1,0 +1,14 @@
+<div class="navbar">
+	<div class="collapsible-menu">
+		<img src="images/menu.svg" class="svg">
+	</div>
+	
+	{{ range (readDir "content") }}
+
+		<div class="navbar-element" id="navbar@{{ lower (replace (substr .Name 0 -3) " " "-") }}">
+			<a href="#{{ lower (replace (substr .Name 0 -3) " " "-") }}">{{ substr .Name 0 -3 }}</a>
+		</div>
+
+	{{ end }}
+		
+</div>

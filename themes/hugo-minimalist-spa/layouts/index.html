@@ -1,0 +1,17 @@
+{{ define "main" }}
+{{ partial "head.html" . }}
+
+	<body>
+	<div class="general-layout">
+		
+		{{ partial "header.html" . }}
+		
+			{{ partial "main_content.html" . }}	
+
+		{{ partial "footer.html" . }}
+		
+	</div>
+	</body>
+
+{{ partial "foot.html" . }}
+{{ end }}
