@@ -1,0 +1,818 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([["feed-toggle-wc"],{"4N55":function(e,t,i){"use strict";i.d(t,"a",(function(){return p}));var o,a=i("D57K"),s=i("P4Ao"),n=i("oePG"),d=i("QBS5"),r=i("vhqU"),l=i("EeEq"),c=i("uXNP"),h=i("6fxl");!function(e){e.listbox="listbox"}(o||(o={}));class p extends s.a{constructor(){super(...arguments),this.selectedIndex=-1,this.typeaheadBuffer="",this.typeaheadTimeout=-1,this.typeAheadExpired=!0,this.role=o.listbox,this._options=[],this.selectedOptions=[],this.handleTypeAhead=e=>{this.typeaheadTimeout&&window.clearTimeout(this.typeaheadTimeout),this.typeaheadTimeout=window.setTimeout(()=>this.typeAheadExpired=!0,p.TYPE_AHEAD_TIMEOUT_MS),e.length>1||(this.typeaheadBuffer=`${this.typeAheadExpired?"":this.typeaheadBuffer}${e}`)}}selectedIndexChanged(e,t){this.setSelectedOptions()}typeaheadBufferChanged(e,t){if(this.$fastController.isConnected){const e=this.typeaheadBuffer.replace(/[.*+\-?^${}()|[\]\\]/g,"\\$&"),t=new RegExp("^"+e,"gi"),i=this.options.filter(e=>e.text.trim().match(t));if(i.length){const e=this.options.indexOf(i[0]);e>-1&&(this.selectedIndex=e)}this.typeAheadExpired=!1}}slottedOptionsChanged(e,t){this.$fastController.isConnected&&(this.options=t.reduce((e,t)=>(Object(l.b)(t)&&e.push(t),e),[]),this.options.forEach(e=>{e.id=e.id||Object(r.a)("option-")}),this.setSelectedOptions(),this.setDefaultSelectedOption())}get options(){return n.b.track(this,"options"),this._options}set options(e){this._options=e,n.b.notify(this,"options")}selectedOptionsChanged(e,t){this.$fastController.isConnected&&this.options.forEach(e=>{e.selected=t.includes(e)})}get firstSelectedOption(){return this.selectedOptions[0]}focusAndScrollOptionIntoView(){this.contains(document.activeElement)&&this.firstSelectedOption&&(this.firstSelectedOption.focus(),this.firstSelectedOption.scrollIntoView({block:"nearest"}))}focusinHandler(e){e.target===e.currentTarget&&(this.setSelectedOptions(),this.focusAndScrollOptionIntoView())}setDefaultSelectedOption(){if(this.options&&this.$fastController.isConnected){const e=this.options.findIndex(e=>null!==e.getAttribute("selected"));if(-1!==e)return void(this.selectedIndex=e);this.selectedIndex=0}}setSelectedOptions(){if(this.$fastController.isConnected&&this.options){const e=this.options[this.selectedIndex]||null;this.selectedOptions=this.options.filter(t=>t.isSameNode(e)),this.ariaActiveDescendant=this.firstSelectedOption?this.firstSelectedOption.id:"",this.focusAndScrollOptionIntoView()}}selectFirstOption(){this.disabled||(this.selectedIndex=0)}selectLastOption(){this.disabled||(this.selectedIndex=this.options.length-1)}selectNextOption(){!this.disabled&&this.options&&this.selectedIndex<this.options.length-1&&(this.selectedIndex+=1)}get length(){return this.options?this.options.length:0}selectPreviousOption(){!this.disabled&&this.selectedIndex>0&&(this.selectedIndex=this.selectedIndex-1)}clickHandler(e){const t=e.target.closest("option,[role=option]");if(t&&!t.disabled)return this.selectedIndex=this.options.indexOf(t),!0}keydownHandler(e){if(this.disabled)return!0;const t=e.key;switch(t){case"Home":e.shiftKey||(e.preventDefault(),this.selectFirstOption());break;case"ArrowDown":e.shiftKey||(e.preventDefault(),this.selectNextOption());break;case"ArrowUp":e.shiftKey||(e.preventDefault(),this.selectPreviousOption());break;case"End":e.preventDefault(),this.selectLastOption();break;case"Tab":return this.focusAndScrollOptionIntoView(),!0;case"Enter":case"Escape":return!0;case" ":if(this.typeAheadExpired)return!0;default:return 1===t.length&&this.handleTypeAhead(""+t),!0}}}p.TYPE_AHEAD_TIMEOUT_MS=1e3,p.slottedOptionFilter=e=>Object(l.b)(e)&&!e.disabled&&!e.hidden,Object(a.c)([n.d],p.prototype,"selectedIndex",void 0),Object(a.c)([n.d],p.prototype,"typeaheadBuffer",void 0),Object(a.c)([d.b],p.prototype,"role",void 0),Object(a.c)([Object(d.b)({mode:"boolean"})],p.prototype,"disabled",void 0),Object(a.c)([n.d],p.prototype,"slottedOptions",void 0),Object(a.c)([n.d],p.prototype,"selectedOptions",void 0);class u{constructor(){this.ariaActiveDescendant=""}}Object(a.c)([n.d],u.prototype,"ariaActiveDescendant",void 0),Object(a.c)([n.d],u.prototype,"ariaDisabled",void 0),Object(a.c)([n.d],u.prototype,"ariaExpanded",void 0),Object(h.a)(u,c.a),Object(h.a)(p,u)},EeEq:function(e,t,i){"use strict";i.d(t,"b",(function(){return c})),i.d(t,"a",(function(){return h}));var o=i("D57K"),a=i("P4Ao"),s=i("oePG"),n=i("QBS5"),d=i("FGLN"),r=i("C5kU"),l=i("6fxl");function c(e){return Object(d.e)(e)&&("option"===e.getAttribute("role")||e instanceof HTMLOptionElement)}class h extends a.a{constructor(e,t,i,o){super(),this.defaultSelected=!1,this.dirtySelected=!1,this.selected=this.defaultSelected,this.dirtyValue=!1,this.initialValue=this.initialValue||"",e&&(this.textContent=e),t&&(this.initialValue=t),i&&(this.defaultSelected=i),o&&(this.selected=o),this.proxy=new Option(""+this.textContent,this.initialValue,this.defaultSelected,this.selected),this.proxy.disabled=this.disabled}defaultSelectedChanged(){this.dirtySelected||(this.selected=this.defaultSelected,this.proxy instanceof HTMLOptionElement&&(this.proxy.selected=this.defaultSelected))}disabledChanged(e,t){this.proxy instanceof HTMLOptionElement&&(this.proxy.disabled=this.disabled)}selectedAttributeChanged(){this.defaultSelected=this.selectedAttribute,this.proxy instanceof HTMLOptionElement&&(this.proxy.defaultSelected=this.defaultSelected)}selectedChanged(){this.$fastController.isConnected&&(this.dirtySelected||(this.dirtySelected=!0),this.proxy instanceof HTMLOptionElement&&(this.proxy.selected=this.selected))}initialValueChanged(e,t){this.dirtyValue||(this.value=this.initialValue,this.dirtyValue=!1)}get label(){return this.value?this.value:this.textContent?this.textContent:""}get text(){return this.textContent}set value(e){this._value=e,this.dirtyValue=!0,this.proxy instanceof HTMLElement&&(this.proxy.value=e),s.b.notify(this,"value")}get value(){return s.b.track(this,"value"),this._value?this._value:this.text}get form(){return this.proxy?this.proxy.form:null}}Object(o.c)([s.d],h.prototype,"defaultSelected",void 0),Object(o.c)([Object(n.b)({mode:"boolean"})],h.prototype,"disabled",void 0),Object(o.c)([Object(n.b)({attribute:"selected",mode:"boolean"})],h.prototype,"selectedAttribute",void 0),Object(o.c)([s.d],h.prototype,"selected",void 0),Object(o.c)([Object(n.b)({attribute:"value",mode:"fromView"})],h.prototype,"initialValue",void 0),Object(l.a)(h,r.a)},XiV1:function(e,t,i){"use strict";i.d(t,"a",(function(){return w}));var o=i("D57K"),a=i("P4Ao"),s=i("QBS5"),n=i("oePG"),d=i("Gy7L"),r=i("o87Z");class l extends(Object(r.a)(class extends a.a{constructor(){super(...arguments),this.proxy=document.createElement("input")}})){}class c extends l{constructor(){super(...arguments),this.initialValue="on",this.defaultChecked=!!this.checkedAttribute,this.checked=this.defaultChecked,this.dirtyChecked=!1,this.formResetCallback=()=>{this.checked=this.checkedAttribute,this.dirtyChecked=!1},this.keypressHandler=e=>{switch(e.keyCode){case d.l:this.checked=!this.checked}},this.clickHandler=e=>{this.disabled||this.readOnly||(this.checked=!this.checked)}}readOnlyChanged(){this.proxy instanceof HTMLElement&&(this.proxy.readOnly=this.readOnly),this.readOnly?this.classList.add("readonly"):this.classList.remove("readonly")}checkedAttributeChanged(){this.defaultChecked=this.checkedAttribute}defaultCheckedChanged(){this.dirtyChecked||(this.checked=this.defaultChecked,this.dirtyChecked=!1)}checkedChanged(){this.dirtyChecked||(this.dirtyChecked=!0),this.updateForm(),this.proxy instanceof HTMLElement&&(this.proxy.checked=this.checked),this.$emit("change"),this.checked?this.classList.add("checked"):this.classList.remove("checked"),this.validate()}connectedCallback(){super.connectedCallback(),this.proxy.setAttribute("type","checkbox"),this.updateForm()}updateForm(){const e=this.checked?this.value:null;this.setFormValue(e,e)}}Object(o.c)([Object(s.b)({attribute:"readonly",mode:"boolean"})],c.prototype,"readOnly",void 0),Object(o.c)([Object(s.b)({attribute:"checked",mode:"boolean"})],c.prototype,"checkedAttribute",void 0),Object(o.c)([n.d],c.prototype,"defaultSlottedNodes",void 0),Object(o.c)([n.d],c.prototype,"defaultChecked",void 0),Object(o.c)([n.d],c.prototype,"checked",void 0);var h=i("6BDD"),p=i("UauI");const u=h.b`
+    <template
+        role="switch"
+        aria-checked="${e=>e.checked}"
+        aria-disabled="${e=>e.disabled}"
+        aria-readonly="${e=>e.readOnly}"
+        tabindex="${e=>e.disabled?null:0}"
+        @keypress="${(e,t)=>e.keypressHandler(t.event)}"
+        @click="${(e,t)=>e.clickHandler(t.event)}"
+        class="${e=>e.checked?"checked":""}"
+    >
+        <label
+            part="label"
+            class="${e=>e.defaultSlottedNodes&&e.defaultSlottedNodes.length?"label":"label label__hidden"}"
+        >
+            <slot ${Object(p.b)("defaultSlottedNodes")}></slot>
+        </label>
+        <div part="switch" class="switch">
+            <span class="checked-indicator" part="checked-indicator"></span>
+        </div>
+        <span class="status-message" part="status-message">
+            <span class="checked-message" part="checked-message">
+                <slot name="checked-message"></slot>
+            </span>
+            <span class="unchecked-message" part="unchecked-message">
+                <slot name="unchecked-message"></slot>
+            </span>
+        </span>
+    </template>
+`;var b=i("4X57"),g=i("j9Xn"),f=i("xY0q"),v=i("2i1/"),y=i("wHpb"),x=i("CzTk"),m=i("oqLQ"),k=i("QkLF"),$=i("kL0l");const O=b.a`
+    :host([hidden]) {
+        display: none;
+    }
+
+    ${Object(f.a)("inline-flex")} :host {
+        align-items: center;
+        outline: none;
+        font-family: var(--body-font);
+        margin: calc(var(--design-unit) * 1px) 0;
+        ${""} user-select: none;
+    }
+
+    :host(.disabled) {
+        opacity: var(--disabled-opacity);
+    }
+
+    :host(.disabled) .label,
+    :host(.readonly) .label,
+    :host(.readonly) .switch,
+    :host(.disabled) .switch {
+        cursor: ${v.a};
+    }
+
+    .switch {
+        position: relative;
+        outline: none;
+        box-sizing: border-box;
+        width: calc(((${k.a} / 2) + var(--design-unit)) * 2px);
+        height: calc(((${k.a} / 2) + var(--design-unit)) * 1px);
+        background: ${$.o.var};
+        border-radius: calc(${k.a} * 1px);
+        border: calc(var(--outline-width) * 1px) solid ${$.L.var};
+    }
+
+    :host(:enabled) .switch:hover {
+        background: ${$.n.var};
+        border-color: ${$.K.var};
+        cursor: pointer;
+    }
+
+    :host(:enabled) .switch:active {
+        background: ${$.m.var};
+        border-color: ${$.I.var};
+    }
+
+    :host(:${y.a}) .switch {
+        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px ${$.v.var};
+        border-color: ${$.v.var};
+    }
+
+    .checked-indicator {
+        position: absolute;
+        height: calc((${k.a} - (var(--design-unit) * 5.5)) * 1px);
+        width: calc((${k.a} - (var(--design-unit) * 5.5)) * 1px);
+        top: calc(var(--design-unit) * 1px);
+        background: ${$.C.var};
+        border-radius: 50%;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .status-message {
+        color: ${$.C.var};
+        cursor: pointer;
+        font-size: var(--type-ramp-base-font-size);
+        line-height: var(--type-ramp-base-line-height);
+    }
+
+    .label__hidden {
+        display: none;
+        visibility: hidden;
+    }
+
+    .label {
+        color: ${$.C.var};
+        font-size: var(--type-ramp-base-font-size);
+        line-height: var(--type-ramp-base-line-height);
+        margin-inline-end: calc(var(--design-unit) * 2px + 2px);
+        cursor: pointer;
+    }
+
+    ::slotted(*) {
+        ${""} margin-inline-start: calc(var(--design-unit) * 2px + 2px);
+    }
+
+    :host([aria-checked="true"]) .checked-indicator {
+        background: ${$.f.var};
+    }
+
+    :host([aria-checked="true"]) .switch {
+        background: ${$.c.var};
+    }
+
+    :host([aria-checked="true"]:enabled) .switch:hover {
+        background: ${$.b.var};
+    }
+
+    :host([aria-checked="true"]:enabled) .switch:active {
+        background: ${$.a.var};
+    }
+
+    :host([aria-checked="true"]:${y.a}:enabled) .switch {
+        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px ${$.v.var};
+        border-color: transparent;
+    }
+
+    .unchecked-message {
+        display: block;
+    }
+
+    .checked-message {
+        display: none;
+    }
+
+    :host([aria-checked="true"]) .unchecked-message {
+        display: none;
+    }
+
+    :host([aria-checked="true"]) .checked-message {
+        display: block;
+    }
+`.withBehaviors($.a,$.b,$.c,$.f,$.m,$.n,$.o,$.v,$.C,$.I,$.K,$.L,new x.a(b.a`
+      .checked-indicator {
+        left: calc(var(--design-unit) * 1px);
+      }
+
+      :host([aria-checked='true']) .checked-indicator {
+        left: calc((((${k.a} / 2) + var(--design-unit)) + var(--design-unit)) * 1px);
+      }
+    `,b.a`
+      .checked-indicator {
+        right: calc(var(--design-unit) * 1px);
+      }
+
+      :host([aria-checked='true']) .checked-indicator {
+        right: calc((((${k.a} / 2) + var(--design-unit)) + var(--design-unit)) * 1px);
+      }
+    `),Object(m.c)(b.a`
+            .checked-indicator,
+            :host(:enabled) .switch:active .checked-indicator {
+                forced-color-adjust: none;
+                background: ${g.a.FieldText};
+            }
+            .switch {
+                forced-color-adjust: none;
+                background: ${g.a.Field};
+                border-color: ${g.a.FieldText};
+            }
+            :host(:enabled) .switch:hover {
+                background: ${g.a.HighlightText};
+                border-color: ${g.a.Highlight};
+            }
+            :host(.checked) .switch {
+                background: ${g.a.Highlight};
+                border-color: ${g.a.Highlight};
+            }
+            :host(.checked:enabled) .switch:hover,
+            :host(:enabled) .switch:active {
+                background: ${g.a.HighlightText};
+                border-color: ${g.a.Highlight};
+            }
+            :host(.checked) .checked-indicator {
+                background: ${g.a.HighlightText};
+            }
+            :host(.checked:enabled) .switch:hover .checked-indicator {
+                background: ${g.a.Highlight};
+            }
+            :host(:${y.a}) .switch {
+                border-color: ${g.a.Highlight};
+                box-shadow: 0 0 0 2px ${g.a.Field}, 0 0 0 4px ${g.a.FieldText};
+            }
+            :host(.checked:${y.a}:enabled) .switch {
+                box-shadow: 0 0 0 2px ${g.a.Field}, 0 0 0 4px ${g.a.FieldText};
+            }
+            :host(.disabled) {
+                opacity: 1;
+            }
+            :host(.disabled) .checked-indicator {
+                background: ${g.a.GrayText};
+            }
+            :host(.disabled) .switch {
+                background: ${g.a.Field};
+                border-color: ${g.a.GrayText};
+            }
+            .status-message,
+            .label {
+              color: ${g.a.FieldText};
+          }
+        `));let w=class extends c{};w=Object(o.c)([Object(a.b)({name:"fluent-switch",template:u,styles:O,shadowOptions:{mode:"closed"}})],w)},e8No:function(e,t,i){"use strict";i.d(t,"a",(function(){return y}));var o=i("D57K"),a=i("P4Ao"),s=i("EeEq"),n=i("6BDD"),d=i("C5kU");const r=n.b`
+    <template
+        aria-selected="${e=>e.selected}"
+        class="${e=>e.selected?"selected":""} ${e=>e.disabled?"disabled":""}"
+        role="option"
+    >
+        ${d.c}
+        <span class="content" part="content">
+            <slot></slot>
+        </span>
+        ${d.b}
+    </template>
+`;var l=i("4X57"),c=i("xY0q"),h=i("wHpb"),p=i("2i1/"),u=i("oqLQ"),b=i("j9Xn"),g=i("kL0l"),f=i("QkLF");const v=l.a`
+    ${Object(c.a)("inline-flex")} :host {
+        font-family: var(--body-font);
+        border-radius: calc(var(--corner-radius) * 1px);
+        border: calc(var(--focus-outline-width) * 1px) solid transparent;
+        box-sizing: border-box;
+        color: ${g.C.var};
+        cursor: pointer;
+        fill: currentcolor;
+        font-size: var(--type-ramp-base-font-size);
+        height: calc(${f.a} * 1px);
+        line-height: var(--type-ramp-base-line-height);
+        margin: 0 calc(var(--design-unit) * 1px);
+        outline: none;
+        overflow: hidden;
+        align-items: center;
+        padding: 0 calc(var(--design-unit) * 2.25px);
+        user-select: none;
+        white-space: nowrap;
+    }
+
+    :host(:${h.a}) {
+        box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) inset ${g.w.var};
+        border-color: ${g.v.var};
+        background: ${g.b.var};
+        color: ${g.f.var};
+    }
+
+    :host([aria-selected="true"]) {
+        background: ${g.b.var};
+        color: ${g.f.var};
+    }
+
+    :host(:active) {
+        background: ${g.a.var};
+        color: ${g.f.var};
+    }
+
+    :host(:not([aria-selected="true"]):hover) {
+        background: ${g.l.var};
+        color: ${g.B.var};
+    }
+
+    :host(:not([aria-selected="true"]):active) {
+        background: ${g.l.var};
+        color: ${g.B.var};
+    }
+
+    :host([disabled]) {
+        cursor: ${p.a};
+        opacity: var(--disabled-opacity);
+    }
+
+    :host([disabled]:hover) {
+        background-color: inherit;
+    }
+
+    .content {
+        grid-column-start: 2;
+        justify-self: start;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .start,
+    .end,
+    ::slotted(svg) {
+        display: flex;
+    }
+
+    ::slotted(svg) {
+        ${""}
+        height: calc(var(--design-unit) * 4px);
+        width: calc(var(--design-unit) * 4px);
+    }
+
+    ::slotted([slot="end"]) {
+        margin-inline-start: 1ch;
+    }
+
+    ::slotted([slot="start"]) {
+        margin-inline-end: 1ch;
+    }
+
+`.withBehaviors(g.a,g.b,g.d,g.f,Object(u.c)(l.a`
+      :host {
+        border-color: transparent;
+        color: ${b.a.ButtonText};
+        forced-color-adjust: none;
+      }
+
+      :host(:not([aria-selected='true']):hover),
+      :host([aria-selected='true']) {
+        background: ${b.a.Highlight};
+        color: ${b.a.HighlightText};
+      }
+
+      :host([disabled]),
+      :host([disabled]:not([aria-selected='true']):hover) {
+        background: ${b.a.Canvas};
+        color: ${b.a.GrayText};
+        fill: currentcolor;
+        opacity: 1;
+      }
+    `),g.l,g.r,g.s,g.t,g.v,g.w,g.B,g.C,g.G);let y=class extends s.a{};y=Object(o.c)([Object(a.b)({name:"fluent-option",template:r,styles:v})],y)},i56n:function(e,t,i){"use strict";i.d(t,"a",(function(){return S}));var o=i("D57K"),a=i("QBS5"),s=i("P4Ao"),n=i("oePG"),d=i("uXNP"),r=i("C5kU"),l=i("6fxl"),c=i("4N55"),h=i("o87Z");class p extends(Object(h.a)(class extends c.a{constructor(){super(...arguments),this.proxy=document.createElement("select")}})){}var u=i("xDi8");class b extends p{constructor(){super(...arguments),this.open=!1,this.forcedPosition=!1,this.role=u.b.combobox,this.position=u.a.below,this.maxHeight=0,this.displayValue="",this.formResetCallback=()=>{this.setProxyOptions(),this.setDefaultSelectedOption(),this.value=this.firstSelectedOption.value}}openChanged(){this.ariaExpanded=this.open?"true":"false",this.open&&(this.setPositioning(),this.focusAndScrollOptionIntoView(),this.indexWhenOpened=this.selectedIndex)}get value(){return n.b.track(this,"value"),this._value}set value(e){const t=""+this._value;if(this.$fastController.isConnected&&this.options){const t=this.options.findIndex(t=>t.value===e),i=this.options[this.selectedIndex],o=this.options[t],a=i?i.value:null,s=o?o.value:null;-1!==t&&a===s||(e="",this.selectedIndex=t),this.firstSelectedOption&&(e=this.firstSelectedOption.value)}t!==e&&(this._value=e,super.valueChanged(t,e),n.b.notify(this,"value"))}updateValue(e){this.$fastController.isConnected&&(this.value=this.firstSelectedOption?this.firstSelectedOption.value:"",this.displayValue=this.firstSelectedOption?this.firstSelectedOption.textContent||this.firstSelectedOption.value:this.value),e&&this.$emit("change")}selectedIndexChanged(e,t){super.selectedIndexChanged(e,t),this.updateValue()}setPositioning(){const e=this.getBoundingClientRect(),t=window.innerHeight-e.bottom;this.position=this.forcedPosition?this.positionAttribute:e.top>t?u.a.above:u.a.below,this.positionAttribute=this.forcedPosition?this.positionAttribute:this.position,this.maxHeight=this.position===u.a.above?~~e.top:~~t}disabledChanged(e,t){super.disabledChanged&&super.disabledChanged(e,t),this.ariaDisabled=this.disabled?"true":"false"}clickHandler(e){if(!this.disabled){if(this.open){const t=e.target.closest("option,[role=option]");if(t&&t.disabled)return}return super.clickHandler(e),this.open=!this.open,this.open||this.indexWhenOpened===this.selectedIndex||this.updateValue(!0),!0}}focusoutHandler(e){if(!this.open)return!0;const t=e.relatedTarget;this.isSameNode(t)?this.focus():this.options&&this.options.includes(t)||(this.open=!1)}slottedOptionsChanged(e,t){super.slottedOptionsChanged(e,t),this.setProxyOptions(),this.updateValue()}setProxyOptions(){this.proxy instanceof HTMLSelectElement&&this.options&&(this.proxy.options.length=0,this.options.forEach(e=>{const t=e.proxy||(e instanceof HTMLOptionElement?e.cloneNode():null);t&&this.proxy.appendChild(t)}))}keydownHandler(e){super.keydownHandler(e);switch(e.key||e.key.charCodeAt(0)){case" ":this.typeAheadExpired&&(e.preventDefault(),this.open=!this.open);break;case"Enter":e.preventDefault(),this.open=!this.open;break;case"Escape":this.open&&(e.preventDefault(),this.open=!1);break;case"Tab":if(!this.open)return!0;e.preventDefault(),this.open=!1}return this.open||this.indexWhenOpened===this.selectedIndex||this.updateValue(!0),!0}connectedCallback(){super.connectedCallback(),this.forcedPosition=!!this.positionAttribute}}Object(o.c)([Object(a.b)({attribute:"open",mode:"boolean"})],b.prototype,"open",void 0),Object(o.c)([Object(a.b)({attribute:"position"})],b.prototype,"positionAttribute",void 0),Object(o.c)([n.d],b.prototype,"position",void 0),Object(o.c)([n.d],b.prototype,"maxHeight",void 0),Object(o.c)([n.d],b.prototype,"displayValue",void 0);class g{}Object(o.c)([n.d],g.prototype,"ariaExpanded",void 0),Object(o.c)([Object(a.b)({attribute:"aria-pressed",mode:"fromView"})],g.prototype,"ariaPressed",void 0),Object(l.a)(g,d.a),Object(l.a)(b,r.a,g);var f=i("6BDD"),v=i("UauI");const y=f.b`
+    <template
+        class="${e=>e.open?"open":""} ${e=>e.disabled?"disabled":""} ${e=>e.position}"
+        role="${e=>e.role}"
+        tabindex="${e=>e.disabled?null:"0"}"
+        aria-disabled="${e=>e.ariaDisabled}"
+        @click="${(e,t)=>e.clickHandler(t.event)}"
+        @focusout="${(e,t)=>e.focusoutHandler(t.event)}"
+        @keydown="${(e,t)=>e.keydownHandler(t.event)}"
+    >
+        <div
+            aria-activedescendant="${e=>e.open?e.ariaActiveDescendant:null}"
+            aria-controls="listbox"
+            aria-expanded="${e=>e.ariaExpanded}"
+            aria-haspopup="listbox"
+            class="control"
+            part="control"
+            role="button"
+            ?disabled="${e=>e.disabled}"
+        >
+            ${r.c}
+            <slot name="button-container">
+                <div class="selected-value" part="selected-value">
+                    <slot name="selected-value">${e=>e.displayValue}</slot>
+                </div>
+                <div class="indicator" part="indicator" aria-hidden="true">
+                    <slot name="indicator">
+                        <svg
+                            class="select-indicator"
+                            part="select-indicator"
+                            viewBox="0 0 12 7"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path
+                                d="M11.85.65c.2.2.2.5 0 .7L6.4 6.84a.55.55 0 01-.78 0L.14 1.35a.5.5 0 11.71-.7L6 5.8 11.15.65c.2-.2.5-.2.7 0z"
+                            />
+                        </svg>
+                    </slot>
+                </div>
+            </slot>
+            ${r.b}
+        </div>
+        <div
+            aria-disabled="${e=>e.disabled}"
+            class="listbox"
+            id="listbox"
+            part="listbox"
+            role="listbox"
+            style="--max-height: ${e=>e.maxHeight}px"
+            ?disabled="${e=>e.disabled}"
+            ?hidden="${e=>!e.open}"
+        >
+            <slot
+                ${Object(v.b)({filter:c.a.slottedOptionFilter,flatten:!0,property:"slottedOptions"})}
+            ></slot>
+        </div>
+    </template>
+`;var x=i("4X57"),m=i("xY0q"),k=i("wHpb"),$=i("2i1/"),O=i("oqLQ"),w=i("j9Xn"),C=i("cQsl"),T=i("kL0l"),j=i("QkLF");const D=x.a`
+    ${Object(m.a)("inline-flex")} :host {
+        --elevation: 14;
+        background: ${T.o.var};
+        border-radius: calc(var(--corner-radius) * 1px);
+        border: calc(var(--outline-width) * 1px) solid ${T.L.var};
+        box-sizing: border-box;
+        color: ${T.C.var};
+        contain: contents;
+        height: calc(${j.a} * 1px);
+        position: relative;
+        user-select: none;
+        min-width: 250px;
+    }
+
+    .listbox {
+        ${C.a}
+        background: ${T.F.var};
+        border-radius: calc(var(--corner-radius) * 1px);
+        box-sizing: border-box;
+        display: inline-flex;
+        flex-direction: column;
+        left: 0;
+        max-height: calc(var(--max-height) - (${j.a} * 1px));
+        padding: calc(var(--design-unit) * 1px) 0;
+        overflow-y: auto;
+        position: absolute;
+        width: 100%;
+        z-index: 1;
+        margin: 1px 0;
+    }
+
+    .listbox[hidden] {
+        display: none;
+    }
+
+    .control {
+        align-items: center;
+        box-sizing: border-box;
+        cursor: pointer;
+        display: flex;
+        font-size: var(--type-ramp-base-font-size);
+        font: inherit;
+        line-height: var(--type-ramp-base-line-height);
+        min-height: calc(${j.a} * 1px);
+        padding: 0 calc(var(--design-unit) * 2.25px);
+        width: 100%;
+    }
+
+    :host(:not([disabled]):hover) {
+        background: ${T.n.var};
+        border-color: ${T.K.var};
+    }
+
+    :host(:focus) {
+        outline: none;
+    }
+
+    :host(:${k.a}) {
+        border-color: ${T.v.var};
+        outline: none;
+        box-shadow:
+            0 0 0 1px inset ${T.v.var};
+    }
+
+    :host([open]:${k.a}) {
+        border-color: ${T.L.var};
+        outline: none;
+        box-shadow: none;
+  }
+
+    :host(:${k.a}) ::slotted([aria-selected="true"][role="option"]:not([disabled])) {
+        box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) inset ${T.w.var};
+        border-color: ${T.v.var};
+        background: ${T.b.var};
+        color: ${T.f.var};
+    }
+
+    :host([disabled]) {
+        cursor: ${$.a};
+        opacity: var(--disabled-opacity);
+    }
+
+    :host([disabled]) .control {
+        cursor: ${$.a};
+    }
+
+    :host([disabled]:hover) {
+        background: ${T.s.var};
+        color: ${T.C.var};
+        fill: currentcolor;
+    }
+
+    :host(:not([disabled])) .control:active {
+        background: ${T.m.var};
+        border-color: ${T.I.var};
+    }
+
+    :host([open][position="above"]) .listbox,
+    :host([open][position="below"]) .control {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    :host([open][position="above"]) .control,
+    :host([open][position="below"]) .listbox {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+    }
+
+    :host([open][position="above"]) .listbox {
+        border-bottom: 0;
+        bottom: calc(${j.a} * 1px);
+    }
+
+    :host([open][position="below"]) .listbox {
+        border-top: 0;
+        top: calc(${j.a} * 1px);
+    }
+
+    .selected-value {
+        font-family: var(--body-font);
+        flex: 1 1 auto;
+        text-align: start;
+    }
+
+    .indicator {
+        flex: 0 0 auto;
+        margin-inline-start: 1em;
+    }
+
+    slot[name="listbox"] {
+        display: none;
+        width: 100%;
+    }
+
+    :host([open]) slot[name="listbox"] {
+        display: flex;
+        position: absolute;
+        ${C.a}
+    }
+
+    .end {
+        margin-inline-start: auto;
+    }
+
+    .start,
+    .end,
+    .indicator,
+    .select-indicator,
+    ::slotted(svg) {
+        ${""}
+        fill: currentcolor;
+        height: 1em;
+        min-height: calc(var(--design-unit) * 4px);
+        min-width: calc(var(--design-unit) * 4px);
+        width: 1em;
+    }
+
+    ::slotted([role="option"]) {
+        flex: 0 0 auto;
+    }
+
+    :host([filled]) {
+        background: ${T.p.var};
+        border-color: transparent;
+    }
+
+    :host([filled]:hover:not([disabled])) {
+        background: ${T.l.var};
+        border-color: transparent;
+    }
+
+    :host([filled]:${k.a}) {
+        border-color: ${T.v.var};
+    }
+`.withBehaviors(T.b,T.f,T.p,T.l,T.I,T.K,T.L,Object(O.c)(x.a`
+            :host([disabled]) {
+                border-color: ${w.a.GrayText};
+                background-color: ${w.a.ButtonFace};
+                color: ${w.a.GrayText};
+                opacity: 1;
+                forced-color-adjust: none;
+            }
+
+            :host([disabled]:hover) {
+                background: ${w.a.ButtonFace};
+            }
+
+            :host([disabled]) .control {
+                color: ${w.a.GrayText};
+                border-color: ${w.a.GrayText};
+            }
+
+            :host(:not([disabled]):hover) {
+              background: ${w.a.ButtonFace};
+              border-color: ${w.a.Highlight};
+            }
+
+            :host(:${k.a}) {
+              forced-color-adjust: none;
+              background: ${w.a.ButtonFace};
+              border-color: ${w.a.Highlight};
+              box-shadow: 0 0 0 1px inset ${w.a.Highlight};
+              color: ${w.a.ButtonText};
+              fill: currentcolor;
+            }
+
+            :host([open]) .listbox {
+                background: ${w.a.ButtonFace};
+                border: 1px solid ${w.a.ButtonText};
+            }
+
+            :host(:${k.a}) ::slotted([aria-selected="true"][role="option"]:not([disabled])) {
+                background: ${w.a.Highlight};
+                border-color: ${w.a.ButtonText};
+                box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) inset ${w.a.HighlightText};
+                color: ${w.a.HighlightText};
+                fill: currentcolor;
+            }
+
+            ::slotted([role="option"]:not([aria-selected="true"]):not([disabled]):hover) {
+                forced-color-adjust: none;
+                color: ${w.a.ButtonText};
+                background: ${w.a.ButtonFace};
+                border-color: ${w.a.Highlight};
+                box-shadow: none;
+            }
+        `),T.m,T.n,T.o,T.s,T.v,T.w,T.C,T.F,T.L);let S=class extends b{appearanceChanged(e,t){e!==t&&(this.classList.add(t),this.classList.remove(e))}connectedCallback(){super.connectedCallback(),this.appearance||(this.appearance="outline")}};Object(o.c)([Object(a.b)({mode:"fromView"})],S.prototype,"appearance",void 0),S=Object(o.c)([Object(s.b)({name:"fluent-select",template:y,styles:D})],S)},xDi8:function(e,t,i){"use strict";var o,a;i.d(t,"a",(function(){return o})),i.d(t,"b",(function(){return a})),function(e){e.above="above",e.below="below"}(o||(o={})),function(e){e.combobox="combobox"}(a||(a={}))},y5gg:function(e,t,i){"use strict";i.r(t),i.d(t,"ToolingInfo",(function(){return W})),i.d(t,"FeedToggleWC",(function(){return m})),i.d(t,"FeedToggleOption",(function(){return r})),i.d(t,"ToggleWCTemplate",(function(){return E})),i.d(t,"OptionWCTemplate",(function(){return F})),i.d(t,"DropdownWCTemplate",(function(){return I})),i.d(t,"MenuItemWCTemplate",(function(){return M})),i.d(t,"MenuWCTemplate",(function(){return B})),i.d(t,"DialogWCTemplate",(function(){return A})),i.d(t,"FeedToggleWCTemplate",(function(){return P})),i.d(t,"FeedToggleWCStyles",(function(){return N}));var o=i("A03o"),a=i("C49W"),s=i("akWC"),n=i("Zn5T");const d=Object(o.a)(n.a.feedToggleWC,"A sample Peregrine Web Component experience",Object.assign(Object.assign(Object.assign(Object.assign({},Object(a.c)("feedVisibilityOption","Feed visibility option")),Object(a.b)("enablePeekFeedSetting","Enable peek feed setting")),Object(a.b)("noFeedBackgroundEnabled","Enable transparent feed background")),Object(s.a)({contentVisible:"Localization for the content Visible",feedVisible:"Localization for the feed Visible",headingsOnly:"Localization for the headings only",peekContent:"Localization for the content partially visible"})));var r,l=i("D57K"),c=i("4k19"),h=i("s9+9");!function(e){e[e.Toggle=0]="Toggle",e[e.Dropdown=1]="Dropdown",e[e.Dialog=2]="Dialog"}(r||(r={}));var p=i("Am8i"),u=i("u5KZ"),b=i("L1Sn"),g=i("IqCT"),f=i("oePG"),v=i("QHbP"),y=i("d0Z1"),x=i("+Ht2");class m extends g.a{constructor(){super(...arguments),this.handleOutsideClick=e=>{const t=e.target;t&&t instanceof HTMLElement&&t.instanceId===this.getExperienceType()||this.dismissDialog()},this.handleOnScroll=()=>{const e=scrollY<100&&this.layoutState.imageOfTheDayEnabled&&(this.layoutState.selectedFeedDisplaySetting===c.f.headingsOnly||this.layoutState.selectedFeedDisplaySetting===c.f.peek);e!=this.isFeedTranslucent&&(this.isFeedTranslucent=e)}}experienceConnected(){this.templateReady=!1,this.feedMenuItemsMap={headingsonly:{id:c.f.headingsOnly,title:this.strings.headingsOnly},peek:{id:c.f.peek,title:this.strings.peekContent},always:{id:c.f.always,title:this.strings.contentVisible}},this.feedMenuItems=[this.feedMenuItemsMap[c.f.headingsOnly],...this.config.enablePeekFeedSetting?[this.feedMenuItemsMap[c.f.peek]]:[],this.feedMenuItemsMap[c.f.always]],this.pageSettingsConnector=Object(x.c)(h.a.ChromiumPageSettings),this.pageSettingsConnector&&Object(y.c)(h.a.ChromiumPageSettings,e=>{this.layoutState=e,this.toggleChecked=this.layoutState.selectedFeedDisplaySetting===c.f.always;const t=this.feedMenuItemsMap[this.layoutState.selectedFeedDisplaySetting];this.currentSetting=t&&t.id,this.telemetryContext=this.getTelemetryContext(),this.templateReady=!0,this.isFeedTranslucent=e.imageOfTheDayEnabled&&(e.selectedFeedDisplaySetting===c.f.headingsOnly||e.selectedFeedDisplaySetting===c.f.peek)})}connectedCallback(){var e;super.connectedCallback(),document.addEventListener("scroll",this.handleOnScroll),(null===(e=this.config)||void 0===e?void 0:e.feedVisibilityOption)==r.Dialog&&document.addEventListener("mousedown",this.handleOutsideClick)}getExperienceType(){return n.a.feedToggleWC}shadowDomPopulated(){const e=this.shadowRoot.getElementById("feedToggle");e&&Object(v.b)("feedToggle",e)}updateFeedVisibility(e){const t=e&&e.target;if(!t)return;if((this.layoutState?this.layoutState.currentLayout:c.e.currentLayout)!==c.j.custom){const e=c.l[this.layoutState.currentLayout],t={currentBackgroundImageType:e.current_background_image_type,currentLayout:c.j.custom,greetingEnabled:e.greeting,imageOfTheDayEnabled:e.current_background_image_type!==c.a.off,quickLinksEnabled:e.quick_links,selectedQuickLinksDisplaySetting:e.selectedQuickLinksDisplaySetting,selectedFeedDisplaySetting:e.feeds_position};this.pageSettingsConnector.updateLayout(t)}let i,o;switch(this.config.feedVisibilityOption){case r.Toggle:{const e=!t.checked;o=e?c.f.always:c.f.headingsOnly,i=e?"On":"Off";break}case r.Dropdown:{const e=t.selectedIndex;if(isNaN(e))return;o=this.feedMenuItems[e].id,i=o;break}case r.Dialog:if(!t.id)return;o=t.id,i=o,this.dismissDialog();break;default:return}this.pageSettingsConnector.updateFeeds(o),this.fireFeedToggleTelemetry(i,t)}showDialog(e){this.showMenuDialog=!this.showMenuDialog;const t=e&&e.target&&e.target.parentElement;t&&this.fireFeedToggleTelemetry(this.showMenuDialog?"Show":"Close",t)}dismissDialog(){this.showMenuDialog=!1}getTelemetryContext(){if(!this.telemetryObject)return null;const e=this.telemetryObject.addOrUpdateChild({name:"PinMyFeed",behavior:this.layoutState&&this.layoutState.selectedFeedDisplaySetting===c.f.always?p.c.TurnOff:p.c.TurnOn,type:p.f.Interaction}).getMetadataTag(),t=this.telemetryObject.addOrUpdateChild({name:"PinMyFeed",behavior:p.c.Customize,type:p.f.Interaction}).getMetadataTag();return{feedToggleTelemetryTag:e,feedDialogTelemetryTag:this.telemetryObject.addOrUpdateChild({name:"PinMyFeedButton",behavior:p.c.Open,type:p.f.Interaction}).getMetadataTag(),feedDropdownTelemetryTag:t,feedMenuItemTelemetryTag:t}}fireFeedToggleTelemetry(e,t){const i=t,o=i&&b.a.get(i);o&&o.contract&&(o.contract.content={headline:e,type:p.d.Settings},b.a.setAttribute(i,o.contract),u.a.sendActionEvent(i))}}Object(l.c)([f.d],m.prototype,"currentSetting",void 0),Object(l.c)([f.d],m.prototype,"isFeedTranslucent",void 0),Object(l.c)([f.d],m.prototype,"showMenuDialog",void 0),Object(l.c)([f.d],m.prototype,"templateReady",void 0),Object(l.c)([f.d],m.prototype,"toggleChecked",void 0);var k=i("OaCD"),$=i("eUhr"),O=i("m1Vi"),w=i("XiV1"),C=i("i56n"),T=i("e8No"),j=i("Sunj"),D=i("pH9t"),S=i("6BDD"),H=i("UNqU"),L=i("+53S"),V=i("6vBc");O.b,w.a,C.a,T.a,j.a,D.a,k.a;const E=S.b`
+    <fluent-switch
+        class="feedToggle"
+        checked=${e=>e.toggleChecked}
+        aria-checked="${e=>e.toggleChecked}"
+        ${Object($.b)(e=>e.telemetryContext&&e.telemetryContext.feedToggleTelemetryTag)}
+        @click=${(e,t)=>e.updateFeedVisibility(t.event)}>
+            <span class="feedVisibleTitle">
+                ${e=>e.strings.feedVisible}
+            </span>
+    </fluent-switch>
+`,F=S.b`
+    <fluent-option 
+        value="${e=>e.title}"
+        id="${e=>e.id}"
+        class=${(e,t)=>t.parent.currentSetting===e.id?"selected":"unselected"}
+        ?selected=${(e,t)=>t.parent.currentSetting===e.id}>
+            <span class="feedOptionTitle">${e=>e.title}</span>
+    </fluent-option>
+`,I=S.b`
+    <fluent-select
+        class="feedDropdown"
+        ${Object($.b)(e=>e.telemetryContext&&e.telemetryContext.feedDropdownTelemetryTag)}
+        @change=${(e,t)=>e.updateFeedVisibility(t.event)}>
+            <span slot="selected-value">${e=>e.currentSetting&&e.feedMenuItemsMap[e.currentSetting]&&e.feedMenuItemsMap[e.currentSetting].title}</span>
+            ${Object(H.c)(e=>e.feedMenuItems,F)}
+    </fluent-select>
+`,M=S.b`
+    <fluent-menu-item
+        id="${e=>e.id}"
+        aria-label="${e=>e.title}"
+        @click=${(e,t)=>t.parent.updateFeedVisibility(t.event)}
+        ${Object($.b)((e,t)=>t.parent.telemetryContext.feedMenuItemTelemetryTag)}
+        class="menu-item ${(e,t)=>t.parent.currentSetting===e.id?" selected":""}"
+        role="menuitem">${e=>e.title}
+    </fluent-menu-item>
+`,B=S.b`
+    <fast-anchored-region
+        :anchorElement=${e=>e.referrerButton}
+        class="anchorRegion"
+        vertical-positioning-mode="locktodefault"
+        vertical-default-position="top"
+        horizontal-positioning-mode="locktodefault"
+        horizontal-default-position="left">
+            <fluent-menu class="feedMenu">
+                ${Object(H.c)(e=>e.feedMenuItems,M,{positioning:!0})}
+            </fluent-menu>
+    </fast-anchored-region>
+`,A=S.b`
+    <fluent-button 
+        class="feedDialogButton"
+        ${Object(L.b)("referrerButton")}
+        ${Object($.b)(e=>e.telemetryContext&&e.telemetryContext.feedDialogTelemetryTag)}
+        @click=${(e,t)=>e.showDialog(t.event)}>
+            <svg width="20" height="19" viewBox="0 0 20 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7.25498 11.0045C8.22148 11.0045 9.00498 11.788 9.00498 12.7545V16.2535C9.00498 17.2199 8.22148 18.0035 7.25498 18.0035H1.75C0.783502 18.0035 0 17.2199 0 16.2535V12.7545C0 11.788 0.783502 11.0045 1.75 11.0045H7.25498ZM18.25 11.0045C19.2165 11.0045 20 11.788 20 12.7545V16.2535C20 17.2199 19.2165 18.0035 18.25 18.0035H12.745C11.7785 18.0035 10.995 17.2199 10.995 16.2535V12.7545C10.995 11.788 11.7785 11.0045 12.745 11.0045H18.25ZM7.25498 12.5045H1.75C1.61193 12.5045 1.5 12.6165 1.5 12.7545V16.2535C1.5 16.3915 1.61193 16.5035 1.75 16.5035H7.25498C7.39306 16.5035 7.50498 16.3915 7.50498 16.2535V12.7545C7.50498 12.6165 7.39306 12.5045 7.25498 12.5045ZM18.25 12.5045H12.745C12.6069 12.5045 12.495 12.6165 12.495 12.7545V16.2535C12.495 16.3915 12.6069 16.5035 12.745 16.5035H18.25C18.3881 16.5035 18.5 16.3915 18.5 16.2535V12.7545C18.5 12.6165 18.3881 12.5045 18.25 12.5045ZM18.25 0C19.2165 0 20 0.783502 20 1.75V7.25C20 8.2165 19.2165 9 18.25 9H1.75C0.783502 9 0 8.2165 0 7.25V1.75C0 0.831827 0.70711 0.0788077 1.60647 0.0058012L1.75 0H18.25ZM18.25 1.5H1.75L1.69268 1.5066C1.58223 1.53251 1.5 1.63165 1.5 1.75V7.25C1.5 7.38807 1.61193 7.5 1.75 7.5H18.25C18.3881 7.5 18.5 7.38807 18.5 7.25V1.75C18.5 1.61193 18.3881 1.5 18.25 1.5Z" fill="white"/>
+            </svg>
+    </fluent-button>
+    ${Object(V.a)(e=>e.showMenuDialog,B)}
+`,P=S.b`
+    <div id="feedToggle" class=${e=>_(e)}>
+        ${Object(V.a)(e=>e.templateReady&&e.config.feedVisibilityOption===r.Toggle,E)}
+        ${Object(V.a)(e=>e.templateReady&&e.config.feedVisibilityOption===r.Dropdown,I)}
+        ${Object(V.a)(e=>e.templateReady&&e.config.feedVisibilityOption===r.Dialog,A)}
+    </div>
+`,_=e=>{let t="";return e.config.noFeedBackgroundEnabled&&(t+="noBackground "),e.isFeedTranslucent?t+="feedLight ":t+="feedDark ",t};var z=i("kL0l");const N=i("4X57").a`
+:host {
+    border-radius: 6px;
+}
+
+.anchorRegion {
+    margin: 2px -15px
+}
+
+.feedDark {
+    color: white;
+}
+
+.feedDark .feedDropdown {
+    color: ${z.z.var};
+}
+
+.feedDark .feedDropdown:hover {
+    background:  ${z.r.var};
+}
+
+.feedDark .feedDropdown::part(control):active {
+    background:  ${z.r.var};
+}
+
+.feedDark .feedVisibleTitle {
+    color: ${z.v.var};
+}
+
+.feedDark path {
+    fill: ${z.C.var}
+}
+
+.feedDialogButton {
+    background-color: transparent;
+    outline: none;
+}
+
+.feedDialogButton svg {
+    height: 20px;
+    opacity: .8;
+    width: 20px;
+}
+
+.feedDropdown {
+    font-size: 14px;
+    font-weight: 600;
+    height: 36px;
+    min-width: 202px;
+    padding: 3px 0;
+}
+
+.feedDropdown::part(selected-value) {
+   margin-bottom: 4px;
+}
+
+.feedLight .feedDropdown {
+    background: transparent;
+    color: white;
+}
+ 
+.feedLight .feedDropdown:hover {
+    background: #404040
+}
+
+.feedLight .feedDropdown::part(control):active {
+    background: #404040
+}
+
+.feedLight .feedVisibleTitle {
+    color: white;
+}
+
+.feedLight .feedToggle::part(switch) {
+    background: transparent;
+}
+
+.feedLight .feedToggle::part(checked-indicator) {
+    background: white;
+}
+
+.feedOptionTitle {
+    font-weight: 600;
+}
+
+.feedMenu {
+    border-radius: 4px;
+    box-shadow: 0px 12.8px 28.8px rgba(0, 0, 0, 0.13), 0px 0px 9.2px rgba(0, 0, 0, 0.11);
+    font-weight: 600;
+    min-width: 181px;
+}
+
+.feedToggle {
+    font-weight: 600;
+}
+
+.feedVisibleTitle {
+    pointer-events: none
+}
+
+fluent-option.selected {
+    background: ${z.j.var};
+    color: ${z.C.var};
+}
+
+fluent-option.unselected {
+    background: unset;
+    color: ${z.C.var};
+}
+
+fluent-option:hover {
+    background: ${z.l.var};
+    color: ${z.C.var};
+}
+
+.menu-item {
+    grid-template-columns: 12px auto;
+}
+
+.menu-item.selected {
+    background: ${z.j.var};
+}
+
+.noBackground.feedDark .feedDropdown,
+.noBackground.feedLight .feedDropdown {
+    background: transparent;
+    color: white;
+}
+
+.noBackground.feedDark .feedDropdown:hover,
+.noBackground.feedLight .feedDropdown:hover {
+    background: #404040
+}
+
+`.withBehaviors(z.v,z.j,z.C,z.z,z.r,z.s),W={experienceConfigSchema:d}}}]);
