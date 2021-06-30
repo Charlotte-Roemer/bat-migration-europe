@@ -1,5 +1,0 @@
-baseurl = "/"
-languageCode = "en-us"
-title = "Hugo minimalist SPA"
-author = "Sergio Abreu García"
-theme = "../.."

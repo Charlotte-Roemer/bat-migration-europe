@@ -1,0 +1,85 @@
+baseurl: /
+languageCode: en-us
+defaultContentLanguage: en
+title: Bat Migration Europe
+theme: syna
+enableGitInfo: yes
+version: 0.17.4
+disableKinds:
+  - RSS
+  - taxonomy
+  - taxonomyTerm
+ignorefiles: content/dev/.*
+googleAnalytics: ''
+outputs:
+  home:
+    - HTML
+    - JSON
+frontmatter:
+  date:
+    - date
+    - lastmod
+  lastmod:
+    - lastmod
+    - :git
+    - date
+markup:
+  goldmark:
+    renderer:
+      unsafe: yes
+params:
+  analytics:
+    piwik: {}
+  colors:
+    danger: '#dc1200'
+    dark: '#343a40'
+    info: '#00c9dc'
+    light: '#f8f9fa'
+    primary: '#00838F'
+    secondary: '#868e96'
+    success: '#008f54'
+    warning: '#fdf314'
+  custom:
+    favicon: favicon.ico
+    favicon_ico_sizes: 16x16 32x32
+    favicon_png: favicon.png
+    favicon_svg: favicon.svg
+  debug: yes
+  description: Open Source Theme for your next project
+  fontawesome:
+    disabled: no
+    pro: no
+  name: Okkur Labs
+  style: {}
+  unsafeEvents: yes
+menu:
+  copyright_footer:
+    - name: About Us
+      url: /about
+      weight: 10
+  footer:
+    - name: Getting Started
+      url: https://syna.okkur.org/demo
+      weight: 10
+    - name: About Okkur Labs
+      url: https://about.okkur.org/
+      weight: 20
+  footer_social:
+    - name: github
+      pre: fab fa-github fa-stack-2x
+      url: https://git.okkur.org/syna
+      weight: 30
+  main:
+    - name: Home
+      url: /
+      weight: 10
+    - name: Fragments
+      url: /fragments
+      weight: 20
+    - name: Project
+      url: /project
+      weight: 30
+    - name: About
+      url: /about
+      weight: 50
+
