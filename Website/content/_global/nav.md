@@ -4,7 +4,7 @@ fragment = "nav"
 date = "2018-05-17"
 weight = 0
 background = "dark"
-search = true
+search = false
 sticky = true
 
 [breadcrumb]
@@ -18,7 +18,7 @@ sticky = true
   text = "Bat Migration Europe"
 
 [repo_button]
-  url = "https://github.com/okkur/syna"
-  text = "Star" # default: "Star"
+  url = "https://github.com/Charlotte-Roemer/bat-migration-europe/tree/main/Website"
+  text = "Source code" # default: "Star"
   icon = "fab fa-github" # defaults: "fab fa-github"
 +++

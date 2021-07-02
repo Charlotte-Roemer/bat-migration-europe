@@ -49,35 +49,41 @@ params:
   fontawesome:
     disabled: no
     pro: no
-  name: Okkur Labs
+  name: Bat Migration Europe
   style: {}
   unsafeEvents: yes
 menu:
   copyright_footer:
-    - name: About Us
+    - name: About
       url: /about
       weight: 10
   footer:
-    - name: Getting Started
-      url: https://syna.okkur.org/demo
+    - name: French Museum of Natural History
+      url: https://www.mnhn.fr/fr
       weight: 10
-    - name: About Okkur Labs
-      url: https://about.okkur.org/
+    - name: CESCO lab
+      url: https://cesco.mnhn.fr/fr
+      weight: 15
+    - name: Bat research at the CESCO lab
+      url: https://croemer3.wixsite.com/teamchiro
       weight: 20
-  footer_social:
-    - name: github
-      pre: fab fa-github fa-stack-2x
-      url: https://git.okkur.org/syna
-      weight: 30
+#  footer_social:
+    # - name: github
+    #   pre: fab fa-github fa-stack-2x
+    #   url: https://git.okkur.org/syna
+    #   weight: 30
   main:
     - name: Home
       url: /
       weight: 10
-    - name: Fragments
-      url: /fragments
-      weight: 20
+    # - name: Fragments
+    #   url: /fragments
+    #   weight: 20
     - name: Project
       url: /project
+      weight: 20
+    - name: Partners
+      url: /partners
       weight: 30
     - name: About
       url: /about
