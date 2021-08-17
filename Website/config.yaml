@@ -40,10 +40,10 @@ params:
     success: '#008f54'
     warning: '#fdf314'
   custom:
-    favicon: favicon.ico
+    favicon: logo2.ico
     favicon_ico_sizes: 16x16 32x32
-    favicon_png: favicon.png
-    favicon_svg: favicon.svg
+    favicon_png: logo2.png
+    favicon_svg: logo2.svg
   debug: yes
   description: Open Source Theme for your next project
   fontawesome:

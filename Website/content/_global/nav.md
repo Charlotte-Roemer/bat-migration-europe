@@ -19,6 +19,6 @@ sticky = true
 
 [repo_button]
   url = "https://github.com/Charlotte-Roemer/bat-migration-europe/tree/main/Website"
-  text = "Source code" # default: "Star"
+  text = "Github" # default: "Star"
   icon = "fab fa-github" # defaults: "fab fa-github"
 +++

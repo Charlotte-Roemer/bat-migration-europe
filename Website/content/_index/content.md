@@ -9,13 +9,13 @@ weight: 100
 
 ___
 
-_30th of June 2021_  
+_17th of August 2021_  
 
-A webinar will take place on the 29th of July, from 4 to 6 PM Central European Summer Time.
-On this occasion, the project will be presented and participants will have the opportunity to ask questions and discuss the project.
-You can subscribe by sending an email to our assistant Eva Saison : eva.saison (at) mnhn.fr.
+The website is launched!
 
-A French version of this webinar will take place on the same day from 10 to 12 AM CES Time.  
-If you want to subscribe to the French webinar, please send the email in French.
+The webinar that took place on the 29th of July 2021 can be seen [here]({{< ref "/project/webinar" >}} "Webinar").
 
 ___
+
+
+<font size="1"> *Header image © NASA/GSFC (CC BY 2.0)* </font> 
