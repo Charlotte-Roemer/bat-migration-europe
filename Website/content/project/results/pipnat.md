@@ -16,7 +16,7 @@ The species is predicted to use coastlines and large river valleys. This matches
 <b>Fig.7 - Predicted distribution of <i>P. nathusii</i> in France <br /> according to the month (light colors show high activity, dark show low activity)</b>
 </p>
 
-Almost no summer populations  are predicted in France, which also matches the litterature.
+Almost no summer populations  are predicted in France, which also matches the literature.
 
 <p align = "center">
 <img src="/project/results/map_files/Pipnat_Diff_April_July.png" alt="pipnat_spring" width="400px"/>

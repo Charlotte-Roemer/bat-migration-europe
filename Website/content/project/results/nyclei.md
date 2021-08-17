@@ -16,7 +16,7 @@ The species is predicted to use large river valleys such as the Rhone and the Rh
 <b>Fig.4 - Predicted distribution of <i>N. leisleri</i> in France <br /> according to the month (light colors show high activity, dark show low activity)</b>
 </p>
 
-Large summer populations  are predicted in France, which also matches the litterate.
+Large summer populations are predicted in France, which also matches the literature.
 
 <p align = "center">
 <img src="/project/results/map_files/Nyclei_Diff_April_July.png" alt="nyclei_spring" width="400px"/>
