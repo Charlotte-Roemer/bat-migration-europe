@@ -41,9 +41,8 @@ Yves Bas provides counselling for data management and analysis.
 
 To find more about the coordination team, please visit the [Team Chiro's website](https://croemer3.wixsite.com/teamchiro/team).
 
-</center> 
-
 ___
 
 The logo of Bat migration routes to Europe was designed by Ugo Schumpp.
 
+</center> 
