@@ -85,6 +85,9 @@ menu:
     - name: Partners
       url: /partners
       weight: 30
+    - name: Newsletter
+      url: /newsletter
+      weight: 40
     - name: About
       url: /about
       weight: 50

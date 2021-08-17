@@ -2,7 +2,7 @@
 background: light
 fragment: content
 title: Map of participations
-weight: 100
+weight: 130
 ---
 
 This map shows the current state of participations in Europe.
