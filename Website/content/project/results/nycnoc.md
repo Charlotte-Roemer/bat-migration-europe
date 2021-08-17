@@ -16,7 +16,7 @@ The species is predicted to use large river valleys and wetlands of Northern Fra
 <b>Fig.1 - Predicted distribution of <i>N. noctula</i> in France <br /> according to the month (light colors show high activity, dark show low activity)</b>
 </p>
 
-Few summer populations  are predicted in France and/or  the species is predicted to disperse to North-Eastern Europe, which also matches the litterate.
+Few summer populations  are predicted in France, which also matches the litterature.
 
 <p align = "center">
 <img src="/project/results/map_files/Nycnoc_Diff_April_July.png" alt="nycnoc_spring" width="400px"/>
