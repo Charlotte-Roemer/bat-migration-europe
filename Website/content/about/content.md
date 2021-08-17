@@ -17,6 +17,8 @@ Bat migration Europe is a project coordinated by the CESCO laboratory of the Fre
 
 <br />
 
+___
+
 ### Funding and support
 
 [<img src="/images/OFB_logo.png" alt="" width="200px"/>](https://ofb.gouv.fr/)
@@ -26,6 +28,8 @@ Bat migration Europe is a project coordinated by the CESCO laboratory of the Fre
 Bat migration Europe is funded by the French Office for Biodiversity (OFB), Naturalia Environnement, and by the Projects Initiative of EUROBATS.
 
 <br />
+
+___
 
 ### Coordination team
 
@@ -38,3 +42,8 @@ Yves Bas provides counselling for data management and analysis.
 To find more about the coordination team, please visit the [Team Chiro's website](https://croemer3.wixsite.com/teamchiro/team).
 
 </center> 
+
+___
+
+The logo of Bat migration routes to Europe was designed by Ugo Schumpp.
+
