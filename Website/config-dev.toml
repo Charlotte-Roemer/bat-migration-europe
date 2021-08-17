@@ -28,8 +28,8 @@ lastmod = ["lastmod", ":git", "date"]
      unsafe = true
 
 [params]
-  name = "Okkur Labs"
-  description = "Open Source Theme for your next project"
+  name = "Bat migration Europe"
+  description = "European collaborative project to study bat migration"
   debug = true
   unsafeEvents = true # Default is false. Enables ?event=type format of url events.
 
