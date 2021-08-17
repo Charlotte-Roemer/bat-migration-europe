@@ -6,7 +6,7 @@ title_align: left
 weight: 140
 ---
 
-The species is predicted to use large river valleys such as the Rhone and the Rhine valleys. This matches the literature.
+The species is predicted to use coastlines and large river valleys. This matches the literature except in Corsica, where the species was never captured. This is likely due to false positives in the acoustic dataset and we will investigate this issue in the future.
 
 <p align = "center">
 <img src="/project/results/map_files/Pipnat_GIF_small.gif" alt="pipnat_gif" width="400px"/>
