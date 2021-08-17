@@ -45,7 +45,7 @@ params:
     favicon_png: logo2.png
     favicon_svg: logo2.svg
   debug: yes
-  description: Open Source Theme for your next project
+  description: European collaborative project to study bat migration
   fontawesome:
     disabled: no
     pro: no
