@@ -1,8 +1,7 @@
 ---
 background: secondary
 fragment: content
-title: Working with very large datasets
-title_align: left
+title_align: center
 weight: 105
 ---
 
