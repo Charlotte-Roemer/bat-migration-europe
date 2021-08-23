@@ -9,6 +9,8 @@ weight: 100
 
 This project is possible thanks to the collaboration of research institutes, museums, universities, NGOs, gouvernmental agencies and authorities, natural reserves, consultants and other essential people.
 
+For the moment, we are still in the process of choosing space on servers and organising the workflow of data. Nonetheless, there are already a few institutions who are supporting the project:
+
 [<img src="/images/EUROBATS_logo.png" alt="" width="100px"/>](https://www.eurobats.org)
 
 Bat migration Europe is supported and funded by EUROBATS.
