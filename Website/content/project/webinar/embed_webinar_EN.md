@@ -6,3 +6,5 @@ media_source: https://video.ploud.fr/videos/watch/c11ae6fc-b79e-4527-8887-ecf355
 title: Recording of the international webinar
 weight: 100
 ---
+
+If the video is not working, [click here](https://tube.nocturlab.fr/videos/watch/10485e9f-c8b7-4571-b2cd-f49aada6a79e).
