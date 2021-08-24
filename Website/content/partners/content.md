@@ -15,6 +15,12 @@ For the moment, we are still in the process of choosing space on servers and org
 
 Bat migration Europe is supported and funded by EUROBATS.
 
+### Germany
+
+[<img src="/images/Fledermauswarte.png" alt="" width="100px"/>](https://www.deutsche-fledermauswarte.org/?lang=en)
+
+The German Bat Observatory.
+
 ### Spain
 
 [<img src="/images/Granollers_logo.jpg" alt="" width="100px"/>](http://www.museugranollersciencies.org/en/quiropters/)
