@@ -25,7 +25,7 @@ The German Bat Observatory.
 
 [<img src="/images/Granollers_logo.jpg" alt="" width="100px"/>](http://www.museugranollersciencies.org/en/quiropters/)
 
-The Granollers Museum of Natural Sciences.
+The bat monitoring program of the Granollers Museum of Natural Sciences.
 
 ### United Kingdom
 
