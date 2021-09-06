@@ -27,6 +27,12 @@ The German Bat Observatory.
 
 The bat monitoring program of the Granollers Museum of Natural Sciences.
 
+### Sweden
+
+[<img src="/images/BatLifeSweden_logo_rgb.png" alt="" width="100px"/>](https://batlife-sweden.se/)
+
+BatLife Sweden.
+
 ### United Kingdom
 
 [<img src="/images/BTO_logo.gif" alt="" width="100px"/>](https://www.bto.org/)
