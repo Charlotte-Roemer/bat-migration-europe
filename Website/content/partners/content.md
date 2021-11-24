@@ -21,6 +21,12 @@ Bat migration Europe is supported and funded by EUROBATS.
 
 The Royal Belgian Institute of Natural Sciences
 
+### France
+
+[<img src="/images/sfepm_couleur_vf.jpg" alt="" width="150px"/>](https://www.sfepm.org/)
+
+The French society for the study and protection of mammals
+
 ### Germany
 
 [<img src="/images/Fledermauswarte.png" alt="" width="100px"/>](https://www.deutsche-fledermauswarte.org/?lang=en)
