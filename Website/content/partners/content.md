@@ -15,26 +15,38 @@ For the moment, we are still in the process of choosing space on servers and org
 
 Bat migration Europe is supported and funded by EUROBATS.
 
+### Belgium
+
+[<img src="/images/logo_museum_BE.png" alt="" width="150px"/>](https://www.naturalsciences.be/en/museum/home)
+
+The Royal Belgian Institute of Natural Sciences
+
 ### Germany
 
 [<img src="/images/Fledermauswarte.png" alt="" width="100px"/>](https://www.deutsche-fledermauswarte.org/?lang=en)
 
-The German Bat Observatory.
+The German Bat Observatory
+
+### Portugal
+
+[<img src="/images/LEA_CITAB_logo.jpg" alt="" width="250"/>](https://www.citab.utad.pt/)
+
+The laboratory of Applied Ecology, Centre for the Research and Technology of Agro-Environment  of University of Trás-os-Montes e Alto Douro 
 
 ### Spain
 
 [<img src="/images/Granollers_logo.jpg" alt="" width="100px"/>](http://www.museugranollersciencies.org/en/quiropters/)
 
-The bat monitoring program of the Granollers Museum of Natural Sciences.
+The bat monitoring program of the Granollers Museum of Natural Sciences
 
 ### Sweden
 
 [<img src="/images/BatLifeSweden_logo_rgb.png" alt="" width="100px"/>](https://batlife-sweden.se/)
 
-BatLife Sweden.
+BatLife Sweden
 
 ### United Kingdom
 
 [<img src="/images/BTO_logo.gif" alt="" width="100px"/>](https://www.bto.org/)
 
-The British Trust for Ornithology.
+The British Trust for Ornithology
