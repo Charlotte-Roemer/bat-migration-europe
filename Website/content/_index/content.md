@@ -9,6 +9,13 @@ weight: 100
 
 ___
 
+_30th of November 2021_  
+
+Partners are encouraged anew to list their study sites and return the list to us by email by the end of the year.
+
+We now have access to the [IN2P3 data center](https://cc.in2p3.fr/en/) (French Centre of Scientific Research - CNRS) to host the data of the project!
+___
+
 _23rd of September 2021_  
 
 Partners are encouraged to list their study sites and return the list to us by email. You can find more about how to [get involved here]({{< ref "/project/get-involved" >}} "Get involved").
