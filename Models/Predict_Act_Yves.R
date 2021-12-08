@@ -1,0 +1,115 @@
+library(data.table)
+library(randomForest)
+library(spdep)
+
+
+#args="Pippyg"
+#args[2]="GI_coordWGS84_DataPF_SpNuit2_Seuil90_Lat42.41_45.23_Long-1.19_5.6"
+#args[3]="15/06/2018" #date of prediction
+#args[5]=50
+#args[11]=40 #number of coordinates projections (must be a division of 360)
+#ModRF_file=paste0("./VigieChiro/ModPred/ModRFActLog_",args[1],"_Seuil",args[5],".learner")
+print(getwd())
+#load(paste0("./VigieChiro/ModPred/ModRFActLog_",args[1],"_Seuil",args[5],".learner"))
+print("L14")
+load(ModRF_file)
+Sys.time()
+CoordSIG=fread(paste0(args[2],".csv"))
+Sys.time()
+print(nrow(CoordSIG))
+print(apply(CoordSIG,MARGIN=2,FUN=function(x) sum(is.na(x))))
+
+#print(apply(CoordSIG,MARGIN=1,FUN=function(x) sum(is.na(x))))
+
+CoordSIG=subset(CoordSIG,is.na(CoordSIG$SpAltiS)==F)
+CoordSIG=subset(CoordSIG,is.na(CoordSIG$SpBioC1)==F)
+print(nrow(CoordSIG))
+print("M22")
+
+CoordSIG$SpGite=0
+CoordSIG$SpFDate=yday(as.Date(args[3]
+                              ,format="%d/%m/%Y"))
+CoordSIG$SpCDate=cos(CoordSIG$SpFDate/365*2*pi)
+CoordSIG$SpSDate=sin(CoordSIG$SpFDate/365*2*pi)
+                                                            
+
+if(exists("YearEffect"))
+{
+if(YearEffect)
+{
+CoordSIG$SpYear=as.numeric(substr(args[3],7,10))
+}
+}
+                              
+
+if(sum(grepl("Group.1.x",names(CoordSIG)))>0)
+{
+  CoordSIG$Group.1=CoordSIG$Group.1.x
+  CoordSIG$Group.2=CoordSIG$Group.2.x
+  CoordSIG$Group.1.x=NULL
+  CoordSIG$Group.1.y=NULL
+  CoordSIG$Group.2.x=NULL
+  CoordSIG$Group.2.y=NULL
+}
+if(!grepl("Group.1",names(CoordSIG))) #dirty
+{
+CoordSIG$Group.1=CoordSIG$longitude
+CoordSIG$Group.2=CoordSIG$latitude
+}
+CoordDS=as.matrix(cbind(CoordSIG$Group.1,CoordSIG$Group.2))
+
+for (a in 0:(as.numeric(args[11])-1))
+{
+  Coordi=Rotation(CoordDS,angle=pi*a/as.numeric(args[11]))
+  #print(plot(Coordi[,1],CoordDS[,1],main=as.character(a)))
+  #print(plot(Coordi[,1],CoordDS[,2],main=as.character(a)))
+  CoordSIG=cbind(CoordSIG,Coordi[,1])
+  names(CoordSIG)[ncol(CoordSIG)]=paste0("SpCoord",a)
+}
+
+test=match(row.names(ModRF$importance),names(CoordSIG))
+MissingVar=subset(row.names(ModRF$importance),is.na(test))
+print("missing:")
+print(MissingVar)
+if(length(MissingVar)>0)
+{
+  for (j in 1:length(MissingVar))
+  {
+    CoordSIG$temp=0
+    names(CoordSIG)[ncol(CoordSIG)]=MissingVar[j]
+  }
+}
+CoordSIG[is.na(CoordSIG)]=0
+#print(apply(CoordSIG,MARGIN=2,FUN=function(x) sum(is.na(x))))
+print("M61")
+PredLoc=predict(ModRF,CoordSIG)
+print("M63")
+PredAll=predict(ModRF,CoordSIG,predict.all=T)[[2]]
+print("M65")
+PredErr=apply(PredAll,MARGIN=1,FUN=sd)
+print("M67")
+coordinates(CoordSIG) <- c("Group.1", "Group.2")
+proj4string(CoordSIG) <- CRS("+init=epsg:4326") # WGS 84
+
+CoordSIG$pred=PredLoc
+CoordSIG$err=PredErr
+
+#spplot(CoordSIG,zcol="pred",main=args[1])
+#spplot(CoordSIG,zcol="err")
+
+Coord=as.data.table(CoordSIG)
+Coord=subset(Coord,select=c("Group.1","Group.2","pred","err"))
+print("M76")
+DateForFile=gsub("/","_",args[3])
+DateForFile=gsub("2020","",DateForFile)
+
+
+FilName=paste0(Output
+       ,args[1],"_Act_",DateForFile
+       ,basename(args[2]))
+
+print(FilName)
+
+fwrite(Coord,paste0(FilName,".csv"))
+
+
