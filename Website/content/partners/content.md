@@ -62,6 +62,12 @@ The Department of Life Sciences and Systems Biology of the University of Turin
 
 The laboratory of Applied Ecology of the Centre for the Research and Technology of Agro-Environment of the University of Trás-os-Montes e Alto Douro 
 
+### Romania
+
+[<img src="/images/wilderness_research_conservation_logo.jpg" alt="" width="100"/>](http://wildernessrc.ro/)
+
+Wilderness Research and Conservation
+
 ### Spain
 
 [<img src="/images/Granollers_logo.jpg" alt="" width="100px"/>](http://www.museugranollersciencies.org/en/quiropters/)

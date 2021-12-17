@@ -4,9 +4,9 @@ fragment: content
 weight: 130
 ---
 
-If you are interested in the project, please subscribe to the newsletter [here]({{< ref "/newsletter" >}} "Newsletter").
+If you are interested in the project, please subscribe to the newsletter [here]({{< ref "/newsletter" >}} "Newsletter"). Indeed, information are only sent to partners through this list.
 
-We are still in the process of choosing space on servers for data exchange and organising the workflow of data.
+We are almost finished translating the contract of data exchange that we will then send to partners so that our collaboration can be official. We will also soon send our tutorial to organise your data.
 
 In the meantime, please review the data that you would be willing to share for the project and list study sites using the table that you can [download here](https://b2drop.eudat.eu/s/oYAbHRd33pNebS6). You will find the definition and how to fill columns in [the 'definition' table here](https://b2drop.eudat.eu/s/Ey3TbBemNCS6QFS). 
 Please be aware that this is not the final metadata table that will be used to analyse the data: indeed, this first table ('potential dataset') will help us evaluate the size of the potential dataset, and we can also help you prioritise the study sites that should be the most interesting for the project, so you don't have to send all of your data if this is too big for you.
