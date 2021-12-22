@@ -9,7 +9,7 @@ weight: 100
 
 This project is possible thanks to the collaboration of research institutes, museums, universities, NGOs, gouvernmental agencies and authorities, natural reserves, consultants and other essential people.
 
-The following institutions support the project morally (and financially if stated). If you wish to appear in this list, please contact us!
+Partners from the following institutions support the project morally (and financially if stated). If you wish to appear in this list, please contact us!
 
 ### Europe
 
@@ -22,6 +22,12 @@ Bat migration Europe is supported and funded by EUROBATS.
 [<img src="/images/logo_museum_BE.png" alt="" width="150px"/>](https://www.naturalsciences.be/en/museum/home)
 
 The Royal Belgian Institute of Natural Sciences
+
+### Denmark
+
+[<img src="/images/aarhus_university_logo.png" alt="" width="150px"/>](https://ecos.au.dk/en/)
+
+The Aarhus University
 
 ### France
 
