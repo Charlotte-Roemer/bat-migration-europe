@@ -12,82 +12,75 @@ This project is possible thanks to the collaboration of research institutes, mus
 Partners from the following institutions support the project morally (and financially if stated). If you wish to appear in this list, please contact us!
 
 ### Europe
-
-[<img src="/images/EUROBATS_logo.png" alt="" width="100px"/>](https://www.eurobats.org)
-
-Bat migration Europe is supported and funded by EUROBATS.
+---
+[<img src="/images/EUROBATS_logo.png" alt="" width="200px" style="padding-right:100px"/>](https://www.eurobats.org) EUROBATS (funder) 
 
 ### Belgium
+---
+[<img src="/images/logo_museum_BE.png" alt="" width="200px" style="padding-right:50px"/>](https://www.naturalsciences.be/en/museum/home) The Royal Belgian Institute of Natural Sciences
 
-[<img src="/images/logo_museum_BE.png" alt="" width="150px"/>](https://www.naturalsciences.be/en/museum/home)
-
-The Royal Belgian Institute of Natural Sciences
+[<img src="/images/Vespertilio_logo.jpg" alt="" width="200px" style="padding-right:100px"/>](http://vespertilio.be/) Vespertilio VZW
 
 ### Denmark
+---
 
-[<img src="/images/aarhus_university_logo.png" alt="" width="150px"/>](https://ecos.au.dk/en/)
-
-The Aarhus University
+[<img src="/images/aarhus_university_logo.png" alt="" width="200px" style="padding-right:50px"/>](https://ecos.au.dk/en/) The Aarhus University
 
 ### France
+---
 
-[<img src="/images/OFB_logo.png" alt="" width="150px"/>](https://ofb.gouv.fr/)
+[<img src="/images/OFB_logo.png" alt="" width="200px" style="padding-right:50px"/>](https://ofb.gouv.fr/) The French Office for Biodiversity (funder)
 
-Bat migration Europe is supported and funded by the French Office for Biodiversity
+[<img src="/images/Naturalia_logo.png" alt="" width="200px" style="padding-right:50px"/>](https://www.naturalia-environnement.fr/) Naturalia Environnement (funder)
 
-[<img src="/images/Naturalia_logo.png" alt="" width="150px"/>](https://www.naturalia-environnement.fr/)
+[<img src="/images/sfepm_couleur_vf.jpg" alt="" width="200px" style="padding-right:50px"/>](https://www.sfepm.org/) The French society for the study and protection of mammals
 
-Bat migration Europe is supported and funded by Naturalia Environnement
-
-[<img src="/images/sfepm_couleur_vf.jpg" alt="" width="150px"/>](https://www.sfepm.org/)
-
-The French society for the study and protection of mammals
+[<img src="/images/CPIE_logo.png" alt="" width="200px" style="padding-right:100px"/>](https://cpie-mayenne.org/) The Permanent Centre of Initiatives for the Environment in Mayenne - Bas-Maine
 
 ### Germany
+---
 
-[<img src="/images/Fledermauswarte.png" alt="" width="100px"/>](https://www.deutsche-fledermauswarte.org/?lang=en)
+[<img src="/images/Fledermauswarte.png" alt="" width="200px" style="padding-right:100px"/>](https://www.deutsche-fledermauswarte.org/?lang=en) The German Bat Observatory
 
-The German Bat Observatory
+[<img src="/images/NACHTaktiv_logo.png" alt="" width="200px" style="padding-right:100px"/>](http://www.nacht-aktiv.net/) NACHTaktiv - Biologists for Bat Research
 
 ### Hungary
+---
 
-[<img src="/images/logo_CER.png" alt="" width="150px"/>](https://ecolres.hu/en/node/2)
-
-The Center for Ecological Research
+[<img src="/images/logo_CER.png" alt="" width="200px" style="padding-right:50px"/>](https://ecolres.hu/en/node/2) The Center for Ecological Research
 
 ### Italy
+---
 
 [<img src="/images/DBIOS_logo.gif" alt="" width="100px"/>](https://dbiosen.campusnet.unito.it/do/home.pl)
-[<img src="/images/University_Turin_logo.svg" alt="" width="100px"/>](https://dbiosen.campusnet.unito.it/do/home.pl)
-
-The Department of Life Sciences and Systems Biology of the University of Turin
+[<img src="/images/University_Turin_logo.svg" alt="" width="200px" style="padding-right:50px"/>](https://dbiosen.campusnet.unito.it/do/home.pl) The Department of Life Sciences and Systems Biology of the University of Turin
 
 ### Portugal
+---
 
-[<img src="/images/LEA_CITAB_logo.jpg" alt="" width="250"/>](https://www.citab.utad.pt/)
-
-The laboratory of Applied Ecology of the Centre for the Research and Technology of Agro-Environment of the University of Trás-os-Montes e Alto Douro 
+[<img src="/images/LEA_CITAB_logo.jpg" alt="" width="250" style="padding-right:0px"/>](https://www.citab.utad.pt/) The laboratory of Applied Ecology of the Centre for the Research and Technology of Agro-Environment of the University of Trás-os-Montes e Alto Douro 
 
 ### Romania
+---
 
-[<img src="/images/wilderness_research_conservation_logo.jpg" alt="" width="100"/>](http://wildernessrc.ro/)
+[<img src="/images/wilderness_research_conservation_logo.jpg" alt="" width="200" style="padding-right:100px"/>](http://wildernessrc.ro/) Wilderness Research and Conservation
 
-Wilderness Research and Conservation
+[<img src="/images/CBRC_logo.jpg" alt="" width="200" style="padding-right:50px"/>](https://lilieci.ro/en/) The Centre for Bat Research and Conservation
 
 ### Spain
+---
 
-[<img src="/images/Granollers_logo.jpg" alt="" width="100px"/>](http://www.museugranollersciencies.org/en/quiropters/)
-
-The bat monitoring program of the Granollers Museum of Natural Sciences
+[<img src="/images/Granollers_logo.jpg" alt="" width="200px" style="padding-right:100px"/>](http://www.museugranollersciencies.org/en/quiropters/) The bat monitoring program of the Granollers Museum of Natural Sciences
 
 ### Sweden
+---
 
-[<img src="/images/BatLifeSweden_logo_rgb.png" alt="" width="100px"/>](https://batlife-sweden.se/)
-
-BatLife Sweden
+[<img src="/images/BatLifeSweden_logo_rgb.png" alt="" width="200px" style="padding-right:50px"/>](https://batlife-sweden.se/) BatLife Sweden
 
 ### United Kingdom
+---
 
-[<img src="/images/BTO_logo.gif" alt="" width="100px"/>](https://www.bto.org/)
+[<img src="/images/BTO_logo.gif" alt="" width="200px" style="padding-right:100px"/>](https://www.bto.org/) The British Trust for Ornithology
 
-The British Trust for Ornithology
+[<img src="/images/BCT_logo.png" alt="" width="200px" style="padding-right:50px"/>](https://www.bats.org.uk/) The Bat Conservation Trust
+
