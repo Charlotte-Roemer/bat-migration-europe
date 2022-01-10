@@ -12,9 +12,7 @@ ___
 
 _22nd of December 2021_  
 
-<img src="/images/Wishes.png"/>
-
-
+The team of Bat migration routes in Europe wishes you a merry Christmas and a safe migration to 2022!
 ___
 
 _30th of November 2021_  

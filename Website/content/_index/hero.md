@@ -16,5 +16,10 @@ subtitle = "Bat Migration routes in Europe"
   image = "logo.png"
   width = "80px" # optional - will default to image width
   #height = "80px" # optional - will default to image height
+  
+[[buttons]]
+  text = "Get involved!"
+  url = "/project/get-involved/"
+  color = "light"
 
 +++

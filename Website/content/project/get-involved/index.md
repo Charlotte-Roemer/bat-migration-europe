@@ -1,7 +1,7 @@
 ---
 background: light
 fragment: content
-title: Get involved
+title: Get involved!
 weight: 120
 ---
 
