@@ -44,6 +44,8 @@ Partners from the following institutions support the project morally (and financ
 
 [<img src="/images/NACHTaktiv_logo.png" alt="" width="200px" style="padding-right:100px"/>](http://www.nacht-aktiv.net/) NACHTaktiv - Biologists for Bat Research
 
+[<img src="/images/BVF_logo.png" alt="" width="200px" style="padding-right:50px"/>](https://bvfledermaus.de/) The Federal Association for Bat Expertise in Germany (BVF)
+
 ### Hungary
 ---
 
