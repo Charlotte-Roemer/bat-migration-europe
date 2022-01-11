@@ -82,7 +82,7 @@ Partners from the following institutions support the project morally (and financ
 ### Switzerland
 ---
 
-[<img src="/images/CCO_logo.png" alt="" width="200px" style="padding-right:100px"/>](https://www.chauves-souris.ch/) The Western Coordination Centre for the Study and Protection of Bats
+[<img src="/images/CCO_logo.png" alt="" width="200px" style="padding-right:100px"/>](https://chauves-souris-geneve.ch/) Swiss Bat Centre – Geneva
 
 ### United Kingdom
 ---
