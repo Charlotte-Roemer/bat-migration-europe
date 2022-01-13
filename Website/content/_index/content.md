@@ -10,6 +10,16 @@ weight: 100
 
 ___
 
+_10th of January 2022_  
+
+We are ready to start data transfer!
+You will find all information about how to send your data on the tutorial [here]({{< ref "/project/get-involved" >}} "Get involved") 
+
+We received proposals from 20 persons who listed their study sites. But we expect much more according to our informal conversations!
+
+For the moment the data listed represent more than 34 To. They originate from Austria, Belgium, Denmark, France, Germany, Hungary, Italy, Portugal, Romania, Sweden and the United Kingdom.
+___
+
 _22nd of December 2021_  
 
 The team of Bat migration routes in Europe wishes you a merry Christmas and a safe migration to 2022!
