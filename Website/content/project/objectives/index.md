@@ -5,7 +5,10 @@ title: Objectives
 weight: 100
 ---
 
-To understand where and when migrating bats are most active to design priority conservation areas.
+<br>
+</br>
+
+The aim of the project is to understand where and when migrating bats are most active to design priority conservation areas.
 
 
 <!--more-->

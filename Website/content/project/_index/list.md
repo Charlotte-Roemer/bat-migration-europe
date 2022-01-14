@@ -3,7 +3,7 @@ date = "2018-07-06"
 fragment = "list"
 weight = 150
 
-count = 1000
+count = 10
 #section = "fragments"
 #summary = false # Default value is true
 read_more = false # Default value is empty (empty: show when content is truncated, false to never show, true to always show)
