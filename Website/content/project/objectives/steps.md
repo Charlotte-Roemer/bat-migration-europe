@@ -6,9 +6,6 @@ title_align: left
 weight: 160
 ---
 
-<br>
-</br>
-
 1. Make a proof of concept at the French national scale 
     - Distribution maps of acoustic activity for three migrating bats.
 2. Find partners all around Europe

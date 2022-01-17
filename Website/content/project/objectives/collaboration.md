@@ -6,9 +6,6 @@ title_align: left
 weight: 130
 ---
 
-<br>
-</br>
-
 <table>
     <tr>
     <td> 

@@ -5,11 +5,13 @@ title: Objectives
 weight: 100
 ---
 
-<br>
-</br>
+<p align="center">
+<img src="/images/no_attribution_needed.jpg" alt="" width="500px"/>
+</p>
 
+<div style="text-align: justify">
 The aim of the project is to understand where and when migrating bats are most active to design priority conservation areas.
-
+</div>
 
 <!--more-->
 

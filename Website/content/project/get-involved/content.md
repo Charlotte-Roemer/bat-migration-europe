@@ -1,6 +1,8 @@
 ---
 background: light
 fragment: content
+title: How to participate
+title_align: left
 weight: 130
 ---
 

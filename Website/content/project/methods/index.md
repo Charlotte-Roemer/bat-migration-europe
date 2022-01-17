@@ -5,7 +5,19 @@ title: Methods
 weight: 110
 ---
 
+<br>
+</br>
+
+<p align="center">
+<img src="/images/Nyclei2.png" alt="" width="500px"/>
+</p>
+
+<br>
+</br>
+
+<div style="text-align: justify">
 Acoustic datasets will be used to predict the spatio-temporal distribution of migrating bats in Europe.
+</div>
 
 
 <!--more-->

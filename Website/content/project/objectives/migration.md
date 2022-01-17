@@ -9,8 +9,8 @@ weight: 110
 <table>
     <tr>
     <td> 
-        <img src="/images/Ludovic_Jouve_noctule_commune_vol_ludovic_jouve_2_small.jpg" alt="" width="580px" style="padding-right:50px" align="left"/>
-    <p style='text-align: center'>© Ludovic Jouve</p>
+        <img src="/images/Pipnat_Cyril_Schoenbaechler_small.jpg" alt="" width="580px" style="padding-right:50px" align="left"/>
+    <p style='text-align: center'>© Cyril Schönbächler</p>
     </td>
     <td style='text-align:left;'>
 Bats can cover distances superior to 2,000 km. Several long-distance migrating species are known:

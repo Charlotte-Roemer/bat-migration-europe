@@ -7,9 +7,22 @@ weight: 100
 
 
 
+<table>
+    <tr>
+    <td>
+        <td style="width:500px">
+        
 This project is possible thanks to the collaboration of research institutes, museums, universities, NGOs, gouvernmental agencies and authorities, natural reserves, consultants and other essential people.
 
+
 Partners from the following institutions support the project morally (and financially if stated). If you wish to appear in this list, please contact us!
+    </td>
+        <td>
+        <img src="/images/Nyctalus leisleri_Valéry Uldry_small.jpg" alt="" width="580px" style="padding-right:50px" align="left"/>
+    <p style='text-align: center'>© Valéry Uldry</p>
+    </td>
+    </tr>
+</table>
 
 ### Europe
 ---

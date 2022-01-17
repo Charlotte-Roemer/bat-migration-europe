@@ -4,16 +4,12 @@ fragment = "buttons"
 #disabled = false 
 date = "2022-01-10" 
 weight = 125 
-background = "secondary"
-
-# title = "" 
-# subtitle = "" 
-#title_align = "left" # Default is center, can be left, right or center
+background = "light"
 
 [[buttons]] 
 text = "1. Newsletter" 
 url = "/newsletter/" 
-color = "light" # primary, secondary, success, danger, warning, info, light, dark, link - default: primary
+color = "secondary" # primary, secondary, success, danger, warning, info, light, dark, link - default: primary
 
 [[buttons]] 
 text = "2. Webinar" 

@@ -6,9 +6,6 @@ title_align: left
 weight: 140
 ---
 
-<br>
-</br>
-
 - Study spatio-temporal changes in bat activity for three migrating bats.
 - Highlight areas of conservation priority for these migrating bats in Europe.
 - Develop a strategy to take these areas into account during wind energy planning.
