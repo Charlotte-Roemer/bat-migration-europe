@@ -97,6 +97,11 @@ Partners from the following institutions support the project morally (and financ
 
 [<img src="/images/CCO_logo.png" alt="" width="200px" style="padding-right:100px"/>](https://chauves-souris-geneve.ch/) Swiss Bat Centre – Geneva
 
+### Ukraine
+---
+
+[<img src="/images/BELs_logo_trans.png" alt="" width="200px" style="padding-right:100px"/>](http://bioecolinks.org/) Bioecolinks
+
 ### United Kingdom
 ---
 
@@ -105,8 +110,3 @@ Partners from the following institutions support the project morally (and financ
 [<img src="/images/BCT_logo.png" alt="" width="200px" style="padding-right:50px"/>](https://www.bats.org.uk/) The Bat Conservation Trust
 
 [<img src="/images/VWT_logo.jpg" alt="" width="200px" style="padding-right:100px"/>](https://www.vwt.org.uk/) The Vincent Wildlife Trust
-
-### Ukraine
----
-
-[<img src="/images/BELs_logo_trans.png" alt="" width="200px" style="padding-right:100px"/>](http://bioecolinks.org/) Bioecolinks
