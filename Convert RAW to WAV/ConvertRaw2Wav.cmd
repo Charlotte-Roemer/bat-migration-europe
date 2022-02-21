@@ -1,0 +1,1 @@
+for %%a in (*.raw) do sox -t raw -r 500000 -b 16 -e signed-integer -c 1 "%%~a" "%%~na.wav"
