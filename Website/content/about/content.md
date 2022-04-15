@@ -10,12 +10,13 @@ weight: 100
 
 <center> 
 
-Bat migration Europe is a project coordinated by the CESCO laboratory of the French Museum of Natural History (Paris, France). A part of this project is a collaboration with the laboratory Centre in Ecology and Evolutionary Ecology  from the French National Centre for Scientific Research (Montpellier, France).
+Bat migration Europe is a project coordinated by the CESCO laboratory of the French Museum of Natural History (Paris, France). A part of this project is a collaboration with the laboratory Centre in Ecology and Evolutionary Ecology  from the French National Centre for Scientific Research (Montpellier, France). We are in collaboration with the BBEES lab to ensure that the data workflow fits the best standards of data management.
 
 [<img src="/images/CESCO_logo.png" alt="" width="150px"/>](https://cesco.mnhn.fr/fr)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 [<img src="/images/MNHN_logo.jpg" alt="" width="100px"/>](https://www.mnhn.fr/fr)
 [<img src="/images/logo_cefe.jpg" alt="" width="200px"/>](https://www.cefe.cnrs.fr/en/)
 [<img src="/images/CNRS.png" alt="" width="100px"/>](http://www.cnrs.fr/en)
+[<img src="/images/logo_BBEES.png" alt="" width="100px"/>](https://bbees.mnhn.fr/)
 
 <br />
 

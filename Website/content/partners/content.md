@@ -27,6 +27,8 @@ Partners from the following institutions support the project morally (and financ
 ### Europe
 ---
 [<img src="/images/EUROBATS_logo.png" alt="" width="200px" style="padding-right:100px"/>](https://www.eurobats.org) EUROBATS (funder) 
+<br>
+</br>
 
 ### Belgium
 ---
@@ -34,10 +36,27 @@ Partners from the following institutions support the project morally (and financ
 
 [<img src="/images/Vespertilio_logo.jpg" alt="" width="200px" style="padding-right:100px"/>](http://vespertilio.be/) Vespertilio VZW
 
+[<img src="/images/spw_env_fr.png" alt="" width="200px" style="padding-right:50px"/>](https://www.wallonie.be/en/stakeholders-and-institutions/wallonia/public-service-of-wallonia) The Public Service of Wallonia
+
+[<img src="/images/Natagora_plecotus_logo.jpg" alt="" width="200px" style="padding-right:100px"/>](https://www.natagora.be/) Natagora
+
+[<img src="/images/logo-ecofirst.gif" alt="" width="200px" style="padding-right:50px"/>](https://www.ecofirst.eu/) ECOFIRST
+<br>
+</br>
+
+### Czech Republic
+---
+
+[<img src="/images/Logo_Masaryk_University.svg.png" alt="" width="200px" style="padding-right:100px"/>](https://www.muni.cz/en) The Masaryk University
+<br>
+</br>
+
 ### Denmark
 ---
 
 [<img src="/images/aarhus_university_logo.png" alt="" width="200px" style="padding-right:50px"/>](https://ecos.au.dk/en/) The Aarhus University
+<br>
+</br>
 
 ### France
 ---
@@ -49,6 +68,8 @@ Partners from the following institutions support the project morally (and financ
 [<img src="/images/sfepm_couleur_vf.jpg" alt="" width="200px" style="padding-right:50px"/>](https://www.sfepm.org/) The French society for the study and protection of mammals
 
 [<img src="/images/CPIE_logo.png" alt="" width="200px" style="padding-right:100px"/>](https://cpie-mayenne.org/) The Permanent Centre of Initiatives for the Environment in Mayenne - Bas-Maine
+<br>
+</br>
 
 ### Germany
 ---
@@ -58,22 +79,30 @@ Partners from the following institutions support the project morally (and financ
 [<img src="/images/NACHTaktiv_logo.png" alt="" width="200px" style="padding-right:100px"/>](http://www.nacht-aktiv.net/) NACHTaktiv - Biologists for Bat Research
 
 [<img src="/images/BVF_logo.png" alt="" width="200px" style="padding-right:50px"/>](https://bvfledermaus.de/) The Federal Association for Bat Expertise in Germany (BVF)
+<br>
+</br>
 
 ### Hungary
 ---
 
 [<img src="/images/logo_CER.png" alt="" width="200px" style="padding-right:50px"/>](https://ecolres.hu/en/node/2) The Center for Ecological Research
+<br>
+</br>
 
 ### Italy
 ---
 
 [<img src="/images/DBIOS_logo.gif" alt="" width="100px"/>](https://dbiosen.campusnet.unito.it/do/home.pl)
 [<img src="/images/University_Turin_logo.svg" alt="" width="200px" style="padding-right:50px"/>](https://dbiosen.campusnet.unito.it/do/home.pl) The Department of Life Sciences and Systems Biology of the University of Turin
+<br>
+</br>
 
 ### Portugal
 ---
 
 [<img src="/images/LEA_CITAB_logo.jpg" alt="" width="250" style="padding-right:0px"/>](https://www.citab.utad.pt/) The laboratory of Applied Ecology of the Centre for the Research and Technology of Agro-Environment of the University of Trás-os-Montes e Alto Douro 
+<br>
+</br>
 
 ### Romania
 ---
@@ -81,26 +110,36 @@ Partners from the following institutions support the project morally (and financ
 [<img src="/images/wilderness_research_conservation_logo.jpg" alt="" width="200" style="padding-right:100px"/>](http://wildernessrc.ro/) Wilderness Research and Conservation
 
 [<img src="/images/CBRC_logo.jpg" alt="" width="200" style="padding-right:50px"/>](https://lilieci.ro/en/) The Centre for Bat Research and Conservation
+<br>
+</br>
 
 ### Spain
 ---
 
 [<img src="/images/Granollers_logo.jpg" alt="" width="200px" style="padding-right:100px"/>](http://www.museugranollersciencies.org/en/quiropters/) The bat monitoring program of the Granollers Museum of Natural Sciences
+<br>
+</br>
 
 ### Sweden
 ---
 
 [<img src="/images/BatLifeSweden_logo_rgb.png" alt="" width="200px" style="padding-right:50px"/>](https://batlife-sweden.se/) BatLife Sweden
+<br>
+</br>
 
 ### Switzerland
 ---
 
 [<img src="/images/CCO_logo.png" alt="" width="200px" style="padding-right:100px"/>](https://chauves-souris-geneve.ch/) Swiss Bat Centre – Geneva
+<br>
+</br>
 
 ### Ukraine
 ---
 
 [<img src="/images/BELs_logo_trans.png" alt="" width="200px" style="padding-right:100px"/>](http://bioecolinks.org/) Bioecolinks
+<br>
+</br>
 
 ### United Kingdom
 ---

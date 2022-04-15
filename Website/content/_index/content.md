@@ -10,6 +10,12 @@ weight: 100
 
 ___
 
+_15th of April 2022_  
+
+Thanks to our first partners, 1800 Gigaoctets of data have been sent for the project! It is only the beginning and we are expecting much more.
+If you haven't done so already, please get in touch with us to start your data transfer as soon as possible.
+___
+
 _10th of January 2022_  
 
 We are ready to start data transfer!
