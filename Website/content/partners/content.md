@@ -116,7 +116,7 @@ Partners from the following institutions support the project morally (and financ
 ### Serbia
 ---
 
-[<img src="/images/logo_University_of_Belgrade.png" alt="" width="200px" style="padding-right:100px"/>](https://www.bg.ac.rs/en/) The university of Belgrade
+[<img src="/images/logo_University_of_Belgrade.png" alt="" width="200px" style="padding-right:100px"/>](https://www.bg.ac.rs/en/) The institute for biological research of the university of Belgrade
 <br>
 </br>
 
