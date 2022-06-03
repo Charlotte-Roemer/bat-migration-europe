@@ -10,6 +10,16 @@ weight: 100
 
 ___
 
+_3rd of June 2022_  
+
+Data transfer is going well: up to now we collected 10.5 Terabytes from 14 different partners from 11 countries (Belgium, Romania, Basque Country, Switzerland, Sweden, Germany, UK, Austria, Hungary, The Netherlands, and France). These data represent more than 500 nights and 270 sites!
+
+This is just the beginning, because 26 other partners signed or are about to sign an agreement for data exchange, which means that they will soon transfer their data. 
+
+We are currently working on developing the tools to standardise these data and process them. In parallel, we made good progress developing the method that we will apply to build prediction maps of bat activity.
+
+___
+
 _15th of April 2022_  
 
 Thanks to our first partners, 1800 Gigaoctets of data have been sent for the project! It is only the beginning and we are expecting much more.
