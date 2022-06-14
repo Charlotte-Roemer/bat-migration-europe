@@ -51,6 +51,10 @@ Partners from the following institutions support the project morally (and financ
 <br>
 </br>
 
+[<img src="/images/CBCS_logo.gif" alt="" width="200px" style="padding-right:100px"/>](https://ceson.org/index_en.php) CBCS - The Czech Bat Conservation Society
+<br>
+</br>
+
 ### Denmark
 ---
 
