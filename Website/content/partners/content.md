@@ -152,6 +152,8 @@ Partners from the following institutions support the project morally (and financ
 
 [<img src="/images/IZAN_logo_final.jpg" alt="" width="200px" style="padding-right:120px"/>](http://www.izan.kiev.ua/eng/index.htm)The Schmalhausen Institute of Zoology, NAS of Ukraine
 
+[<img src="/images/UBRC-10.jpg" alt="" width="200px" style="padding-right:100px"/>](http://batsukraine.org/en/)The Ukrainian Bat Rehabilitation Center
+
 <br>
 </br>
 
