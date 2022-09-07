@@ -1,118 +1,125 @@
-
-# To create random forest models (.learner files) of bat activity
-
 library(data.table)
 library(rgdal)
 library(raster)
+#library(sp)
+#library(ggplot2)
+#library(MASS)
 library(rgeos)
 library(latticeExtra)
 library(randomForest)
+#library(glmmTMB)
 library(gdata)
 library(spdep)
 library(tidyverse)
-library(pgirmess)
-library(sp)
-
-
-#to show milliseconds
+#pour afficher les milisecondes
 op <- options(digits.secs=3)
+#Saison=c("05","06","07") #obsolete
 
 
-args="C:/Users/croemer01/Documents/Donnees vigie-chiro/SpNuit50_selection" #bat activity table. file without csv extension
+args="C:/Users/croemer01/Documents/Donnees vigie-chiro/SpNuit2Valid_50_DataLP_PF_exportTot" #fichier sans l'extension csv
+#args="mnt/VigieChiro/SpNuit2Valid_0_PG" #fichier sans l'extension csv
+#args="SpNuit2_5090_DataLP_PF_exportTot"
+#args="./VigieChiro/STOC-EPS/data_FrenchBBS_squarre_Diane_20180628_allSp_2001_2018"
 
-args[2]="C:/Users/croemer01/Documents/Donnees vigie-chiro/GI_coordWGS84_SpNuit2_50_DataLP_PF_exportTot" #table with spatial variables (habitat and climate)
-args[3]="C:/Users/croemer01/Documents/Donnees vigie-chiro/SpeciesList.csv" # Species list to build models
-#args[3]=NA #NA if we want all species without filter (but specify args[5)
+args[2]="C:/Users/croemer01/Documents/Donnees vigie-chiro/GI_FR_sites_localites" #tableau des covariables spatiales (habitat et climat)
+#args[2]="mnt/GI/GI_localites_stoc"
+args[3]="C:/Users/croemer01/Documents/Donnees vigie-chiro/SpeciesList.csv"
+#args[3]="SpeciesListMig2.csv" 
+#args[3]=NA #NA si on veut faire tout sans filtre (mais spécifier args[5)
 #args[4]="Esp" #name of taxa column (useless if args[3] is specified)
 args[4]="espece" #name of taxa column (useless if args[3] is specified)
 #args[4]="code_sp" #name of taxa column (useless if args[3] is specified)
 #args[5]="STRTUR" #name of taxa group (useless if args[3] is specified)
-DataLoc=F #TRUE if coordinates are in table args[1
+DataLoc=F #TRUE si les coordonnées sont dans la table "args[1"
 #CoordinateNames=c("longitude_wgs84","latitude_wgs84") 
-CoordinateNames=c("longitude","latitude") #name of columns with coordinates in the locality table (sites_localites.txt)
+CoordinateNames=c("longitude","latitude") #nom des colonnes de coordonnées dans la table localités (sites_localites.txt)
 args[6]="participation" #name of sampling event
 args[7]="localite" #name of locality in CoordSIG (if DataLoc=T)
 args[8]="participation" #name of participation (=sampling event)
 args[9]=T #if date (=day-of-year) is provided or not
 #args[10]="abondance"
-args[10]="nb_contacts" #the name of the parameter which gives the metric to predict
+args[10]="nb_contacts" #le nom du paramètre qui donne la métrique à prédire
 args[11]=40 #number of coordinates projections (must be a division of 360)
 MinData=1
 #GroupSel="bat"
-GroupSel=NA #sorting according to the group column of Specieslist (args[3), NA if no sorting
-DM=T #option if you also want a model to predict minimum time lapse between bat passes and sunset and sunrise
-Output="C:/Users/croemer01/Documents/Donnees vigie-chiro/ModPred/VC50PG" #folder to copy models to (fichiers .learner), no "_" else bug !!!
-Tag="VC50" #tag which will be written in the filename, no "_", else bug !!!
-effectYear=F # option to add a year effect: to predict population trends
-varYear="annee" #name of the year variable (needless if effectYear=F)
-W0=F #whether the table args[1 contains the 0 bat passes/night
-MergedGI=F #whether habitat-climate variables are in the table args[1 
-Fpar="C:/Users/croemer01/Documents/Donnees vigie-chiro/Participations_selection.csv" #the file with data about participations
-Fsl="C:/Users/croemer01/Documents/Donnees vigie-chiro/Sites_selection.csv"	#the file with the data about localities
-ProbThreshold=0 # a filter on the score_max parameter (takes all data superior or equal to this value)
-TrainTest=T # If we want to create a custom test and train dataset separated by a certain geographical distance
-min_dist = 200 # geographical distance in meters to create a custom test and train dataset
+GroupSel=NA #tri en fonction de la colonne groupe de Specieslist (args[3), NA si aucun tri
+DM=F #option si on veut aussi un modèle qui prédit le décalage de temps minimum entre les contacts et les coucher-lever de soleil
+Output="C:/Users/croemer01/Documents/Donnees vigie-chiro/ModPred/VC50PG" #dans quel dossier on copie les modèles (fichiers .learner), pas de "_" sinon bug !!!
+Tag="VC50_PG" #tag qui sera inscrit dans le nom de fichier, pas de "_" sinon bug !!!
+effectYear=F # option si on veut que le modèle intégre l'année, c'est à dire la tendance temporelle
+varYear="annee" #nom de la variable année (inutile si effectYear=F)
+W0=F #si la table args[1 contient les activités nulles
+MergedGI=F #si les variables habitats-climat sont dans la table args[1 
+Fpar="C:/Users/croemer01/Documents/Donnees vigie-chiro/p_export.csv" #le fichier avec les données de participation
+Fsl="C:/Users/croemer01/Documents/Donnees vigie-chiro/sites_localites.txt"	#le fichier avec les données de localités
+ProbThreshold=0 # un filtre sur le paramètre score_max (prend toutes les données supérieures ou égales à cette valeur)
 
 dir.create(Output)
 
-# Reads bat activity data
+
+#recup�ration des donn�es chiros
 DataCPL3=fread(paste0(args[1],".csv"))
 
-if (!("score_max" %in% names(DataCPL3))){
-  DataCPL3 = DataCPL3 %>% 
-    group_by(participation, Nuit, num_micro) %>% 
-    mutate(score_max = max(as.numeric(nb_contacts))) %>% 
-    as.data.frame()
-}
-
-#Reads the grid of coordinates
+#recup gridSIG
 Sys.time()
 CoordSIG=fread(paste0(args[2],".csv"))
+#print(names(CoordSIG))
+#summary(CoordSIG)
 Sys.time()
+if(!("Group.1" %in% names(CoordSIG)))
+{
+  if(("longitude" %in% names(CoordSIG))){
+    
+    CoordSIG$Group.1=CoordSIG$longitude
+    CoordSIG$Group.2=CoordSIG$latitude
+    CoordSIG$Group.1.x=NULL
+    CoordSIG$Group.1.y=NULL
+    CoordSIG$Group.2.x=NULL
+    CoordSIG$Group.2.y=NULL
+    print("case 1")
+  }else{
+    print("case 2")
+    CoordSIG$Group.1=CoordSIG$longitude_wgs84
+    CoordSIG$Group.2=CoordSIG$latitude_wgs84
+    DataCPL3$Group.1=DataCPL3$longitude_wgs84.x
+    DataCPL3$Group.2=DataCPL3$latitude_wgs84.x
+    
+  }
+}else{
+  print("case 0")
+}
 
-# Cleans up dataframe
-colnames(CoordSIG)[colnames(CoordSIG)=="Group.1"] = "longitude"
-colnames(CoordSIG)[colnames(CoordSIG)=="Group.2"] = "latitude"
-CoordSIG$Group.1.1=NULL
-CoordSIG$Group.2.1=NULL
-CoordSIG$Group.1.1.x =NULL
-CoordSIG$Group.2.1.x =NULL
-CoordSIG$Group.1.1.y =NULL
-CoordSIG$Group.2.1.y =NULL
-
-if(!MergedGI){ # If habitat-climate variables are not in the bat activity table
+if(!MergedGI){
   
-  if(!DataLoc) # If coordinates are not in the bat activity table
+  
+  if(!DataLoc)
   {
-    #reads participation data
-    Particip=fread(Fpar,fill=T)
-    #reads locality data
+    #r�cup�ration des donn�es participation
+    Particip=read_delim(Fpar, delim=";")
+    #r�cup�ration des localit�s
     SiteLoc=fread(Fsl)
     Gite=mapply(function(x,y) 
       ((grepl(paste0(y,"="),x))|(grepl(paste0(y," ="),x)))
       ,SiteLoc$commentaire
       ,SiteLoc$localite)
     SiteLoc$SpGite=as.numeric(Gite)
-    SiteLoc = SiteLoc %>% 
-      mutate_at(.vars = c("longitude", "latitude"), 
-                .fun = function(x) as.numeric(gsub(",", "\\.", x)))
     
-    #list of coordinates existing in this dataset to help add 0 in nb_contacts later
+    #liste des coordonn�es existantes dans ce jeu de donn�es
     ListPar=levels(as.factor(DataCPL3$participation))
     SelPar=subset(Particip,Particip$participation %in% ListPar)
     SelParSL=merge(SiteLoc,SelPar,by.x=c("site","nom"),by.y=c("site","point"))
     CoordPar=aggregate(SelParSL$participation
-                       ,by=c(list("longitude" = SelParSL$longitude),
-                             list("latitude" = SelParSL$latitude),
-                             list("participation" = SelParSL$participation))
+                       ,by=c(list(SelParSL$longitude),list(SelParSL$latitude),list(SelParSL$participation))
                        ,FUN=length)
     CoordPar$x=NULL
+    CoordPar$participation=CoordPar$Group.3
     
   }else{
     print("L103")
-    if(W0){ # if bat activity table contains 0
-      DataTot=merge(DataCPL3,CoordSIG,by=c("longitude","latitude"))
+    if(W0){
+      DataTot=merge(DataCPL3,CoordSIG,by=c("Group.1","Group.2"))
     }else{
+      
       ColCode2=match(args[7],names(DataCPL3))
       ColCode3=match(args[8],names(DataCPL3))
       DataCPL3$participation=as.data.frame(DataCPL3)[,ColCode3]
@@ -120,20 +127,27 @@ if(!MergedGI){ # If habitat-climate variables are not in the bat activity table
       SelParSL=subset(DataCPL3,select=c("participation","localite"))
       print("L108")
       SelParSL=unique(SelParSL)
-      CoordPar0=subset(CoordSIG,select=c("longitude","latitude",args[6]))
+      CoordPar0=subset(CoordSIG,select=c("Group.1","Group.2",args[6]))
       CoordPar=merge(CoordPar0,SelParSL,by.x=args[6],by.y="localite")
-      names(CoordPar)[4]="participation"
+      names(CoordPar)[4]="Group.3"
+      #SelParSL=CoordSIG
+      #SelParSL$participation=CoordPar$Group.3
       
+      #ColLat=match(args[7],names(DataCPL3))  
+      #Latitude=as.data.frame(DataCPL3)[,ColLat]  
+      #Latitude=as.numeric(gsub(",",".",Latitude))
     }
   }
   
   
-  if(!W0){ # if bat activity table does not contains 0
-    CoordPS=merge(CoordPar,CoordSIG,by=c("longitude","latitude"))
+  if(!W0){
+    CoordPS=merge(CoordPar,CoordSIG,by=c("Group.1","Group.2"))
     
     test=(is.na(CoordPS))
     test2=apply(test,MARGIN=1,sum)
     test3=apply(test,MARGIN=2,sum)
+    plot(test2)
+    plot(test3)
     
     CoordPS[is.na(CoordPS)]=0
     
@@ -143,18 +157,16 @@ if(!MergedGI){ # If habitat-climate variables are not in the bat activity table
     CoordPS$participation=as.data.frame(CoordPS)[,numPar[1]]
   }
 }
-
 print("L152")
 print(args[3]!="NA")
-
-if(args[3]!="NA") # if species list is provided
+if(args[3]!="NA")
 {
-  SpeciesList=fread(args[3]) # read species list
+  SpeciesList=fread(args[3])
   ListSp=levels(as.factor(DataCPL3$espece))
   ListSp=subset(ListSp,ListSp %in% SpeciesList$Esp)
   
 }else{
-  Group=args[5] # use group instead of species
+  Group=args[5]
   colTaxa=match(args[4],names(DataCPL3))
   DataCPL3$espece=as.data.frame(DataCPL3)[,colTaxa]
   Esp=unique(as.data.frame(DataCPL3)[,colTaxa])
@@ -165,13 +177,17 @@ if(args[3]!="NA") # if species list is provided
   fwrite(SpeciesList,paste0("SpeciesList_",Group,substr(Sys.time(),1,10),".csv"))
 }
 
-# Metric is the variable to predict
 Metric=args[10]
-DataCPL3$nb_contacts=subset(DataCPL3,select=Metric)[,1]
+DataCPL3$nb_contacts=subset(DataCPL3,select=Metric)
 print("L183")
 print(nrow(DataCPL3))
 DataCPL3=subset(DataCPL3,!is.na(DataCPL3$nb_contacts))
 print(nrow(DataCPL3))
+
+#France_departement
+#FranceD= shapefile("C:/Users/Yves Bas/Documents/SIG/Limite_administrative/France_dep_L93.shp")
+#Sys.time()
+
 
 
 if(!is.na(GroupSel))
@@ -180,57 +196,64 @@ if(!is.na(GroupSel))
   ListSp=subset(ListSp,ListSp %in% SpSel$Esp)
 }
 
-# For each species create a model
+ListSp=c(
+  "Barbar","Eptser","Hypsav","Minsch","Myoalc","Myodau","Myoema"
+       ,"Myomys"
+      ,"Myonat","Nyclas","Nyclei",
+  "Nycnoc","Pipkuh","Pipnat","Pippip"
+     ,"Pippyg","Pleaus"
+    ,"Pleaur","Rhifer","Rhihip","Tadten")
+
 print("L190")
 print(ListSp)
 for (i in 1:length(ListSp))
 {
-  DataSp=subset(DataCPL3,DataCPL3$espece==ListSp[i]) # subset species
+  DataSp=subset(DataCPL3,DataCPL3$espece==ListSp[i])
   print("L195")
-  if(W0){ # if bat activity table contains 0
+  if(W0){
     DataSaison=DataSp
   }else{
     DataSpSL=merge(DataSp,SelParSL,by="participation")
+    #fwrite(DataSpSL,paste0("./VigieChiro/DataSp/DataSpSL_",ListSp[i],".csv"))
     
     print(paste(ListSp[i],nrow(DataSp),Sys.time()))
     
-    # Adds 0 counts
-    DataSpSL_w0=merge(DataSp,SelParSL,by="participation",all.y=T) # adds name of points to participations
+    DataSpSL_w0=merge(DataSp,SelParSL,by="participation",all.y=T)
     DataSpSL_w0$nb_contacts[is.na(DataSpSL_w0$nb_contacts)]=0
     DataSpSL_w0$score_max[is.na(DataSpSL_w0$score_max)]=0
     
-    DataSaison=full_join(DataSpSL_w0,CoordPS, by=c("participation", "longitude", "latitude")) # adds environmental variables to activity data
+    #print(names(DataSpSL_w0))
+    DataSaison=merge(DataSpSL_w0,CoordPS
+                     ,by.x=c("participation")
+                     ,by.y=c("Group.3"))
     
     print(Sys.time())
   }
   print("L213")
-  
+  #print(names(DataSaison))
   #add date of year
   if(args[9])
   {
-    if(grepl("/", DataSaison$date_debut[1])){
-      Date1=as.Date(substr(DataSaison$date_debut,1,10)
-                    ,format="%Y/%m/%Y")    
-    }else{
-      Date1=as.Date(DataSaison$date_debut)
-    }
-    
+    Date1=as.Date(substr(DataSaison$date_debut,1,10)
+                  ,format="%d/%m/%Y")    
+    #print(head(Date1))
     SpFDate=yday(Date1)
-    DataSaison$SpCDate=cos(SpFDate/365*2*pi) # to create a circular variable for date
-    DataSaison$SpSDate=sin(SpFDate/365*2*pi) # to create a circular variable for date
+    DataSaison$SpCDate=cos(SpFDate/365*2*pi)
+    DataSaison$SpSDate=sin(SpFDate/365*2*pi)
   }else{
     DataSaison$SpCDate=0
     DataSaison$SpSDate=0
     print("L225")
   }
   #add several rotated coordinates
-  CoordDS=as.matrix(cbind(DataSaison$longitude,DataSaison$latitude))
+  CoordDS=as.matrix(cbind(DataSaison$Group.1,DataSaison$Group.2))
   print("L230")
   
   for (a in 0:(as.numeric(args[11])-1))
   {
     Coordi=Rotation(CoordDS,angle=pi*a/as.numeric(args[11]))
-    
+    #print(plot(Coordi[,1],CoordDS[,1],main=as.character(a)))
+    #print(plot(Coordi[,1],CoordDS[,2],main=as.character(a)))
     DataSaison=cbind(DataSaison,Coordi[,1])
     names(DataSaison)[ncol(DataSaison)]=paste0("SpCoord",a)
   }
@@ -239,12 +262,12 @@ for (i in 1:length(ListSp))
   #  DataSaison=subset(DataSaison,substr(DataSaison$`date part. debut`,4,5) %in% Saison)
   
   print((sum(DataSaison$nb_contacts)>=MinData))
-  if(sum(DataSaison$nb_contacts)>=MinData) # if the number of observations is superior to MinData
+  if(sum(DataSaison$nb_contacts)>=MinData)
   {
     DataSPos=subset(DataSaison,DataSaison$nb_contacts>0)
-    
+    #NbReplicatsSpatiaux=nlevels(as.factor(as.character(DataSPos$Coord)))
     print("L246")
-    if(effectYear) # if you want to calculate population trends
+    if(effectYear)
     {
       DataYear=subset(DataSaison,select=varYear)
       names(DataYear)="year"
@@ -253,14 +276,16 @@ for (i in 1:length(ListSp))
     
     testPred=(substr(names(DataSaison),1,2)=="Sp")
     Prednames=names(DataSaison)[testPred]
-    Predictors=DataSaison[,Prednames]
+    Predictors=DataSaison[,..Prednames]
+    #print(names(Predictors))
+    
     
     testNA=apply(Predictors,MARGIN=2,FUN=function(x) sum(is.na(x)))
     print(summary(testNA))
     testNA2=apply(Predictors,MARGIN=1,FUN=function(x) sum(is.na(x)))
     print(summary(testNA2))
     
-    #threshold on score
+    #seuillage score
     print(summary(DataSaison$score_max))
     print(summary(DataSaison$score_max>ProbThreshold))
     DataSaison$nb_contacts=ifelse(DataSaison$score_max>ProbThreshold,DataSaison$nb_contacts,0)
@@ -268,50 +293,19 @@ for (i in 1:length(ListSp))
     DataSaison$ActLog10=log10(DataSaison$nb_contacts+1) #pas sur que ce soit pertinent
     print(summary(DataSaison$ActLog10))
     Sys.time()
-    
-    # Optional : create train/test datasets here
-    if (TrainTest)
-    {
-      source(paste("C:/Users/croemer01/Documents/R/bat-migration-europe/Brouillons/","use_buffer_to_create_train_and_test_datasets.r",sep="")) 
-      
-      DataSaison_Train= DataSaison %>% 
-        left_join(xy93.3) %>% 
-        filter(type=="train" & !is.na(type)) %>% 
-        drop_na(Prednames) # verifier qu on droppe pas des trucs pour rien car on divise quand meme par 2
-     
-      DataSaison_Test= DataSaison %>% 
-        left_join(xy93.3) %>% 
-        filter(type=="test" & !is.na(type)) %>% 
-        drop_na(Prednames)
-      
-      Predictors_Train=DataSaison_Train %>% 
-        select(Prednames)
-      
-      Predictors_Test=DataSaison_Test %>% 
-        select(Prednames)
-    
-    #### Random forest model for number of bat passes per night ####
-    ModRF=randomForest(x=Predictors_Train,y=DataSaison_Train$ActLog10
-                       ,replace=F
-                       ,strata=paste(DataSaison_Train$id_site,DataSaison_Train$localite)
-                       ,importance=T) #2.1 sec / tree
-      
-      predictForest <- predict(ModRF, newdata = Predictors_Test, type="response")
-      #table(DataSaison_Test$ActLog10, predictForest)
-      
-    }else{
-      #### Random forest model for number of bat passes per night ####
-      ModRF=randomForest(x=Predictors,y=DataSaison$ActLog10
-                         ,replace=T
-                         ,strata=paste(DataSaison$id_site,DataSaison$localite)
-                         ,importance=T ) #2.1 sec / tree
-    }
-    
+    ModRF=randomForest(x=Predictors,y=DataSaison$ActLog10
+                       ,replace=T
+                       ,strata=paste(DataSaison$id_site,DataSaison$localite)
+                       ,importance=T
+    ) #2.1 sec / tree
     Sys.time()
-    
     
     varImpPlot(ModRF,cex=0.5,main=paste("Act",ListSp[i]))
     print(paste("PseudoR2: ",ModRF$rsq[ModRF$ntree]))
+    #coordinates(DataSaison) <- c("Group.1", "Group.2")
+    #proj4string(DataSaison) <- CRS("+init=epsg:4326") # WGS 84
+    #DataSaison$pred=ModRF$predicted
+    #print(spplot(DataSaison,zcol="pred",main=ListSp[i]))  
     
     #test if species is a bat
     test=match(ListSp[i],SpeciesList$Esp)
@@ -322,10 +316,10 @@ for (i in 1:length(ListSp))
                             ,".learner")) 
     
     
-    if((Bat)&(DM)) # if species is a bat and if you also want a model to predict minimum 
-      # time lapse between bat passes and sunset and sunrise
+    if((Bat)&(DM))
     {
-      
+      #DataSaison$DM=pmin(DataSaison$min_decalage_coucher,DataSaison$min_decalage_lever)
+      #DataSaisonDM=subset(DataSaison,DM>0)
       DataSaison$DM=DataSaison$indice_gite
       DataSaisonDM=subset(DataSaison,!is.na(DataSaison$DM))
       if(nrow(DataSaisonDM)>0){
@@ -334,12 +328,10 @@ for (i in 1:length(ListSp))
         Prednames=c(Prednames,"SpCDate","SpSDate")
         PredictorsDM=as.data.table(DataSaisonDM)[,..Prednames]
         
+        # DataSaisonDM$Log10DM=log10(DataSaisonDM$DM/60+1)
         DataSaisonDM$Log10DM=DataSaisonDM$DM
         print("L330")
         Sys.time()
-        
-        #### Random forest model for timelapse between sunset and first bat pass (index for roost) ####
-        
         ModRF_DM=randomForest(x=PredictorsDM,y=DataSaisonDM$Log10DM
                               ,replace=T
                               ,strata=paste(DataSaisonDM$id_site,DataSaisonDM$localite)
@@ -354,9 +346,6 @@ for (i in 1:length(ListSp))
         DataSaisonDM$Log10DM=DataSaison$indice_repos_nocturne
         DataSaisonDM=subset(DataSaisonDM,!is.na(DataSaisonDM$Log10DM))
         Sys.time()
-        
-        #### Random forest model for timelapse between... (index for swarming) ####
-        
         ModRF_DM=randomForest(x=PredictorsDM,y=DataSaisonDM$Log10DM
                               ,replace=T
                               ,strata=paste(DataSaisonDM$id_site,DataSaisonDM$localite)

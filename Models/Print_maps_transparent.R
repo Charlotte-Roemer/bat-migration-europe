@@ -9,9 +9,9 @@ library(beepr)
 
 arg <- "C:/Users/croemer01/Documents/SIG/Delimitations_pays/REGION.shp" # french contour
 arg[2] <- "C:/Users/croemer01/Documents/Post-Doc/Vigie-Chiro et Indicateurs_ecologiques/Classificateur/SpeciesListComplete.csv" # species list
-arg[3] <- "C:/Users/croemer01/Documents/Donnees vigie-chiro/Cartes/output_50_20220301" # repertory with outputs from Predict_act
-arg[4] <- "C:/Users/croemer01/Documents/Donnees vigie-chiro/Cartes/output_50_20220301/maps" #repertory for png
-arg[5] <- "C:/Users/croemer01/Documents/GT Eolien/Donnees_parcs/SIG/Mats_service_TOTAL.shp" # wind turbines in France
+arg[3] <- "C:/Users/croemer01/Documents/Donnees vigie-chiro/PredictionsModels/weighted_2022-08-11" # repertory with outputs from Predict_act
+arg[4] <- "C:/Users/croemer01/Documents/Donnees vigie-chiro/Maps/weighted_2022-08-11" #repertory for png
+#arg[5] <- "C:/Users/croemer01/Documents/GT Eolien/Donnees_parcs/SIG/Mats_service_TOTAL.shp" # wind turbines in France
 
 # Load french contour
 france <- read_sf(arg[1])
@@ -21,7 +21,7 @@ france_f <- france %>%
   st_transform(4326) # reproject to WGS84
 
 # Load french wind turbines
-WT_FR <- read_sf(arg[5])
+#WT_FR <- read_sf(arg[5])
 
 #Load species list
 sp_list <- fread(arg[2])
@@ -63,7 +63,7 @@ for (i in 1:length(names(table(file_bind$Species)))) { # For each species
   for (j in 1:length(names(table(dataa$Month)))){
     for (k in 1:2){
       NamePlot1=paste0(arg[4], "/", Sp,"_", names(table(dataa$Month))[j],"_",names(table(dataa$Day))[k],".png")
-      png(filename=NamePlot1, width = 3000, height = 2500, res=300)
+      # png(filename=NamePlot1, width = 3000, height = 2500, res=300)
       
       dataa_Month=subset(dataa, dataa$Month==names(table(dataa$Month))[j] & dataa$Day==names(table(dataa$Day))[k])
       Month_name <- my.month.name(as.numeric(names(table(dataa$Month))[j]))
@@ -87,8 +87,11 @@ for (i in 1:length(names(table(file_bind$Species)))) { # For each species
         
         theme(panel.grid.major = element_blank(),
               panel.grid.minor = element_blank(),
-              panel.background = element_blank(),
+              panel.background = element_rect(fill='transparent'), #transparent panel bg
+              plot.background = element_rect(fill='transparent', color=NA), #transparent plot bg,
               axis.line = element_line(colour = "black"),
+              legend.background = element_rect(fill='transparent'), #transparent legend bg
+              legend.box.background = element_rect(fill='transparent'), #transparent legend panel
               plot.subtitle = element_text(size=12)) +
         
         labs(title = paste0(full_latin_name, "\n", Day_name, " of ", Month_name),
@@ -101,9 +104,9 @@ for (i in 1:length(names(table(file_bind$Species)))) { # For each species
         ylab("") +
         xlab("") 
       
-      print(plot1)
-      dev.off()
-      #ggsave(plot1, filename = NamePlot1, bg = "transparent")
+      # print(plot1)
+      # dev.off()
+      ggsave(plot1, filename = NamePlot1, bg = "transparent", width = 10, height = 8, dpi=300)
     }
   }
   
@@ -165,7 +168,7 @@ for (i in 1:length(names(table(file_bind$Species)))) { # For each species
   
   # Plot predictions for the difference between April and July
   NamePlot2=paste0(arg[4], "/", Sp,"_", "Diff_April_July",".png")
-  png(filename=NamePlot2, width = 3000, height = 2500, res=300)
+  # png(filename=NamePlot2, width = 3000, height = 2500, res=300)
   
   mid <- mean(dataa_diff$pred_diff_april_july)
   
@@ -194,13 +197,13 @@ for (i in 1:length(names(table(file_bind$Species)))) { # For each species
     ylab("") +
     xlab("") 
   
-  print(plot2)
-  dev.off()
-  #ggsave(plot2, filename = NamePlot2, bg = "transparent")
+  # print(plot2)
+  # dev.off()
+  ggsave(plot2, filename = NamePlot2, bg = "transparent", width = 10, height = 8, dpi=300)
   
   # Plot predictions for the difference between July and September
   NamePlot3=paste0(arg[4], "/", Sp,"_", "Diff_July_Sept",".png")
-  png(filename=NamePlot3, width = 3000, height = 2500, res=300)
+  # png(filename=NamePlot3, width = 3000, height = 2500, res=300)
   
   mid <- mean(dataa_diff$pred_diff_july_sept)
   
@@ -231,13 +234,13 @@ for (i in 1:length(names(table(file_bind$Species)))) { # For each species
     ylab("") +
     xlab("") 
   
-  print(plot)
-  dev.off()
-  #ggsave(plot3, filename = NamePlot3, bg = "transparent")
+  # print(plot)
+  # dev.off()
+  ggsave(plot3, filename = NamePlot3, bg = "transparent", width = 10, height = 8, dpi=300)
   
   # Plot predictions for the difference between January and July
   NamePlot4=paste0(arg[4], "/", Sp,"_", "Diff_January_July",".png")
-  png(filename=NamePlot4, width = 3000, height = 2500, res=300)
+  #png(filename=NamePlot4, width = 3000, height = 2500, res=300)
   
   mid <- mean(dataa_diff$pref_diff_january_july)
   
@@ -266,9 +269,9 @@ for (i in 1:length(names(table(file_bind$Species)))) { # For each species
     ylab("") +
     xlab("") 
   
-  print(plot)
-  dev.off()
-  #ggsave(plot4, filename = NamePlot4, bg = "transparent")
+  # print(plot)
+  # dev.off()
+  ggsave(plot4, filename = NamePlot4, bg = "transparent", width = 10, height = 8, dpi=300)
   
   
   

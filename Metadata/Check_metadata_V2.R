@@ -6,13 +6,13 @@ library(lubridate)
 library(sf)
 
 
-setwd("C:/Users/croemer01/Documents/Post-Doc/MIGRATION/Metadonnees/TEST")
+setwd("C:/Users/croemer01/Documents/Post-Doc/MIGRATION/Metadonnees/Return_from_partners_FINAL")
 
 #### List and load metadata files ####
-csv.list <- list.files("C:/Users/croemer01/Documents/Post-Doc/MIGRATION/Metadonnees/TEST",
-                       pattern='*.csv', recursive = TRUE)
+csv.list <- list.files("C:/Users/croemer01/Documents/Post-Doc/MIGRATION/Metadonnees/Return_from_partners_FINAL",
+                       pattern='*Metadata_table.csv', recursive = TRUE)
 
-csv.df.list <- lapply(csv.list, fread) 
+csv.df.list <- lapply(csv.list, fread, na.strings=c("-")) 
 # /!\ some tables have a weird behaviour (e.g. when asking head(table Arnold Andreasson) after formatting time)
 # This is probably due to the fread function
 # There was no problem until the step of rbind
@@ -35,7 +35,7 @@ for (i in 1:length(csv.df.list)){
   matchCOL=match (colnames(csv.df.list[[i]]), name_col)
   if(TRUE %in% is.na(matchCOL)){
     print(paste0("error: column names are incorrect for ", Affiliation))
-    print(paste0("missing columns: ", name_col[which(is.na(matchCOL))]))
+    print(paste0("missing columns: ", colnames(csv.df.list[[i]])[which(is.na(matchCOL))]))
   }
 }
 
@@ -44,8 +44,10 @@ StandardFormat = c(rep("character",6), rep("numeric", 2), rep("character",5),
                    "integer",  rep("character", 2), "numeric", "integer", "character",
                    "integer", "character", rep("integer", 12), rep("character",3))
 
-for (i in 1:length(csv.df.list)){
+for (i in 1:length(csv.df.list)){ # Next time, make of function of this and run it after step TIME format
   Affiliation = csv.df.list[[i]]$Affiliation[1]
+  print("")
+  print(Affiliation)
   for (j in 1:length(StandardFormat)){
     if(!class(as.data.frame(csv.df.list[[i]])[,j])[1]=="POSIXct" &
        !class(as.data.frame(csv.df.list[[i]])[,j])[1]=="IDate"){
@@ -56,10 +58,11 @@ for (i in 1:length(csv.df.list)){
                  StandardFormat[j] == "numeric") | # considers that integer = numeric
                 (names(table(as.data.frame(lapply(csv.df.list[[i]], class)[j]))) == "numeric" &
                  StandardFormat[j] == "integer"))) { # considers that numeric = integer
-            print(paste0("warning for: ", Affiliation))
-            print(paste0("wrong format for ",  names(as.data.frame(lapply(csv.df.list[[i]], class)[j])),
-                         ": found ", names(table(as.data.frame(lapply(csv.df.list[[i]], class)[j]))), 
-                         " instead of ", StandardFormat[j]))
+            if(!(j==22 & "Audiomoth" %in% csv.df.list[[i]]$Recorder)){
+              print(paste0("wrong format for ",  names(as.data.frame(lapply(csv.df.list[[i]], class)[j])),
+                           ": found ", names(table(as.data.frame(lapply(csv.df.list[[i]], class)[j]))), 
+                           " instead of ", StandardFormat[j]))
+            }
           }
         }
       }
@@ -74,7 +77,13 @@ csv.df.list = csv.df.list %>%
   map(~ .x %>% 
         mutate(LPF = gsub("[^0-9.-]", "", LPF))) %>%  
   lapply(transform, MicHeight = as.numeric(MicHeight)) %>% 
-  lapply(transform, LPF = as.numeric(LPF))
+  lapply(transform, LPF = as.numeric(LPF)) %>% 
+  lapply(transform, HPF = as.numeric(HPF)) %>% 
+  lapply(transform, Participation = as.character(Participation)) %>% 
+  lapply(transform, GainRecorder = as.character(GainRecorder)) %>% # because of Audiomoths
+  lapply(transform, FreqMax = as.numeric(FreqMax))
+  
+
 for(i in 1:length(csv.df.list)){ # Check that people did not only write characters in these columns
   Affiliation = csv.df.list[[i]]$Affiliation[1]
   if(all(is.na(csv.df.list[[i]]$MicHeight))) {
@@ -85,11 +94,97 @@ for(i in 1:length(csv.df.list)){ # Check that people did not only write characte
   }
 }
 
+#### Replace characters by numeric (e.g. Recorder = Audiomoth instead of 3) ####
+for (i in 1:length(csv.df.list)){ # Y coordinates should be greater values than X
+  Affiliation = csv.df.list[[i]]$Affiliation[1]
+  print("")
+  print(Affiliation)
+  Break1 = FALSE
+  Break2 = FALSE
+  for(j in 1:nrow(csv.df.list[[i]])){
+    if(is.character(csv.df.list[[i]]$TypeStudy[j])){
+      if(csv.df.list[[i]]$TypeStudy[j]=="ground-level" |
+         csv.df.list[[i]]$TypeStudy[j]=="Ground-level"){
+        csv.df.list[[i]]$TypeStudy[j]=1 
+        if(Break1 == FALSE){
+          print(paste0("warning: replacing TypeStudy character by a numeric"))
+          Break1=TRUE
+        }
+      }
+      if(csv.df.list[[i]]$TypeStudy[j]=="Tree canopy" |
+         csv.df.list[[i]]$TypeStudy[j]=="tree canopy"){
+        csv.df.list[[i]]$TypeStudy[j]=2 
+        if(Break1 == FALSE){
+          print(paste0("warning: replacing TypeStudy character by a numeric"))
+          Break1=TRUE
+        }
+      }
+      if(csv.df.list[[i]]$TypeStudy[j]=="Wind mast" |
+         csv.df.list[[i]]$TypeStudy[j]=="wind mast"){
+        csv.df.list[[i]]$TypeStudy[j]=3
+        if(Break1 == FALSE){
+          print(paste0("warning: replacing TypeStudy character by a numeric"))
+          Break1=TRUE
+        }
+      }
+      if(csv.df.list[[i]]$TypeStudy[j]=="Wind turbine" |
+         csv.df.list[[i]]$TypeStudy[j]=="wind turbine"){
+        csv.df.list[[i]]$TypeStudy[j]=4
+        if(Break1 == FALSE){
+          print(paste0("warning: replacing TypeStudy character by a numeric"))
+          Break1=TRUE
+        }
+      }
+      if(csv.df.list[[i]]$TypeStudy[j]=="Building" |
+         csv.df.list[[i]]$TypeStudy[j]=="building"){
+        csv.df.list[[i]]$TypeStudy[j]=5
+        if(Break1 == FALSE){
+          print(paste0("warning: replacing TypeStudy character by a numeric"))
+          Break1=TRUE
+        }
+      }
+      if(csv.df.list[[i]]$TypeStudy[j]=="Other" |
+         csv.df.list[[i]]$TypeStudy[j]=="other"){
+        csv.df.list[[i]]$TypeStudy[j]=6
+        if(Break1 == FALSE){
+          print(paste0("warning: replacing TypeStudy character by a numeric"))
+          Break1=TRUE
+        }
+      }
+    }
+    if(is.character(csv.df.list[[i]]$Recorder[j])){
+      if(csv.df.list[[i]]$Recorder[j]=="SM2BAT"){
+        csv.df.list[[i]]$Recorder[j]=17 
+        if(Break2 == FALSE){
+          print(paste0("warning: replacing Recorder character by a numeric"))
+          Break2=TRUE
+        }
+      }
+      if(csv.df.list[[i]]$Recorder[j]=="Audiomoth"){
+        csv.df.list[[i]]$Recorder[j]=3
+        if(Break2 == FALSE){
+          print(paste0("warning: replacing Recorder character by a numeric"))
+          Break2=TRUE
+        }
+      }
+    }
+  }
+}
+
+
+
 #### Make DATE format ####
 for(i in 1:length(csv.df.list)){
   if(grepl("/", csv.df.list[[i]]$StartDate[1])){
     csv.df.list[[i]]$StartDate = dmy(csv.df.list[[i]]$StartDate)
     csv.df.list[[i]]$EndDate = dmy(csv.df.list[[i]]$EndDate)
+  }
+}
+for(i in 1:length(csv.df.list)){
+  if(grepl(".", csv.df.list[[i]]$StartDate[1]) &
+     nchar(gsub("\\..*","",csv.df.list[[i]]$StartDate[1]))==4){
+    csv.df.list[[i]]$StartDate = ymd(csv.df.list[[i]]$StartDate)
+    csv.df.list[[i]]$EndDate = ymd(csv.df.list[[i]]$EndDate)
   }
 }
 csv.df.list = lapply(csv.df.list,function(x) { # /!\ RUN ONLY ONCE
@@ -110,17 +205,19 @@ for(i in 1:length(csv.df.list)){ # Check that date columns are not empty
 
 #### Make TIME format ####
 for(i in 1:length(csv.df.list)){
-  if(grepl("PM", csv.df.list[[i]]$StartTime[1]) |
-     grepl("AM", csv.df.list[[i]]$StartTime[1])){
-    csv.df.list[[i]]$StartTime =  hms(format(strptime(csv.df.list[[i]]$StartTime, "%I:%M:%S %p"), "%H:%M:%S"))
-    csv.df.list[[i]]$EndTime =  hms(format(strptime(csv.df.list[[i]]$EndTime, "%I:%M:%S %p"), "%H:%M:%S"))
-  }else{
-    if(str_count(csv.df.list[[i]]$StartTime[1], ":")==1){
-      csv.df.list[[i]]$StartTime = hm(csv.df.list[[i]]$StartTime)
-      csv.df.list[[i]]$EndTime = hm(csv.df.list[[i]]$EndTime)
+  if(!all(is.na(csv.df.list[[i]]$StartTime))){
+    if(grepl("PM", csv.df.list[[i]]$StartTime[1]) |
+       grepl("AM", csv.df.list[[i]]$StartTime[1])){
+      csv.df.list[[i]]$StartTime =  hms(format(strptime(csv.df.list[[i]]$StartTime, "%I:%M:%S %p"), "%H:%M:%S"))
+      csv.df.list[[i]]$EndTime =  hms(format(strptime(csv.df.list[[i]]$EndTime, "%I:%M:%S %p"), "%H:%M:%S"))
     }else{
-      csv.df.list[[i]]$StartTime = hms(csv.df.list[[i]]$StartTime)
-      csv.df.list[[i]]$EndTime = hms(csv.df.list[[i]]$EndTime)
+      if(str_count(csv.df.list[[i]]$StartTime[1], ":")==1){
+        csv.df.list[[i]]$StartTime = hm(csv.df.list[[i]]$StartTime) #PROBLEM
+        csv.df.list[[i]]$EndTime = hm(csv.df.list[[i]]$EndTime) #PROBLEM
+      }else{
+        csv.df.list[[i]]$StartTime = hms(csv.df.list[[i]]$StartTime)
+        csv.df.list[[i]]$EndTime = hms(csv.df.list[[i]]$EndTime)
+      }
     }
   }
 }
@@ -145,13 +242,21 @@ for (i in 1:length(csv.df.list)){ # Y coordinates should be greater values than 
     csv.df.list[[i]]$X = XTemp
     csv.df.list[[i]]$Y = YTemp
   }
+  for(j in 1:nrow(csv.df.list[[i]]))
+    if(is.na(csv.df.list[[i]]$Y[j])){
+      print(j)
+      print(paste0("warning: missing Y coordinates for ", Affiliation))
+    }
+  if(is.na(csv.df.list[[i]]$X[j])){
+    print(paste0("warning: missing X coordinates for ", Affiliation))
+  }
 }
 
 countries <- c(
   "Andorra", "Belarus", "Bulgaria", "Portugal", "Spain", "France", "Switzerland", "Germany",
   "Austria", "Belgium", "UK", "Netherlands", "Norway(?!:Svalbard)", "Monaco", "Montenegro", 
   "Sweden", "Finland", "Latvia", "Lithuania", "Luxembourg", "Albania", "Serbia",
-  "Denmark", "Poland", "Italy", "Estonia", "Macedonia", 
+  "Denmark", "Poland", "Italy", "Estonia", "North Macedonia", 
   "Croatia", "Slovenia", "Hungary", "Slovakia", "Greece", "Ireland", "Kosovo", "Malta", "Moldova",
   "Czech republic", "Ukraine", "Romania", "Liechtenstein", 
   "Bosnia and Herzegovina", "Russia:32"
@@ -180,7 +285,7 @@ for (i in 1:length(csv.df.list)){ # Make spatial object
   }
 }
 
-# Plot for pleasure
+# Plot
 X_Y_for_plot = do.call(rbind, lapply(csv.df.list, subset, select=c("X", "Y")))
 X_Y_for_plot_sf = st_as_sf( 
   X_Y_for_plot, coords = c("X", "Y"), crs=4326, remove=FALSE) %>% 
@@ -351,7 +456,10 @@ for (i in 1:length(csv.df.list2)){
       Break = TRUE
     }
   }
+  ### ADD checks for DATE, TIME, etc ### !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 }
+
+
 
 #### Check that required columns are not empty ####
 Required_columns = c("FirstName",	"FamilyName",	"Email",	"Affiliation",	"Country",	"Site",	"X",	"Y",	
@@ -371,25 +479,41 @@ for (i in 1:length(csv.df.list2)){
   }
 }
 
+#### Rbind data (at the IN2P3 the tables do not need to be merged) ####
+csv.df.list3 = csv.df.list2 %>% 
+  lapply(transform, Participation = as.character(Participation)) %>% 
+  lapply(transform, GainRecorder = as.character(GainRecorder)) %>% 
+  lapply(transform, TypeStudy = as.character(TypeStudy)) %>% 
+  lapply(transform, Recorder = as.character(Recorder)) %>% 
+  lapply(transform, Mic = as.character(Mic)) %>% 
+  lapply(transform, HPF = as.character(HPF)) %>% 
+  lapply(transform, TriggerLevel = as.character(TriggerLevel)) %>% 
+  lapply(transform, TrigWin = as.character(TrigWin)) %>% 
+  lapply(transform, Pause = as.character(Pause))
 
+csv.df2 = bind_rows(csv.df.list3, .id = "column_label")
 
-#### Rbind data ####
-csv.df = do.call(rbind, lapply(csv.df.list2, as.data.frame))
-if(rowSums(as.data.frame(lapply(csv.df.list2, nrow))) != nrow(csv.df)){
+if(rowSums(as.data.frame(lapply(csv.df.list3, nrow))) != nrow(csv.df2)){
   print("warning: rbind did not succeed")
 }
 
 
-# Check if Site and participation folders are all at the IN2P3
+#### Write table ####
+write.csv(csv.df2, "C:/Users/croemer01/Documents/Post-Doc/MIGRATION/Metadonnees/Summary_ASUPPRIMER.csv")
+
+#### Check if Site and participation folders are all at the IN2P3 #### 
+Directories = list.dirs("C:/Users/croemer01/Documents/Post-Doc/MIGRATION/Metadonnees/TEST")
+Directories_Sites= Directories[which(lengths(regmatches(Directories, gregexpr("/", Directories)))==9)]
+Directories_Sites = gsub(".*\\/", "", Directories_Sites)
+
+#### Check if Site and participation folders at the IN2P3 are in the metadata table #### 
 
 
 
-# Check if Site and participation folders at the IN2P3 are in the metadata table
+#### Count n nights and n sites ####
+N_Nights1 = sum(as.numeric(difftime(csv.df$EndDate, csv.df$StartDate, units = "days")), na.rm = T)
+N_Nights2 = length(which(as.numeric(difftime(csv.df$EndDate, csv.df$StartDate, units = "days"))==0)) # people wrote same date for start and end
+N_Nights1 + N_Nights2
 
-
-
-
-
-
-
-
+N_Sites = nrow(unique(data.frame(csv.df$X, csv.df$Y)))
+N_Sites

@@ -2,18 +2,19 @@ library(data.table)
 library(randomForest)
 library(spdep)
 library(tidyverse)
-library(beepr)
 
 # Predicts activity using the random forest models
 
 # List arguments #####
 args="Nyclei"
-args[2]="C:/Users/croemer01/Documents/Donnees vigie-chiro/GI_SysGrid__3e+05"
-#args[3]="15/06/2018" #date of prediction
-args[5]="weighted"
+args[2]="/mnt/beegfs/ybas/GI/GI_SysGrid__3e+05"
+args[3]="20220629" #date of prediction (exactly same writing as the folder name)
+args[5]="0"
 args[11]=40 #number of coordinates projections (must be a division of 360)
-ModRF_file=paste0("C:/Users/croemer01/Documents/Donnees vigie-chiro/ModPred/VCweightedPG_2022-08-11/ModRFActLog_",args[1],"VC",args[5],"_PG.learner")
-Output="C:/Users/croemer01/Documents/Donnees vigie-chiro/PredictionsModels/weighted_2022-08-11/" # Output folder
+ModRF_file=paste0("/mnt/beegfs/croemer/VigieChiro/ModPred/VC", args[5], "PG_", args[3], "/ModRFActLog_",args[1],"VC",args[5],"_PG.learner")
+Output=paste0("/mnt/beegfs/croemer/VigieChiro/PredictionsModels/", args[5], "_", args[3], "/") #folder to copy models to 
+
+dir.create(Output)
 
 print("L14")
 load(ModRF_file) # Load random forest model
@@ -112,4 +113,3 @@ for (i in 1:length(Date_seq)){
   
 }
 
-beep(2)
