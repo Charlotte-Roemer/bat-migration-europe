@@ -7,6 +7,15 @@ weight: 100
 
 <center>  
 
+___
+
+_7 of September 2022_  
+
+We now received data recorded on more than 8000 sites from 18 partners in total. More than 30 partners are still preparing their data and sending them.
+ 
+You can see the updated map of participations [here]({{< ref "/project/participations" >}}. It shows the study sites sent for Bat Migration Routes in Europe (>8000 sites) + the French Vigie-Chiro dataset (>16000 sites).
+ 
+In addition, we donated 103 Audiomoths during the summer, adding 4 new countries to the list of partners!
 
 ___
 
