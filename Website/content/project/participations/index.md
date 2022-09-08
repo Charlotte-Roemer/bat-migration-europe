@@ -14,7 +14,7 @@ weight: 130
 
 <div style="text-align: justify">
 This map shows the current state of participations in Europe.
-This map was updated on the 20th of June 2022.
+This map was updated on the 8 of September 2022.
 </div>
 
 <!--more-->
