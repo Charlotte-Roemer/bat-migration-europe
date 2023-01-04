@@ -208,7 +208,7 @@ TableCapture_Success = TableCapture %>%
   mutate(Species_1 = ifelse(SpeciesGroup=="1", 1, 0),
          Species_2 = ifelse(SpeciesGroup=="2", 1, 0),
          Species_3 = ifelse(SpeciesGroup=="3", 1, 0)) %>% 
-  filter(SpeciesGroup!="0") %>% 
+  filter(SpeciesGroup!="0") %>% # remove all individuals that are not in the SpeciesGroup
   select(INSEE_COM, NOM_COM, JulianDay, Species_1, Species_2, Species_3, Sp, SpeciesGroup) %>% 
   as.data.frame()
 

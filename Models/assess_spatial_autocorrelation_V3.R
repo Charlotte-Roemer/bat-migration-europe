@@ -4,11 +4,68 @@
 # Then test spatial correlation
 
 library(beepr)
-library(spatialRF)
+#library(spatialRF)
+library(randomForest)
+
+Sp="Nyclei"
+Threshold="weighted"
+
+ModRF_file=paste0("C:/Users/croemer01/Documents/Donnees vigie-chiro/ModPred/VCweightedPG_2022-08-11/ModRFActLog_",
+                  Sp,"VC",Threshold,"_PG.learner")
+load(ModRF_file) # Load random forest model
+
+# ! Problem : le RF construit se base sur plein de jeux de données train de tailles différentes
+# donc on ne peux pas calculer les résidus classiquement : ResidualsRF = DataSaison$ActLog10 - predict(ModRF)
+# il faut faire un prédict sur le jeu de données complet, puis soustraire les résidus !!
+
+DataSaison_for_residuals = cbind(DataSaison[,..Prednames], 
+                                 ActLog10 = DataSaison$ActLog10)
+
+
+
+library(viridis)
+ggplot(DataSaison, aes(x=longitude, 
+                             y=latitude, 
+                             col=Residuals_RF)) +
+  geom_point() +
+  scale_color_viridis()
+
+
+# Moran's I
+library(ncf)
 
 n_rows=10 # resample by dividing dataset by n to go faster
-a <- seq(1, nrow(DataSaison), by = n_rows)
-DataSaisonSample <- DataSaison[a,]
+a <- seq(1, nrow(DataSaison_for_residuals), by = n_rows)
+DataSaisonSample <- DataSaison_for_residuals[a,]
+
+Predicts_RF = predict(ModRF, DataSaisonSample)
+Residuals_RF =  DataSaisonSample$ActLog10 - Predicts_RF
+
+ncf.cor <- correlog(DataSaisonSample$longitude, DataSaisonSample$latitude, 
+                    Residuals_RF,
+                    increment=2, resamp=500)
+
+
+
+
+
+
+DataSaisonSample$CESCO = ifelse(DataSaisonSample$observateur %in% c("Alexis LAFORGE",
+                                                                    "Aurélie Lacoeuilhe",
+                                                                    "Camille Leroux",
+                                                                    "christian kerbiriou",
+                                                                    "Clementine Azam",
+                                                                    "Fabien CLAIREAU",
+                                                                    "Jérémy Froidevaux",
+                                                                    "Julie Pauwels",
+                                                                    "Kévin Barré",
+                                                                    "Léa MARITON",
+                                                                    "Tiphaine Devaux"),
+                                "OUI", "NON")
+
+DataSaisonSample=subset(DataSaisonSample, CESCO == "NON")
+
+
 
 xy93 = DataSaisonSample[,c("longitude", "latitude", "nb_contacts")] %>% # transform to L93 to obtain spatial distances in km
   st_as_sf(coords=c("longitude", "latitude")) %>% 
@@ -34,6 +91,8 @@ xy <- xy93[, c("x", "y")]
 #distance thresholds (same units as distance_matrix)
 distance.thresholds <- c(0, 50, 100, 200, 300, 500, 1000, 2000, 5000, 10000, 20000)
 
+
+
 # Build non spatial model
 model.non.spatial <- spatialRF::rf(
   data = DataSaisonSample,
@@ -54,6 +113,25 @@ plot5=spatialRF::plot_residuals_diagnostics(
 )
 print(plot5)
 dev.off()
+
+# Check spatial distribution of residuals
+library(viridis)
+ggplot(DataSaisonSample, aes(x=DataSaisonSample$longitude, 
+                             y=DataSaisonSample$latitude, 
+                             col=log10(model.non.spatial$residuals$values+2))) +
+         geom_point() +
+  scale_color_viridis()
+
+# Check CESCO data
+ggplot(DataSaisonSample, aes(x=DataSaisonSample$longitude, 
+                             y=DataSaisonSample$latitude, 
+                             col=DataSaisonSample$CESCO)) +
+  geom_point()
+
+
+
+
+
 # 
 # # Only the Moran's I
 # spatialRF::plot_moran(

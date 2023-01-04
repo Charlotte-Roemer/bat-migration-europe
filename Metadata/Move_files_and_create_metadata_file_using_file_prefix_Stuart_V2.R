@@ -6,11 +6,12 @@ library(tidyverse)
 library(beepr)
 
 pattern = "ta" # extension name of files (usually wav, ta or raw)
-Directory = "D:/Ukraine_and_Belarus_SNEWSON/Ta_files/Hard_drive_xx01/ta_files" # Directory name where files are
-Directory_out = "D:/Ukraine_and_Belarus_SNEWSON/Ta_files/organised" # Directory name where to copy the files
-FileDataName = "D:/Ukraine_and_Belarus_SNEWSON/Checked_results_Polesia_2019_2021.csv" # file containing coordinates
+Directory = "E:/Ukraine_and_Belarus_SNEWSON/Ta_files/Hard_drive_xx01/ta_files" # Directory name where files are
+Directory_out = "E:/Ukraine_and_Belarus_SNEWSON/Ta_files/organised" # Directory name where to copy the files
+FileDataName = "E:/Ukraine_and_Belarus_SNEWSON/Checked_results_Polesia_2019_2021.csv" # file containing coordinates
 MetadataDir = "C:/Users/croemer01/Documents/Post-Doc/MIGRATION/Metadonnees/Return_from_partners_FINAL/"
 MetadataName = "Stuart_newson_Belarus-Ukraine" # file with metadata
+NSubdirectories = 5 # Number of "/" before file name (after using list.files function to list files to move to participation folder)
 
 nx = nchar(pattern)
 nwav = 3
@@ -159,7 +160,7 @@ for (j in 1:length(list.outputs)){ # does this for each site
   
   Date_Night=vector()
   for(i in 1:length(lswav.participation)){
-    if(str_count(lswav.participationDIR[i], "/")==4){
+    if(str_count(lswav.participationDIR[i], "/")==NSubdirectories){
       if(str_sub(lswav.participation[i], (-nx-5),(-nx-5))=="_"){
         Date_Night[i]= ifelse(str_sub(lswav.participation[i],(-nx-11),(-nx-11))==0,
                               as.character(as.Date(paste(str_sub(lswav.participation[i],(-nx-20),(-nx-17)),

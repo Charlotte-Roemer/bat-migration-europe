@@ -82,7 +82,7 @@ csv.df.list = csv.df.list %>%
   lapply(transform, Participation = as.character(Participation)) %>% 
   lapply(transform, GainRecorder = as.character(GainRecorder)) %>% # because of Audiomoths
   lapply(transform, FreqMax = as.numeric(FreqMax))
-  
+
 
 for(i in 1:length(csv.df.list)){ # Check that people did not only write characters in these columns
   Affiliation = csv.df.list[[i]]$Affiliation[1]
@@ -167,11 +167,30 @@ for (i in 1:length(csv.df.list)){ # Y coordinates should be greater values than 
           Break2=TRUE
         }
       }
+      if(csv.df.list[[i]]$Mic[j]=="AudioMoth" |
+         csv.df.list[[i]]$Mic[j]=="Audiomoth"){
+        csv.df.list[[i]]$Mic[j]=24
+        if(Break2 == FALSE){
+          print(paste0("warning: replacing Mic character by a numeric"))
+          Break2=TRUE
+        }
+      }
+      if(csv.df.list[[i]]$Mic[j]=="SMX-US"){
+        csv.df.list[[i]]$Mic[j]=1
+        if(Break2 == FALSE){
+          print(paste0("warning: replacing Mic character by a numeric"))
+          Break2=TRUE
+        }
+      }
     }
   }
 }
 
-
+#### Change format again to numeric ####
+csv.df.list = csv.df.list %>% 
+  lapply(transform, Recorder = as.numeric(Recorder)) %>% 
+  lapply(transform, Mic = as.numeric(Mic)) %>% 
+  lapply(transform, TypeStudy = as.numeric(TypeStudy))
 
 #### Make DATE format ####
 for(i in 1:length(csv.df.list)){
@@ -312,17 +331,21 @@ for (i in 1:length(csv.df.list2)){
   
   Break= FALSE
   for(j in 1:nrow(csv.df.list2[[i]])){
-    if(csv.df.list2[[i]]$Recorder[j] > 24 & Break == FALSE) { 
-      print(paste0("warning: wrong Recorder"))
-      Break = TRUE
+    if(!is.na(csv.df.list2[[i]]$Recorder[j])){
+      if(as.numeric(csv.df.list2[[i]]$Recorder[j]) > 24 & Break == FALSE) { 
+        print(paste0("warning: wrong Recorder"))
+        Break = TRUE
+      }
     }
   }
   
   Break= FALSE
   for(j in 1:nrow(csv.df.list2[[i]])){
-    if(csv.df.list2[[i]]$Mic[j] > 25 & Break == FALSE) { 
-      print(paste0("warning: wrong Mic"))
-      Break = TRUE
+    if(!is.na(csv.df.list2[[i]]$Mic[j])){
+      if(csv.df.list2[[i]]$Mic[j] > 25 & Break == FALSE) { 
+        print(paste0("warning: wrong Mic"))
+        Break = TRUE
+      }
     }
   }
   
@@ -394,7 +417,7 @@ for (i in 1:length(csv.df.list2)){
   for(j in 1:nrow(csv.df.list2[[i]])) {
     if(!is.na(csv.df.list2[[i]]$TriggerLevel[j]) &
        csv.df.list2[[i]]$TriggerLevel[j] != 0 &
-       (csv.df.list2[[i]]$TriggerLevel[j]  < -100 | csv.df.list2[[i]]$TriggerLevel[j]  > 0)){
+       as.numeric(csv.df.list2[[i]]$TriggerLevel[j]  < -100 | csv.df.list2[[i]]$TriggerLevel[j]  > 0)){
       if(csv.df.list2[[i]]$Recorder[j] %in% RecordersAbsoluteTrigger) 
       {
         if(Break1 == FALSE){
@@ -402,7 +425,7 @@ for (i in 1:length(csv.df.list2)){
           print("thus I am replacing by the negative")
           Break1 = TRUE
         }
-        csv.df.list2[[i]]$TriggerLevel[j]=-csv.df.list2[[i]]$TriggerLevel[j]
+        csv.df.list2[[i]]$TriggerLevel[j]=-as.numeric(csv.df.list2[[i]]$TriggerLevel[j])
       }else{
         if(Break2 == FALSE){
           print(paste0("warning: wrong TriggerLevel"))
@@ -415,7 +438,7 @@ for (i in 1:length(csv.df.list2)){
   Break= FALSE
   for(j in 1:nrow(csv.df.list2[[i]])){
     if(!is.na(csv.df.list2[[i]]$MinDur[j]) &
-       csv.df.list2[[i]]$MinDur[j] != 0 &
+       as.numeric(csv.df.list2[[i]]$MinDur[j]) != 0 &
        (csv.df.list2[[i]]$MinDur[j] < 1 |  csv.df.list2[[i]]$MinDur[j]  > 10) & 
        Break == FALSE) {
       print(paste0("warning: wrong MinDur"))
@@ -489,7 +512,13 @@ csv.df.list3 = csv.df.list2 %>%
   lapply(transform, HPF = as.character(HPF)) %>% 
   lapply(transform, TriggerLevel = as.character(TriggerLevel)) %>% 
   lapply(transform, TrigWin = as.character(TrigWin)) %>% 
-  lapply(transform, Pause = as.character(Pause))
+  lapply(transform, Pause = as.character(Pause)) %>% 
+  lapply(transform, FreqMin = as.numeric(FreqMin)) %>% 
+  lapply(transform, RecorderOther = as.numeric(RecorderOther)) %>% 
+  lapply(transform, MinDur = as.numeric(MinDur)) %>% 
+  lapply(transform, MaxDur = as.numeric(MaxDur)) %>% 
+  lapply(transform, TrigWinMax = as.numeric(TrigWinMax)) %>% 
+  lapply(transform, FileSplittingLength = as.numeric(FileSplittingLength))
 
 csv.df2 = bind_rows(csv.df.list3, .id = "column_label")
 
@@ -507,13 +536,14 @@ Directories_Sites= Directories[which(lengths(regmatches(Directories, gregexpr("/
 Directories_Sites = gsub(".*\\/", "", Directories_Sites)
 
 #### Check if Site and participation folders at the IN2P3 are in the metadata table #### 
-
+# check if there are no other file or folder that should not be there (sometimes there are unwanted subfolders)
+# check if folders are not empty
 
 
 #### Count n nights and n sites ####
-N_Nights1 = sum(as.numeric(difftime(csv.df$EndDate, csv.df$StartDate, units = "days")), na.rm = T)
-N_Nights2 = length(which(as.numeric(difftime(csv.df$EndDate, csv.df$StartDate, units = "days"))==0)) # people wrote same date for start and end
+N_Nights1 = sum(as.numeric(difftime(csv.df2$EndDate, csv.df2$StartDate, units = "days")), na.rm = T)
+N_Nights2 = length(which(as.numeric(difftime(csv.df2$EndDate, csv.df2$StartDate, units = "days"))==0)) # people wrote same date for start and end
 N_Nights1 + N_Nights2
 
-N_Sites = nrow(unique(data.frame(csv.df$X, csv.df$Y)))
+N_Sites = nrow(unique(data.frame(csv.df2$X, csv.df2$Y)))
 N_Sites

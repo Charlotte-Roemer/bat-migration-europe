@@ -56,7 +56,7 @@ MergedGI=F #whether habitat-climate variables are in the table args[1
 Fpar="C:/Users/croemer01/Documents/Donnees vigie-chiro/p_export.csv" #the file with data about participations
 Fsl="C:/Users/croemer01/Documents/Donnees vigie-chiro/sites_localites.txt"	#the file with the data about localities
 ProbThreshold=0 # a filter on the score_max parameter (takes all data superior or equal to this value)
-Sp = "Tadten" # choose species
+Sp = "Nyclei" # choose species
 
 dir.create(Output)
 
