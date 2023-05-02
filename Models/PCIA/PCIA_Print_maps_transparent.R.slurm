@@ -36,4 +36,4 @@ module load udunits
 module load R/4.0.5    
 
 # Commandes et scripte à lancer
-Rscript PCIA_Predict_Act_V2_C.R
+Rscript PCIA_Print_maps_transparent_V2.R

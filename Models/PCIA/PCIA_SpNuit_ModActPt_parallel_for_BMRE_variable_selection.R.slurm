@@ -23,12 +23,17 @@
 module load userspace/tr17.10
 module load biology
 
-module load lapack/3.7.1 
-module load jags/4.3.0 
-module load proj.4/4.9.3 
-module load geos/3.6.2
-module load gcc/7.2.0
-module load R/4.0.2
+module load userspace/tr17.10
+module load biology
+module load gcc/7.2.0        
+module load lapack/3.7.1
+module load blas/gcc72/3.7.1
+module load jags/gcc72/4.3.0
+module load proj/8.0.0     
+module load geos
+module load gdal
+module load udunits
+module load R/4.0.5    
 
 # Commandes et scripte à lancer
-Rscript PCIA_Test.R
+Rscript PCIA_SpNuit_ModActPt_parallel_for_BMRE_variable_selection.R

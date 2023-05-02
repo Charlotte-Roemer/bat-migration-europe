@@ -6,11 +6,11 @@ library(sf)
 library(spdep)
 
 
-args = "C:/Users/croemer01/Documents/Post-Doc/CACCHI/Data/Datacapture_MNHN_traits2021_envoyé.csv" # file with capture data
+args = "C:/Users/croemer01/Documents/Post-Doc/CACCHI/Data/Datacapture_MNHN_traits2021_envoyÃ©.csv" # file with capture data
 args[2]=40 #number of coordinates projections (must be a division of 360)
 args[3] = "C:/Users/croemer01/Documents/Donnees vigie-chiro/SpeciesList.csv" #Species list
 args[4] = "C:/Users/croemer01/Documents/SIG/SIG_Post-Doc_MNHN/ADMIN-EXPRESS-COG/ADMIN-EXPRESS-COG_2-1__SHP__FRA_2020-03-25/ADMIN-EXPRESS-COG/1_DONNEES_LIVRAISON_2020-03-25/ADE-COG_2-1_SHP_WGS84G_FRA/COMMUNE.shp" # Municipal corporations
-args[5]="C:/Users/croemer01/Documents/Donnees vigie-chiro/SysGrid__849906_environ_800m_de_coté" # grid on which predictions are made
+args[5]="C:/Users/croemer01/Documents/Donnees vigie-chiro/SysGrid__849906_environ_800m_de_cote" # grid on which predictions are made
 args[6] = "C:/Users/croemer01/Documents/Post-Doc/CACCHI/Data/GCLR_EXPORT_2022_n20_Data_biometrie_LR_MNHN_29_07_2022__202207291639.csv" # file with capture data from LR
 args[7] = "C:/Users/croemer01/Documents/SIG/SIG_Post-Doc_MNHN/ADMIN-EXPRESS-COG/ADMIN-EXPRESS-COG_2-1__SHP__FRA_2020-03-25/ADMIN-EXPRESS-COG/1_DONNEES_LIVRAISON_2020-03-25/ADE-COG_2-1_SHP_WGS84G_FRA/ENTITE_RATTACHEE.shp" # Municipal corporations (old)
 
@@ -26,14 +26,21 @@ TableCapture0$Y_CENTROID_COMMUNE=TableCapture0$Y_CENTROID_COMMUNE*100 # to obtai
 TableCapture0$INSEE_COM = ifelse(nchar(TableCapture0$INSEE_COM) == 4, # the first 0 is sometimes missing
                                  paste0("0", TableCapture0$INSEE_COM), 
                                  TableCapture0$INSEE_COM)
+TableCaptureSummaryGiteMinsch=TableCapture0 %>% 
+  filter(TAXON=="Miniopterus schreibersii") %>% 
+  count(DATE) %>% 
+  mutate(SpGite = ifelse(n>20, 1, 0)) %>% # if more than 20 Minsch captured by night, site is probably a roost
+  mutate(n=NULL)
+
+TableCapture0 = left_join(TableCapture0, TableCaptureSummaryGiteMinsch)
 
 # Load LR capture data and merge
 TableCaptureLR= as.data.frame(read_delim(args[6], delim=","))
 TableCaptureLR = TableCaptureLR %>% 
-  select("date_obs", "code_insee", "nom_vern", "gîte")
+  select("date_obs", "code_insee", "nom_vern", "gÃ®te")
 
 # /!\ I removed all Rhino + Pleco + Myotis species here
-TableCaptureLR$nom_vern[TableCaptureLR$nom_vern == "Eptesicus serotinus "| TableCaptureLR$nom_vern =="Sérotine commune"| TableCaptureLR$nom_vern =="Eptesicus serotinus Schreber 1774"| TableCaptureLR$nom_vern =="EPTSER"| TableCaptureLR$nom_vern =="Eptser"| TableCaptureLR$nom_vern =="Serotine commune"]<- "Eptesicus serotinus"
+TableCaptureLR$nom_vern[TableCaptureLR$nom_vern == "Eptesicus serotinus "| TableCaptureLR$nom_vern =="SÃ©rotine commune"| TableCaptureLR$nom_vern =="Eptesicus serotinus Schreber 1774"| TableCaptureLR$nom_vern =="EPTSER"| TableCaptureLR$nom_vern =="Eptser"| TableCaptureLR$nom_vern =="Serotine commune"]<- "Eptesicus serotinus"
 TableCaptureLR$nom_vern[TableCaptureLR$nom_vern == "Eptesicus nilssoni Keyserling  Blasius 1839"| TableCaptureLR$nom_vern =="Eptesicus nilssonii "| TableCaptureLR$nom_vern =="Eptesicus nilssonii Keyserling  Blasius 1839"| TableCaptureLR$nom_vern =="EPTNIL"]<- "Eptesicus nilssonii"
 TableCaptureLR$nom_vern[TableCaptureLR$nom_vern == "NLAS"| TableCaptureLR$nom_vern =="NYCLAS"| TableCaptureLR$nom_vern =="Grande Noctule"]<- "Nyctalus lasiopterus"
 TableCaptureLR$nom_vern[TableCaptureLR$nom_vern == "Nyctalus leisleri Kuhl 1817"| TableCaptureLR$nom_vern =="Nyctalus leisleri "| TableCaptureLR$nom_vern =="Nyctalus leisleri leisleri Kuhl 1817"| TableCaptureLR$nom_vern =="Nyctalus leislerii"| TableCaptureLR$nom_vern =="NYCLEI"| TableCaptureLR$nom_vern =="Nyclei"| TableCaptureLR$nom_vern =="Noctule de Leisler"| TableCaptureLR$nom_vern =="Nyctalus leisleri leisleri"| TableCaptureLR$nom_vern =="Nyctalus leisleri leisleri "]<- "Nyctalus leisleri"
@@ -41,22 +48,23 @@ TableCaptureLR$nom_vern[TableCaptureLR$nom_vern == "Nyctalus noctula Schreber 17
 TableCaptureLR$nom_vern[TableCaptureLR$nom_vern == "PIP KUH"| TableCaptureLR$nom_vern =="Pipistrelle kuhlii"| TableCaptureLR$nom_vern =="pipistrellus kuhlii"| TableCaptureLR$nom_vern =="Pipistrellus kuhlii "| TableCaptureLR$nom_vern =="PIPKHU"| TableCaptureLR$nom_vern =="Pipkuh"| TableCaptureLR$nom_vern =="PIPKUH"| TableCaptureLR$nom_vern =="Pipistrellus kuhlii Kuhl 1817"| TableCaptureLR$nom_vern =="Pipistrellus kuhli Kuhl 1817"| TableCaptureLR$nom_vern =="Pipistrelle de Kuhl"| TableCaptureLR$nom_vern =="Pipistrel kuhli"]<- "Pipistrellus kuhlii"
 TableCaptureLR$nom_vern[TableCaptureLR$nom_vern == "Pipnat"|TableCaptureLR$nom_vern == "PIP NAT"| TableCaptureLR$nom_vern =="Pipistrelle de Nathusius"| TableCaptureLR$nom_vern =="Pipistrellus nathusii "| TableCaptureLR$nom_vern =="Pipistrellus nathusii Keyserling  Blasius 1839"| TableCaptureLR$nom_vern =="PIPNAT"| TableCaptureLR$nom_vern =="PIPNAT "]<- "Pipistrellus nathusii"
 TableCaptureLR$nom_vern[TableCaptureLR$nom_vern == "Pipistrel pipistrellus"| TableCaptureLR$nom_vern =="Pipistrellus pipistrellus "| TableCaptureLR$nom_vern =="Pipistrellus pipistrellus pipistrellus"| TableCaptureLR$nom_vern =="Pipistrellus pipistrellus pipistrellus "| TableCaptureLR$nom_vern =="Pipistrelle commune"| TableCaptureLR$nom_vern =="Pipistrellus pipistrellus pipistrellus"| TableCaptureLR$nom_vern =="Pipistrellus pipistrellus Schreber 1774"| TableCaptureLR$nom_vern =="PIPPIP"| TableCaptureLR$nom_vern =="PiPPIP"| TableCaptureLR$nom_vern =="Pippip"]<- "Pipistrellus pipistrellus"
-TableCaptureLR$nom_vern[TableCaptureLR$nom_vern == "Pipistrel pygmaeus"| TableCaptureLR$nom_vern =="Pipistrelle pygmaeus"| TableCaptureLR$nom_vern =="Pipistrellus pygmaeus "| TableCaptureLR$nom_vern =="PIPPYG"| TableCaptureLR$nom_vern =="Pipistrellus cf pygameus"| TableCaptureLR$nom_vern =="Pipistrelle pygmée"]<- "Pipistrellus pygmaeus"
+TableCaptureLR$nom_vern[TableCaptureLR$nom_vern == "Pipistrel pygmaeus"| TableCaptureLR$nom_vern =="Pipistrelle pygmaeus"| TableCaptureLR$nom_vern =="Pipistrellus pygmaeus "| TableCaptureLR$nom_vern =="PIPPYG"| TableCaptureLR$nom_vern =="Pipistrellus cf pygameus"| TableCaptureLR$nom_vern =="Pipistrelle pygmÃ©e"]<- "Pipistrellus pygmaeus"
 TableCaptureLR$nom_vern[TableCaptureLR$nom_vern == "Pipistrellus specie"|  TableCaptureLR$nom_vern =="Pipistrellus "| TableCaptureLR$nom_vern =="Pipistrelle sp"| TableCaptureLR$nom_vern =="Pipistrellus nathusius ?"| TableCaptureLR$nom_vern =="Pipistrel sp"| TableCaptureLR$nom_vern =="PIPIND"| TableCaptureLR$nom_vern =="Pipistrellus species"| TableCaptureLR$nom_vern =="Pipistrellus sp"]<- "Pipistrellus"
 TableCaptureLR$nom_vern[TableCaptureLR$nom_vern == "Pipistrellus kuhlii_Pipistrellus nathusii"|TableCaptureLR$nom_vern == "Pipistrelle de Kuhl/Nathusius"| TableCaptureLR$nom_vern =="Pipkuh-Pipnat"]<- "Pipistrellus kuhlii_Pipistrellus nathusii"
 TableCaptureLR$nom_vern[TableCaptureLR$nom_vern == "Pipistrellus pygmaeus Leach 1825 Pipistrellus nathusii Keyserling  Blasius 1839"|TableCaptureLR$nom_vern == "Pipistrellus nathusii_Pipistrellus pygmaeus"|TableCaptureLR$nom_vern == "Pipistrellus nathusii Keyserling  Blasius 1839 Pipistrellus pygmaeus Leach 1825"]<- "Pipistrellus nathusii_Pipistrellus pygmaeus"
-TableCaptureLR$nom_vern[TableCaptureLR$nom_vern == "Pipistrelle commune, Pipistrelle pygmée"|TableCaptureLR$nom_vern == "Pipistrellus pipistrellus Schreber 1774 Pipistrellus pygmaeus Leach 1825"|TableCaptureLR$nom_vern == "PIPPIPPYG"| TableCaptureLR$nom_vern =="Pipistrellus pipistrellus / pygmaeus"| TableCaptureLR$nom_vern =="Pipistrellus pipistrellus Schreber, 1774, Pipistrellus pygmaeus Leach, 1825"]<- "Pipistrellus pygmaeus_Pipistrellus pipistrellus"
+TableCaptureLR$nom_vern[TableCaptureLR$nom_vern == "Pipistrelle commune, Pipistrelle pygmÃ©e"|TableCaptureLR$nom_vern == "Pipistrellus pipistrellus Schreber 1774 Pipistrellus pygmaeus Leach 1825"|TableCaptureLR$nom_vern == "PIPPIPPYG"| TableCaptureLR$nom_vern =="Pipistrellus pipistrellus / pygmaeus"| TableCaptureLR$nom_vern =="Pipistrellus pipistrellus Schreber, 1774, Pipistrellus pygmaeus Leach, 1825"]<- "Pipistrellus pygmaeus_Pipistrellus pipistrellus"
 TableCaptureLR$nom_vern[TableCaptureLR$nom_vern == "Pipistrellus pipistrellus_Pipistrellus kuhlii"|TableCaptureLR$nom_vern == "Pipistrellus pipistrellus Schreber 1774 Pipistrellus kuhli Kuhl 1817"]<- "Pipistrellus pipistrellus_Pipistrellus kuhlii"
-TableCaptureLR$nom_vern[TableCaptureLR$nom_vern == "VESMUR"| TableCaptureLR$nom_vern =="Sérotine bicolore"| TableCaptureLR$nom_vern =="Vespertilio murinus Linnaeus 1758"]<- "Vespertilio murinus"
+TableCaptureLR$nom_vern[TableCaptureLR$nom_vern == "VESMUR"| TableCaptureLR$nom_vern =="SÃ©rotine bicolore"| TableCaptureLR$nom_vern =="Vespertilio murinus Linnaeus 1758"]<- "Vespertilio murinus"
 TableCaptureLR$nom_vern[TableCaptureLR$nom_vern == "Tadarida teniotis Rafinesque 1814"| TableCaptureLR$nom_vern =="Molosse de Cestoni"| TableCaptureLR$nom_vern =="TADTEN"]<- "Tadarida teniotis"
-TableCaptureLR$nom_vern[TableCaptureLR$nom_vern == "RAS"| TableCaptureLR$nom_vern =="Chiropteres : Aucune observation"| TableCaptureLR$nom_vern =="Aucune espèce"| TableCaptureLR$nom_vern =="Aucune chauve-souris"]<- "BREDOUILLE"
+TableCaptureLR$nom_vern[TableCaptureLR$nom_vern == "RAS"| TableCaptureLR$nom_vern =="Chiropteres : Aucune observation"| TableCaptureLR$nom_vern =="Aucune espÃ¨ce"| TableCaptureLR$nom_vern =="Aucune chauve-souris"]<- "BREDOUILLE"
 TableCaptureLR$nom_vern[TableCaptureLR$nom_vern == "NYCIND"]<- "Nyctalus sp"
+TableCaptureLR$nom_vern[TableCaptureLR$nom_vern == "MinioptÃ¨re de Schreibers"]<- "Miniopterus schreibersii"
 
 names(TableCaptureLR)[names(TableCaptureLR) == "nom_vern"] = "TAXON"
 names(TableCaptureLR)[names(TableCaptureLR) == "date_obs"] = "DATE"
 names(TableCaptureLR)[names(TableCaptureLR) == "code_insee"] = "INSEE_COM"
-names(TableCaptureLR)[names(TableCaptureLR) == "gîte"] = "SpGite"
-TableCaptureLR$SpGite = ifelse(TableCaptureLR$SpGite == '"gîte non précisé" ou "hors gîte"', 0, 1)
+names(TableCaptureLR)[names(TableCaptureLR) == "gÃ®te"] = "SpGite"
+TableCaptureLR$SpGite = ifelse(TableCaptureLR$SpGite == '"gÃ®te non prÃ©cisÃ©" ou "hors gÃ®te"', 0, 1)
 
 TableCaptureLR$DATE = format(TableCaptureLR$DATE, "%d/%m/%Y")
 
@@ -70,6 +78,13 @@ Match1 = match(TableCapture$TAXON, SpeciesList$'Scientific name')
 TableCapture$Sp = SpeciesList$Esp[Match1]
 
 TableCapture=TableCapture[!is.na(TableCapture$Sp),]
+
+# Remove all Pipistrellus pipistrellus and pygmaeus before 2005 (both considered as same species before 2005)
+TableCapture = TableCapture %>% 
+  filter( !(as.Date(DATE, format = "%d/%m/%Y") < as.Date("2005-01-01") & 
+              TAXON=="Pipistrellus pipistrellus") &
+            !(as.Date(DATE, format = "%d/%m/%Y") < as.Date("2005-01-01") & 
+                TAXON=="Pipistrellus pygmaeus"))
 
 # Load delimitation of municipal corporations (recent version)
 Limit_municipal_new = read_sf(args[4]) %>% 

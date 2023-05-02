@@ -1,0 +1,15 @@
+Yves :
+Comme convenu, ci-joint le script extr_PF_ActNuit qui comptabilise les contacts par nuit et d'autres métriques
+Je t'ai mis aussi le script qui intervient **en amont** "extr_PF_DataLP" qui ajoute les variables de localisation et de participation
+et un exemple de script qui encapsule les 2 pour les faire tourner par paquets de données : 
+SpNuitTot_50 (paramétré pour ne garder que les scores supérieures à 0.5)
+
+J'ai aussi à ta dispo si besoin un workflow plus fourni avec en aval des scripts qui mesure les durées de séquences 
+(pour flaguer les micros defectueux), les durées d'enregistrements (pour flaguer les nuits partielles), 
+les types de données (pour flaguer les participations où la classification contextuelle a planté), la phénologie horaire, etc
+
+Charlotte :
+j'ai pas de répertoire Raw mais j'ai un répertoire export
+mes fichiers s'appellent export_... et pas DataLP_PF_export_... --> normal car pas utilisé le script "extr_PF_DataLP"
+Il me semble que ce dernier script est inutile car je peux rajouter ces infos plus tard (prévu dans SpNuit_ModActPt).
+--> en fait si c'est important (je sais plus pourquoi)

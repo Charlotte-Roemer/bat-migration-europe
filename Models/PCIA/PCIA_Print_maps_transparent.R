@@ -6,13 +6,15 @@ library(tidyverse)
 library(viridis)
 
 ThresholdSort="weighted"
-DateModel="20220627" #date of prediction (exactly same writing as the folder name)
+DateModel="_2023-03-17" #date of prediction (exactly same writing as the folder name)
 
 arg <- "/mnt/beegfs/croemer/SIG/REGION.shp" # french contour
 arg[2] <- "/mnt/beegfs/croemer/VigieChiro/SpeciesList.csv" # species list
 arg[3] <- paste0("/mnt/beegfs/croemer/VigieChiro/PredictionsModels/", ThresholdSort, DateModel) # repertory with outputs from Predict_act
-arg[4] <- paste0("/mnt/beegfs/croemer/VigieChiro/Maps/", ThresholdSort, DateModel, "/") #repertory for png
+arg[4] <- paste0("/mnt/beegfs/croemer/VigieChiro/Maps/", ThresholdSort, DateModel) #repertory for png
 #arg[5] <- "C:/Users/croemer01/Documents/GT Eolien/Donnees_parcs/SIG/Mats_service_TOTAL.shp" # wind turbines in France
+
+dir.create(arg[4])
 
 # Load french contour
 france <- read_sf(arg[1])

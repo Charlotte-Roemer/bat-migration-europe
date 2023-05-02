@@ -8,11 +8,11 @@ library(tidyverse)
 # List arguments #####
 args="Pipnat"
 args[2]="/mnt/beegfs/ybas/GI/GI_SysGrid__3e+05"
-args[3]="2022-08-15" #date of prediction (exactly same writing as the folder name)
+args[3]="2022-08-16" #date of prediction (exactly same writing as the folder name)
 args[5]="weighted"
-args[6]="Boruta" # Use models from variable selection? yes : "Boruta", no : ""
+args[6]="_Boruta" # Use models from variable selection? yes : "_Boruta", no : ""
 args[11]=40 #number of coordinates projections (must be a division of 360)
-ModRF_file=paste0("/mnt/beegfs/croemer/VigieChiro/ModPred/VC", args[5], "PG_", args[3], "/ModRFActLog_",args[1],"VC",args[5],"_PG.learner")
+ModRF_file=paste0("/mnt/beegfs/croemer/VigieChiro/ModPred/VC", args[5], "PG_", args[3], "/ModRFActLog_",args[1],"VC",args[5],"_PG", args[6], ".learner")
 Output=paste0("/mnt/beegfs/croemer/VigieChiro/PredictionsModels/", args[5], "_", args[3], "/") #folder to copy models to 
 
 dir.create(Output)

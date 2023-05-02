@@ -7,11 +7,16 @@ library(viridis)
 #library(gganimate)
 library(beepr)
 
+ThresholdSort="0_VC0V_Yves" #0_VC0V_Yves
+DateModel="_2023-03" #date of prediction (exactly same writing as the folder name)
+
 arg <- "C:/Users/croemer01/Documents/SIG/Delimitations_pays/REGION.shp" # french contour
 arg[2] <- "C:/Users/croemer01/Documents/Post-Doc/Vigie-Chiro et Indicateurs_ecologiques/Classificateur/SpeciesListComplete.csv" # species list
-arg[3] <- "C:/Users/croemer01/Documents/Donnees vigie-chiro/PredictionsModels/weighted_2022-08-11" # repertory with outputs from Predict_act
-arg[4] <- "C:/Users/croemer01/Documents/Donnees vigie-chiro/Maps/weighted_2022-08-11" #repertory for png
+arg[3] <- paste0("C:/Users/croemer01/Documents/Donnees vigie-chiro/PredictionsModels/", ThresholdSort, DateModel) # repertory with outputs from Predict_act
+arg[4] <- paste0("C:/Users/croemer01/Documents/Donnees vigie-chiro/Maps/", ThresholdSort, DateModel) #repertory for png
 #arg[5] <- "C:/Users/croemer01/Documents/GT Eolien/Donnees_parcs/SIG/Mats_service_TOTAL.shp" # wind turbines in France
+
+dir.create(arg[4])
 
 # Load french contour
 france <- read_sf(arg[1])
@@ -29,7 +34,7 @@ sp_list <- fread(arg[2])
 # Load predictions
 list_file <- list.files(arg[3],recursive=FALSE,pattern="*.csv$")
 ls2 = paste(paste0(arg[3],"/",list_file, sep=""))
-ld <- lapply(ls2, function(x) read_csv(x))
+ld <- lapply(ls2, function(x) read_csv(x, show_col_types = F))
 ld <- mapply(cbind, ld, "Species"=tstrsplit(list_file,split="_")[[1]], SIMPLIFY=F) # add column with species name
 ld <- mapply(cbind, ld, "Month"=tstrsplit(tstrsplit(list_file,split="_")[[3]], split="-")[[2]], SIMPLIFY=F) # add column with month name
 ld <- mapply(cbind, ld, "Day"=tstrsplit(tstrsplit(list_file,split="_")[[3]], split="-")[[3]], SIMPLIFY=F) # add column with day name
@@ -37,7 +42,7 @@ ld <- mapply(cbind, ld, "Day"=tstrsplit(tstrsplit(list_file,split="_")[[3]], spl
 file_bind <- do.call("rbind",ld)
 
 # Back-transform predictions
-file_bind$pred=10^(file_bind$pred)
+file_bind$pred=10^(file_bind$pred)-1
 
 for (i in 1:length(names(table(file_bind$Species)))) { # For each species
   
@@ -54,8 +59,9 @@ for (i in 1:length(names(table(file_bind$Species)))) { # For each species
                                            "December")[n])
   
   # Scale color gradient based on periods of high activity and prediction > 0.1
-  PourMaxScale=subset(dataa, (as.numeric(dataa$Month)<11 & as.numeric(dataa$Month)>8)) 
-  MaxScale=quantile(subset(PourMaxScale$pred,PourMaxScale$pred>0.1),0.98)
+  PourMaxScale=subset(dataa, (as.numeric(dataa$Month)<11 & as.numeric(dataa$Month)>6)) 
+  MaxScale=quantile(subset(PourMaxScale$pred,PourMaxScale$pred>2),0.98)
+  #MaxScale=max(PourMaxScale$pred)
   if(is.na(MaxScale)){MaxScale=0.1}
   ScaleLimit=c(0, MaxScale)
   
@@ -78,6 +84,7 @@ for (i in 1:length(names(table(file_bind$Species)))) { # For each species
         
         scale_color_viridis(name = "Number of \nbat passes/night",
                             limits = ScaleLimit, 
+                            #trans = "pseudo_log",
                             oob = scales::squish,
                             option = "A") +
         

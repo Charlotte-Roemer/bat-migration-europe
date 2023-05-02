@@ -7,31 +7,45 @@ library(sf)
 library(gdistance)
 library(geosphere)
 
-Name = "weighted_2022-08-15"
-Season = "Spring"
-Date = "0315"
+Name = "0_VC0V_Yves_2023-03" # "weighted_2022-08-15"
+Date = "0501"
 Sp = "Pipnat"
 THETA = 0.1
 
+print(Date)
 START=Sys.time()
 
+List_Species = c("Barbar", "Eptnil", "Eptser", "Hypsav", "Minsch", "Myoalc", "Myobec", 
+                 "Myocap", "Myodau", "Myodas", "Myoema", "Myomys", "Myonat", "Nyclas",
+                 "Nyclei", "Nycnoc", "Pipkuh", "Pippip", "Pipnat", "Pippyg", "Pleaur", 
+                 "Pleaus", "Plemac", "Rhieur", "Rhifer", "Rhihip", "Tadten", "Vesmur")
+
+for (i in 1:length(List_Species))
+  
+  
+  if(TRUE %in% str_detect(Date, pattern = c("03", "04", "05", "06"))){
+    Season = "Spring"
+  }else{
+    Season = "Autumn"
+  }
+
 # Read Origin
-Origin = fread(paste0("/mnt/beegfs/croemer/VigieChiro/Connectivity_maps/",
-                    Sp, "_", Date, "_", "Origin", ".csv"))
-# Origin = fread(paste0("C:/Users/croemer01/Documents/Donnees vigie-chiro/Connectivity_maps/",
-#                       Sp, "_", Date, "_", "Origin", ".csv"))
+# Origin = fread(paste0("/mnt/beegfs/croemer/VigieChiro/Connectivity_maps/",
+#                       Name, "/", Sp, "_", Date, "_", "Origin", ".csv"))
+Origin = fread(paste0("C:/Users/croemer01/Documents/Donnees vigie-chiro/Connectivity_maps/",
+                      Name, "/", Sp, "_", Date, "_", "Origin", ".csv"))
 
 # Read Goal
-Goal = fread(paste0("/mnt/beegfs/croemer/VigieChiro/Connectivity_maps/",
-                   Sp, "_", Date, "_", "Goal", ".csv"))
-# Goal = fread(paste0("C:/Users/croemer01/Documents/Donnees vigie-chiro/Connectivity_maps/",
-#                     Sp, "_", Date, "_", "Goal", ".csv"))
+# Goal = fread(paste0("/mnt/beegfs/croemer/VigieChiro/Connectivity_maps/",
+#                     Name, "/", Sp, "_", Date, "_", "Goal", ".csv"))
+Goal = fread(paste0("C:/Users/croemer01/Documents/Donnees vigie-chiro/Connectivity_maps/",
+                    Name, "/", Sp, "_", Date, "_", "Goal", ".csv"))
 
 # Read Transition
-land_cond_sub = readRDS(paste0("/mnt/beegfs/croemer/VigieChiro/Connectivity_maps/",
-                    Sp, "_", Season, "_", "Transition", ".rds"))
-# land_cond_sub = readRDS(paste0("C:/Users/croemer01/Documents/Donnees vigie-chiro/Connectivity_maps/",
-#                                Sp, "_", Season, "_", "Transition", ".rds"))
+# land_cond_sub = readRDS(paste0("/mnt/beegfs/croemer/VigieChiro/Connectivity_maps/",
+#                                Name, "/", Sp, "_", Season, "_", "Transition", ".rds"))
+land_cond_sub = readRDS(paste0("C:/Users/croemer01/Documents/Donnees vigie-chiro/Connectivity_maps/",
+                               Name, "/", Sp, "_", Season, "_", "Transition", ".rds"))
 
 ID_Origin <- sample(Origin$id, size=1) #draw random points (random pairs)
 ID_Goal <- sample(Goal$id, size=1)
@@ -104,34 +118,38 @@ ggplot(dataT, aes(x, y)) +
   scale_x_continuous(breaks = seq(0, 359, by = 10), limits = c(-10, 350)) +
   coord_polar(start = -pi/18, clip = "off")
 
-orientation2 = ifelse(orientation<180, orientation, -orientation+360)
 Tolerance = 6.6
 
 if(Distance>525){ #hypothesis : not more than 35 km/night
   stop("Distance > 525 km")
 }
 
-if(Season == "Spring" & orientation2>90){ # if wrong direction then stop unless short distance
-  AngleDist = log10(orientation2^2*Distance+1)
-  if(AngleDist>Tolerance){
-    stop("AngleDist > Tolerance")
-  }
+# Change angle so that in Spring, North-East = 0 and in Autumn, South-West = 0
+if(Season == "Spring"){
+  orientation2 = ifelse(orientation>45, orientation-45, -orientation-45+360)
 }
-if(Season == "Autumn" & orientation2<90){ # if wrong direction then stop unless short distance
-  AngleDist = log10((180-orientation2)^2*Distance+1)
+if(Season == "Autumn"){
+  orientation2 = ifelse(orientation>225, orientation-225, -orientation-225+360)
+}
+orientation3 = ifelse(orientation2<180, orientation2, -orientation2+360)
+
+if(orientation3>90){ # if wrong direction then stop unless short distance
+  AngleDist = log10(orientation2^2*Distance+1)
   if(AngleDist>Tolerance){
     stop("AngleDist > Tolerance")
   }
 }
 
 # Calculate paths
-pasT <- passage(land_cond_sub, pt_Origin, pt_Goal, theta=THETA)
-
-# Save result
-UniqueName = paste0(format(Sys.Date(), "%Y%m%d"), "_", format(Sys.time(), "%H%M%S"), "_", round(runif(1, 1, 100000000000)))
-raster::writeRaster(pasT, paste0("/mnt/beegfs/croemer/VigieChiro/Connectivity_maps/", 
-                                 Name, "_", Sp, "_", Date, "_", THETA, "_", UniqueName, ".tif"), overwrite=TRUE)
-
+for (k in 1:1000){
+  print(k)
+  pasT <- passage(land_cond_sub, pt_Origin, pt_Goal, theta=THETA)
+  
+  # Save result
+  UniqueName = paste0(format(Sys.Date(), "%Y%m%d"), "_", format(Sys.time(), "%H%M%S"), "_", round(runif(1, 1, 100000000000)))
+  raster::writeRaster(pasT, paste0("/mnt/beegfs/croemer/VigieChiro/Connectivity_maps/", 
+                                   Name, "_", Sp, "_", Date, "_", THETA, "_", UniqueName, ".tif"), overwrite=TRUE)
+}
 
 END=Sys.time()
 TIMEDIFF=END-START

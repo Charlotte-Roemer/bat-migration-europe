@@ -11,9 +11,9 @@ library(glmmTMB)
 
 # WARNING THIS WORKS FOR SPECIES GROUPS OF MAX 3 SPECIES #
 
-Date_Mod = "2022-08-11"
+Date_Mod = "2023-03-16"
 ModRF_directory="C:/Users/croemer01/Documents/Donnees vigie-chiro/ModPred/"
-SpeciesGroupName = "Pip35" # Serotules, Pip35 or Pip50
+SpeciesGroupName = "Control" # Serotules, Pip35, Pip50 or Control
 
 if(SpeciesGroupName == "Serotules") {
   SpeciesGroup = c("Eptser", "Nyclei", "Nycnoc")
@@ -21,10 +21,13 @@ if(SpeciesGroupName == "Serotules") {
   SpeciesGroup = c("Pipkuh", "Pipnat")
 }else if(SpeciesGroupName == "Pip50"){
   SpeciesGroup = c("Pippip", "Pippyg", "Minsch")
+}else if(SpeciesGroupName == "Control"){
+  SpeciesGroup = c("Barbar", "Rhifer")
 }
 
 #### Load capture data ####
-TableCapture_CoordSIG = fread("C:/Users/croemer01/Documents/Post-Doc/CACCHI/Data/Capture_CoordSIG_800m.csv")
+#TableCapture_CoordSIG = fread("C:/Users/croemer01/Documents/Post-Doc/CACCHI/Data/Capture_CoordSIG_800m.csv")
+TableCapture_CoordSIG = fread("C:/Users/croemer01/Documents/Donnees vigie-chiro/Capture_CoordSIG.csv")
 TableCapture = fread("C:/Users/croemer01/Documents/Post-Doc/CACCHI/Data/Capture.csv")
 
 
@@ -62,7 +65,7 @@ if(length(SpeciesGroup)>2){
 #### Load models for all species of the group #### 
 patternSp = paste(SpeciesGroup, collapse = "|")
 
-ThresholdSort_possible = c("weighted", "0", "50", "90")
+ThresholdSort_possible = c("weighted")
 
 START=Sys.time()
 TableAcousticPred_Commune_Day_FINAL = data.frame()
@@ -75,7 +78,7 @@ for (m in 1:length(ThresholdSort_possible)){
   Directory_Model = paste0(ModRF_directory, "VC", ThresholdSort, "PG_",Date_Mod)
   
   ModRF.list <- list.files(Directory_Model, full.names = TRUE, pattern='*.learner', recursive = TRUE)
-  ModRF.list.group = subset(ModRF.list, grepl(patternSp, ModRF.list))
+  ModRF.list.group = subset(ModRF.list, grepl(patternSp, ModRF.list) & grepl ("Boruta", ModRF.list))
   
   load(ModRF.list.group[1]) # Load random forest models
   ModRF_1 = ModRF
@@ -248,11 +251,11 @@ for (n in 1:length(ThresholdSort_possible)){
 
 colnames(Table_AIC_FINAL) = c(SpeciesGroup, "Type")
 
-Table_NRMSE = rbind(NRMSE_weighted, NRMSE_0, NRMSE_50, NRMSE_90)
+Table_NRMSE = rbind(NRMSE_weighted)
 colnames(Table_NRMSE) = c(SpeciesGroup, "Type")
 
-fwrite(Table_NRMSE,paste0(ModRF_directory, SpeciesGroupName, "_NRMSE_capture_acoustic_800m.csv"))
-fwrite(Table_AIC_FINAL,paste0(ModRF_directory, SpeciesGroupName, "_AIC_capture_acoustic_800m.csv"))
+fwrite(Table_NRMSE,paste0(ModRF_directory, SpeciesGroupName, "_NRMSE_capture_acoustic_Boruta.csv"))
+fwrite(Table_AIC_FINAL,paste0(ModRF_directory, SpeciesGroupName, "_AIC_capture_acoustic_Boruta.csv"))
 
 END=Sys.time()
 END-START
