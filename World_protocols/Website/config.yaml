@@ -1,0 +1,41 @@
+title: World maps of bat acoustic protocols
+baseURL: https://hba.sid.one/
+languageCode: en-us
+theme: hugo-blog-awesome
+defaultContentLanguage: en-gb
+googleAnalytics: ''
+enableEmoji: yes
+markup:
+  goldmark:
+    renderer:
+      unsafe: yes
+  highlight:
+    noClasses: no
+menu:
+  main:
+    - name: Home
+      pageRef: /
+      url: /
+      weight: 10
+    - name: About
+      pageRef: about
+      url: /about/
+      weight: 30
+params:
+  author:
+    avatar: avatar.jpg
+    description: This website displays the existing protocols from citizen science programs for the monitoring of bats using acoustic recordings.
+    intro: World maps of bat acoustic protocols
+    name: Charlotte Roemer
+  defaultColor: dark
+  description: Minimal Hugo blog theme with light and dark mode support
+  mainSections: posts
+  sitename: Awesome hugo blog
+  socialIcons:
+    - name: github
+      url: https://github.com/Charlotte-Roemer/bat-migration-europe/tree/main/World_protocols
+  toc: no
+tableOfContents:
+  endLevel: 4
+  ordered: no
+  startLevel: 2
