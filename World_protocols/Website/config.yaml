@@ -23,8 +23,8 @@ menu:
       weight: 30
 params:
   author:
-    avatar: avatar.jpg
-    description: This website displays the existing protocols from citizen science programs for the monitoring of bats using acoustic recordings.
+    avatar: "avatar.jpg"
+    description: This website displays the existing protocols from citizen science programs for the monitoring of bats using acoustic recordings
     intro: World maps of bat acoustic protocols
     name: Charlotte Roemer
   defaultColor: dark
@@ -35,7 +35,7 @@ params:
     - name: github
       url: https://github.com/Charlotte-Roemer/bat-migration-europe/tree/main/World_protocols
   toc: no
-tableOfContents:
+tableOfContents: 
   endLevel: 4
   ordered: no
   startLevel: 2

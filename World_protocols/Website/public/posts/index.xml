@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on World maps of bat acoustic protocols</title>
+    <link>https://hba.sid.one/posts/</link>
+    <description>Recent content in Posts on World maps of bat acoustic protocols</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 03 May 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://hba.sid.one/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Passive acoustic surveys</title>
+      <link>https://hba.sid.one/posts/passive/</link>
+      <pubDate>Wed, 03 May 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://hba.sid.one/posts/passive/</guid>
+      <description>The countries or regions in black have a citizen science program for the study of bats which use passive acoustic surveys. Click on them to find the link to access their website.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,68 @@
+# Site settings
+baseurl = "/"
+languageCode = "en-us"
+defaultContentLanguage = "en"
+#title = "Bat Migration Europe"
+theme = "hugo-blog-awesome"
+themesDir = "../.."
+enableGitInfo = true
+disableKinds = ["RSS", "taxonomy", "taxonomyTerm"]
+
+RelativeURLs = true
+CanonifyURLs = true
+
+# Google Analytics tracking
+googleAnalytics = ""
+
+[outputs]
+  home = ["HTML", "JSON"]
+
+[frontmatter]
+date = ["date", "lastmod"]
+lastmod = ["lastmod", ":git", "date"]
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+     unsafe = true
+
+[params]
+  #name = "Bat migration Europe"
+  #description = "European collaborative project to study bat migration"
+  debug = true
+  unsafeEvents = true # Default is false. Enables ?event=type format of url events.
+
+  [params.style]
+    #background = "secondary"
+
+  # Theme customizations
+  # Assets relative to 'static/'
+  [params.custom]
+    favicon = "logo2.ico"
+    favicon_ico_sizes = "16x16 32x32"
+    favicon_png = "logo2.png"
+    favicon_svg = "logo2.svg"
+
+  [params.recent_posts]
+    enable = true
+    title = "From our blog"
+    subtitle = "Pellen
+    
+  # Piwik tracking
+  [params.analytics.piwik]
+    #url = "https://use.example.net"
+    #id = ""
+    #domain = "*" # Track subdomains via "*.example.com"
+    # Optional hash for integrity check
+    #hash = "sha512-RfeD0pacGTqy9m7U6PgehQfS4cc7SIt+e+P+H5e848kEvB/RW84CUGO3O4O3LNbxjevym6KPUZ8muPsMrI8WIw=="
+
+  # Optional, global disable switch for fontawesome related files
+  # For custom fontawesome js files use the custom.js method
+
+
+# main/prepend/postpend menus are displayed in nav fragment.
+# footer/footer_social menus are displayed in footer fragment.
+# copyright_footer menus are displayed in copyright fragment
+# Keep an eye out for updates. These will be moved out to make navbar more
+# configurable.
+

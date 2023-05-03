@@ -4,8 +4,10 @@
 <div class="author">
     {{ with $image }}
     {{ $image := $image.Fill "100x100 webp" }}
-    <img class="author-avatar" src="{{ $image.RelPermalink }}" alt="{{ $avatar_img_alt }}" width="{{ .Width }}"
-        height="{{ .Height }}" />
+    <figure>
+    <img src="img/header.jpg" width="500x" alt = "ForestWander" />
+    <figcaption>© ForestWander</figcaption>
+    </figure>
     {{ end }}
     <h2 class="author-name">{{ .Site.Params.author.intro }}</h2>
     <p class="author-bio">{{ .Site.Params.author.description }}</p>
