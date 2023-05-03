@@ -73,7 +73,7 @@ TEST = world_sf %>%
 #   geom_sf(data=diffPoly)
 
 bins <- c(0, 0.5, 1)
-pal <- colorBin("YlOrRd", domain = GIS_world$value, bins = bins)
+pal <- colorBin("Blues", domain = GIS_world$value, bins = bins)
 
 my.map <-
   leaflet( options = leafletOptions( minZoom = 2 ) ) %>%
