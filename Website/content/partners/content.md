@@ -29,10 +29,15 @@ Partners from the following institutions support the project morally. If you wis
 
 [<img src="/images/OEKOTEAM.png" alt="" width="200px" style="padding-right:50px"/>](https://www.oekoteam.at/de/) OEKOTEAM
 
+<br>
+</br>
+
 ### Basque Country
 ---
 [<img src="/images/University_Basque_Country.png" alt="" width="200px" style="padding-right:50px"/>](https://www.ehu.eus/en/en-home) The University of the Basque Country
 
+<br>
+</br>
 
 ### Belgium
 ---
@@ -54,18 +59,15 @@ Partners from the following institutions support the project morally. If you wis
 ---
 
 [<img src="/images/Logo_Masaryk_University.svg.png" alt="" width="200px" style="padding-right:100px"/>](https://www.muni.cz/en) The Masaryk University
-<br>
-</br>
 
 [<img src="/images/CBCS_logo.gif" alt="" width="200px" style="padding-right:100px"/>](https://ceson.org/index_en.php) CBCS - The Czech Bat Conservation Society
-<br>
-</br>
 
 [<img src="/images/Charles_University.png" alt="" width="200px" style="padding-right:50px"/>](https://www.studycharles.cz/) The Charles University
-<br>
-</br>
 
 [<img src="/images/University_Hradec_Kralove.png" alt="" width="200px" style="padding-right:50px"/>](https://www.uhk.cz/en) The University of Hradec Kralove
+
+<br>
+</br>
 
 ### Denmark
 ---
@@ -80,8 +82,6 @@ Partners from the following institutions support the project morally. If you wis
 [<img src="/images/sfepm_couleur_vf.jpg" alt="" width="200px" style="padding-right:50px"/>](https://www.sfepm.org/) The French society for the study and protection of mammals
 
 [<img src="/images/CPIE_logo.png" alt="" width="200px" style="padding-right:100px"/>](https://cpie-mayenne.org/) The Permanent Centre of Initiatives for the Environment in Mayenne - Bas-Maine
-<br>
-</br>
 
 [<img src="/images/Tour_du_Valat.png" alt="" width="200px" style="padding-right:100px"/>](https://tourduvalat.org/) The Tour du Valat
 <br>
@@ -95,14 +95,13 @@ Partners from the following institutions support the project morally. If you wis
 [<img src="/images/NACHTaktiv_logo.png" alt="" width="200px" style="padding-right:100px"/>](http://www.nacht-aktiv.net/) NACHTaktiv - Biologists for Bat Research
 
 [<img src="/images/BVF_logo.png" alt="" width="200px" style="padding-right:50px"/>](https://bvfledermaus.de/) The Federal Association for Bat Expertise in Germany (BVF)
-<br>
-</br>
 
 [<img src="/images/IFT.jpg" alt="" width="200px" style="padding-right:50px"/>](https://fmthuer.de/) The Interest group for bat protection and research in Thuringia (IFT e.V.)
-<br>
-</br>
 
 [<img src="/images/NP_Eifel.png" alt="" width="200px" style="padding-right:100px"/>](https://www.nationalpark-eifel.de/) Eifel National Park
+
+<br>
+</br>
 
 ### Greece
 ---
@@ -160,8 +159,6 @@ Partners from the following institutions support the project morally. If you wis
 ---
 
 [<img src="/images/BatLifeSweden_logo_rgb.png" alt="" width="200px" style="padding-right:50px"/>](https://batlife-sweden.se/) BatLife Sweden
-<br>
-</br>
 
 [<img src="/images/BergslagenVC.png" alt="" width="200px" style="padding-right:50px"/>](https://bergslagensvisitorcenter.se/) The Bergslagen Visitor Center
 <br>
