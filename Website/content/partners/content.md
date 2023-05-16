@@ -61,7 +61,7 @@ Partners from the following institutions support the project morally. If you wis
 <br>
 </br>
 
-[<img src="/images/Charles_University.png" alt="" width="200px" style="padding-right:100px"/>](https://www.studycharles.cz/) The Charles University
+[<img src="/images/Charles_University.png" alt="" width="200px" style="padding-right:50px"/>](https://www.studycharles.cz/) The Charles University
 <br>
 </br>
 
@@ -107,7 +107,7 @@ Partners from the following institutions support the project morally. If you wis
 ### Greece
 ---
 
-[<img src="/images/NHMC_UC.jpg" alt="" width="200px" style="padding-right:50px"/>](https://www.nhmc.uoc.gr/en) The Natural History Museum of Crete at the University of Crete
+[<img src="/images/NHMC_UC.jpg" alt="" width="200px" style="padding-right:0px"/>](https://www.nhmc.uoc.gr/en) The Natural History Museum of Crete at the University of Crete
 <br>
 </br>
 
