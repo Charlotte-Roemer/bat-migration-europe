@@ -50,6 +50,7 @@ Partners from the following institutions support the project morally. If you wis
 [<img src="/images/Natagora_plecotus_logo.jpg" alt="" width="200px" style="padding-right:100px"/>](https://www.natagora.be/) Natagora
 
 [<img src="/images/logo-ecofirst.gif" alt="" width="200px" style="padding-right:50px"/>](https://www.ecofirst.eu/) ECOFIRST
+
 <br>
 </br>
 
@@ -73,6 +74,7 @@ Partners from the following institutions support the project morally. If you wis
 ---
 
 [<img src="/images/aarhus_university_logo.png" alt="" width="200px" style="padding-right:50px"/>](https://ecos.au.dk/en/) The Aarhus University
+
 <br>
 </br>
 
@@ -84,6 +86,7 @@ Partners from the following institutions support the project morally. If you wis
 [<img src="/images/CPIE_logo.png" alt="" width="200px" style="padding-right:100px"/>](https://cpie-mayenne.org/) The Permanent Centre of Initiatives for the Environment in Mayenne - Bas-Maine
 
 [<img src="/images/Tour_du_Valat.png" alt="" width="200px" style="padding-right:100px"/>](https://tourduvalat.org/) The Tour du Valat
+
 <br>
 </br>
 
@@ -107,6 +110,7 @@ Partners from the following institutions support the project morally. If you wis
 ---
 
 [<img src="/images/NHMC_UC.jpg" alt="" width="200px" style="padding-right:0px"/>](https://www.nhmc.uoc.gr/en) The Natural History Museum of Crete at the University of Crete
+
 <br>
 </br>
 
@@ -114,6 +118,7 @@ Partners from the following institutions support the project morally. If you wis
 ---
 
 [<img src="/images/logo_CER.png" alt="" width="200px" style="padding-right:50px"/>](https://ecolres.hu/en/node/2) The Center for Ecological Research
+
 <br>
 </br>
 
@@ -122,6 +127,7 @@ Partners from the following institutions support the project morally. If you wis
 
 [<img src="/images/DBIOS_logo.gif" alt="" width="100px"/>](https://dbiosen.campusnet.unito.it/do/home.pl)
 [<img src="/images/University_Turin_logo.svg" alt="" width="200px" style="padding-right:50px"/>](https://dbiosen.campusnet.unito.it/do/home.pl) The Department of Life Sciences and Systems Biology of the University of Turin
+
 <br>
 </br>
 
@@ -129,6 +135,7 @@ Partners from the following institutions support the project morally. If you wis
 ---
 
 [<img src="/images/LEA_CITAB_logo.jpg" alt="" width="250" style="padding-right:0px"/>](https://www.citab.utad.pt/) The laboratory of Applied Ecology of the Centre for the Research and Technology of Agro-Environment of the University of Trás-os-Montes e Alto Douro 
+
 <br>
 </br>
 
@@ -138,6 +145,7 @@ Partners from the following institutions support the project morally. If you wis
 [<img src="/images/wilderness_research_conservation_logo.jpg" alt="" width="200" style="padding-right:100px"/>](http://wildernessrc.ro/) Wilderness Research and Conservation
 
 [<img src="/images/CBRC_logo.jpg" alt="" width="200" style="padding-right:50px"/>](https://lilieci.ro/en/) The Centre for Bat Research and Conservation
+
 <br>
 </br>
 
@@ -145,6 +153,7 @@ Partners from the following institutions support the project morally. If you wis
 ---
 
 [<img src="/images/logo_University_of_Belgrade.png" alt="" width="200px" style="padding-right:100px"/>](https://www.bg.ac.rs/en/) The institute for biological research of the university of Belgrade
+
 <br>
 </br>
 
@@ -152,6 +161,7 @@ Partners from the following institutions support the project morally. If you wis
 ---
 
 [<img src="/images/Granollers_logo.jpg" alt="" width="200px" style="padding-right:100px"/>](http://www.museugranollersciencies.org/en/quiropters/) The bat monitoring program of the Granollers Museum of Natural Sciences
+
 <br>
 </br>
 
@@ -161,6 +171,7 @@ Partners from the following institutions support the project morally. If you wis
 [<img src="/images/BatLifeSweden_logo_rgb.png" alt="" width="200px" style="padding-right:50px"/>](https://batlife-sweden.se/) BatLife Sweden
 
 [<img src="/images/BergslagenVC.png" alt="" width="200px" style="padding-right:50px"/>](https://bergslagensvisitorcenter.se/) The Bergslagen Visitor Center
+
 <br>
 </br>
 
@@ -168,10 +179,9 @@ Partners from the following institutions support the project morally. If you wis
 ---
 
 [<img src="/images/CCO_logo.png" alt="" width="200px" style="padding-right:100px"/>](https://chauves-souris-geneve.ch/) Swiss Bat Centre – Geneva
-<br>
-</br>
 
 [<img src="/images/SWILD.jpg" alt="" width="200px" style="padding-right:100px"/>](http://www.swild.ch/) SWILD 
+
 <br>
 </br>
 
