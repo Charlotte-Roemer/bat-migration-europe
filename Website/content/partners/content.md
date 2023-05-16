@@ -15,20 +15,24 @@ weight: 100
 This project is possible thanks to the collaboration of research institutes, museums, universities, NGOs, gouvernmental agencies and authorities, natural reserves, consultants and other essential people.
 
 
-Partners from the following institutions support the project morally (and financially if stated). If you wish to appear in this list, please contact us!
+Partners from the following institutions support the project morally. If you wish to appear in this list, please contact us!
     </td>
         <td>
-        <img src="/images/Nyctalus leisleri_Valéry Uldry_small.jpg" alt="" width="580px" style="padding-right:50px" align="left"/>
-    <p style='text-align: center'>© Valéry Uldry</p>
+        <img src="/images/Baptiste_Chadeyron_DSC_6165Nycnoc.jpg" alt="" width="580px" style="padding-right:50px" align="left"/>
+    <p style='text-align: center'></p>
     </td>
     </tr>
 </table>
 
-### Europe
+### Austria
 ---
-[<img src="/images/EUROBATS_logo.png" alt="" width="200px" style="padding-right:100px"/>](https://www.eurobats.org) EUROBATS (funder) 
-<br>
-</br>
+
+[<img src="/images/OEKOTEAM.png" alt="" width="200px" style="padding-right:50px"/>](https://www.oekoteam.at/de/) OEKOTEAM
+
+### Basque Country
+---
+[<img src="/images/University_Basque_Country.png" alt="" width="200px" style="padding-right:50px"/>](https://www.ehu.eus/en/en-home) The University of the Basque Country
+
 
 ### Belgium
 ---
@@ -44,6 +48,8 @@ Partners from the following institutions support the project morally (and financ
 <br>
 </br>
 
+[<img src="/images/RL_de_Voorkempenpng.png" alt="" width="200px" style="padding-right:50px"/>](https://www.rldevoorkempen.be/) Regionaal Landschap de Voorkempen
+
 ### Czech Republic
 ---
 
@@ -55,6 +61,12 @@ Partners from the following institutions support the project morally (and financ
 <br>
 </br>
 
+[<img src="/images/Charles_University.png" alt="" width="200px" style="padding-right:100px"/>](https://www.studycharles.cz/) The Charles University
+<br>
+</br>
+
+[<img src="/images/University_Hradec_Kralove.png" alt="" width="200px" style="padding-right:50px"/>](https://www.uhk.cz/en) The University of Hradec Kralove
+
 ### Denmark
 ---
 
@@ -65,13 +77,13 @@ Partners from the following institutions support the project morally (and financ
 ### France
 ---
 
-[<img src="/images/OFB_logo.png" alt="" width="200px" style="padding-right:50px"/>](https://ofb.gouv.fr/) The French Office for Biodiversity (funder)
-
-[<img src="/images/Naturalia_logo.png" alt="" width="200px" style="padding-right:50px"/>](https://www.naturalia-environnement.fr/) Naturalia Environnement (funder)
-
 [<img src="/images/sfepm_couleur_vf.jpg" alt="" width="200px" style="padding-right:50px"/>](https://www.sfepm.org/) The French society for the study and protection of mammals
 
 [<img src="/images/CPIE_logo.png" alt="" width="200px" style="padding-right:100px"/>](https://cpie-mayenne.org/) The Permanent Centre of Initiatives for the Environment in Mayenne - Bas-Maine
+<br>
+</br>
+
+[<img src="/images/Tour_du_Valat.png" alt="" width="200px" style="padding-right:100px"/>](https://tourduvalat.org/) The Tour du Valat
 <br>
 </br>
 
@@ -83,6 +95,19 @@ Partners from the following institutions support the project morally (and financ
 [<img src="/images/NACHTaktiv_logo.png" alt="" width="200px" style="padding-right:100px"/>](http://www.nacht-aktiv.net/) NACHTaktiv - Biologists for Bat Research
 
 [<img src="/images/BVF_logo.png" alt="" width="200px" style="padding-right:50px"/>](https://bvfledermaus.de/) The Federal Association for Bat Expertise in Germany (BVF)
+<br>
+</br>
+
+[<img src="/images/IFT.jpg" alt="" width="200px" style="padding-right:50px"/>](https://fmthuer.de/) The Interest group for bat protection and research in Thuringia (IFT e.V.)
+<br>
+</br>
+
+[<img src="/images/NP_Eifel.png" alt="" width="200px" style="padding-right:100px"/>](https://www.nationalpark-eifel.de/) Eifel National Park
+
+### Greece
+---
+
+[<img src="/images/NHMC_UC.jpg" alt="" width="200px" style="padding-right:50px"/>](https://www.nhmc.uoc.gr/en) The Natural History Museum of Crete at the University of Crete
 <br>
 </br>
 
@@ -138,10 +163,18 @@ Partners from the following institutions support the project morally (and financ
 <br>
 </br>
 
+[<img src="/images/BergslagenVC.png" alt="" width="200px" style="padding-right:50px"/>](https://bergslagensvisitorcenter.se/) The Bergslagen Visitor Center
+<br>
+</br>
+
 ### Switzerland
 ---
 
 [<img src="/images/CCO_logo.png" alt="" width="200px" style="padding-right:100px"/>](https://chauves-souris-geneve.ch/) Swiss Bat Centre – Geneva
+<br>
+</br>
+
+[<img src="/images/SWILD.jpg" alt="" width="200px" style="padding-right:100px"/>](http://www.swild.ch/) SWILD 
 <br>
 </br>
 

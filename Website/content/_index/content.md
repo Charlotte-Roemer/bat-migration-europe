@@ -9,6 +9,14 @@ weight: 100
 
 ___
 
+_16 of May 2023_  
+
+The map of participations was updated [here]({{< ref "/project/participations" >}} "Participations"). 
+
+The publication of the method progresses: 16 people are collaborating on the draft.
+
+___
+
 _7 of September 2022_  
 
 We now received data recorded on more than 8000 sites from 18 partners in total. More than 30 partners are still preparing their data and sending them.
