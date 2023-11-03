@@ -10,20 +10,16 @@
 #SBATCH --ntasks-per-node=1
 
 # Nom du job
-#SBATCH --job-name=TrainRF_SDM
+#SBATCH --job-name=Connectivite
 
 # Quantité de RAM par noeud
 #SBATCH --mem=20G
 
 # Quel type de machine demander (type_1 ou type_2)
-#SBATCH --partition=type_2
+#SBATCH --partition=type_1
  
-#SBATCH --time=10-12:00:00
 
 # Chargement des modules : paquets de packages. si un package manque il faut demander à pcia
-module load userspace/tr17.10
-module load biology
-
 module load userspace/tr17.10
 module load biology
 module load gcc/7.2.0        
@@ -37,4 +33,5 @@ module load udunits
 module load R/4.0.5    
 
 # Commandes et scripte à lancer
-Rscript PCIA_SpNuit_ModActPt_parallel_for_BMRE_variable_selection.R
+Rscript PCIA_Connectivity_model_V7unique_petitspas_allSp.R
+

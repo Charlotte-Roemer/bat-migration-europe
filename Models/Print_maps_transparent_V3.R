@@ -7,11 +7,13 @@ library(viridis)
 #library(gganimate)
 library(beepr)
 
-ThresholdSort="0_VC0V_Yves" #0_VC0V_Yves
-DateModel="_2023-03" #date of prediction (exactly same writing as the folder name)
+#ThresholdSort="0_VC0V_Yves"
+ThresholdSort="weighted"
+#DateModel="_2023-03" #date of prediction (exactly same writing as the folder name)
+DateModel="_2023-10-24_40mtryBoruta" #date of prediction (exactly same writing as the folder name)
 
 arg <- "C:/Users/croemer01/Documents/SIG/Delimitations_pays/REGION.shp" # french contour
-arg[2] <- "C:/Users/croemer01/Documents/Post-Doc/Vigie-Chiro et Indicateurs_ecologiques/Classificateur/SpeciesListComplete.csv" # species list
+arg[2] <- "C:/Users/croemer01/Documents/Post-Doc/Classificateur/SpeciesListComplete.csv" # species list
 arg[3] <- paste0("C:/Users/croemer01/Documents/Donnees vigie-chiro/PredictionsModels/", ThresholdSort, DateModel) # repertory with outputs from Predict_act
 arg[4] <- paste0("C:/Users/croemer01/Documents/Donnees vigie-chiro/Maps/", ThresholdSort, DateModel) #repertory for png
 #arg[5] <- "C:/Users/croemer01/Documents/GT Eolien/Donnees_parcs/SIG/Mats_service_TOTAL.shp" # wind turbines in France
@@ -23,7 +25,8 @@ france <- read_sf(arg[1])
 france_f <- france %>% 
   filter(as.numeric(INSEE_REG)>6) %>% # use only metropolitan France regions
   dplyr::summarise() %>%  # merge all region polygons to obtain the contour of France
-  st_transform(4326) # reproject to WGS84
+  #st_transform(4326) # reproject to WGS84
+  st_transform(2154)
 
 # Load french wind turbines
 #WT_FR <- read_sf(arg[5])
@@ -41,8 +44,12 @@ ld <- mapply(cbind, ld, "Day"=tstrsplit(tstrsplit(list_file,split="_")[[3]], spl
 
 file_bind <- do.call("rbind",ld)
 
+file_bind2 = subset(file_bind,file_bind$Species=="Nyclei")
+Sample=file_bind[sample(c(1:nrow(file_bind2)),100000),]
+boxplot(Sample$pred~Sample$Month)
+
 # Back-transform predictions
-file_bind$pred=10^(file_bind$pred)-1
+file_bind$pred=(10^(file_bind$pred))-1
 
 for (i in 1:length(names(table(file_bind$Species)))) { # For each species
   
@@ -50,15 +57,10 @@ for (i in 1:length(names(table(file_bind$Species)))) { # For each species
   
   print(Sp)
   
-  dataa = subset(file_bind, file_bind$Species == Sp & file_bind$Month <11 & file_bind$Month > 2)
+  dataa = subset(file_bind, file_bind$Species == Sp & as.numeric(file_bind$Month) <11 & as.numeric(file_bind$Month) > 2)
   
   # Plot info
   full_latin_name <- subset(sp_list, sp_list$Nesp==Sp)$'Scientific name'
-  my.month.name <- Vectorize(function(n) c(
-    #"January","February",
-    "March","April", "May","June","July","August", "September", "October", 
-    #"November","December"
-    )[n])
   
   # Scale color gradient based on periods of high activity and prediction > 0.1
   PourMaxScale=subset(dataa, (as.numeric(dataa$Month)<11 & as.numeric(dataa$Month)>6)) 
@@ -74,24 +76,43 @@ for (i in 1:length(names(table(file_bind$Species)))) { # For each species
       # png(filename=NamePlot1, width = 3000, height = 2500, res=300)
       
       dataa_Month=subset(dataa, dataa$Month==names(table(dataa$Month))[j] & dataa$Day==names(table(dataa$Day))[k])
-      Month_name <- my.month.name(as.numeric(names(table(dataa$Month))[j]))
+      Month_name <- month.name[as.numeric(names(table(dataa$Month))[j])]
       Day_name <- as.numeric(names(table(dataa$Day)[k]))
+      
+      dataa_Month2 = dataa_Month %>% 
+        st_as_sf(coords=c("X", "Y"), crs=4326) %>% 
+        st_transform(2154) %>% 
+        mutate(x = st_coordinates(.)[,1],
+               y = st_coordinates(.)[,2]) %>% 
+        as.data.frame()
+      
+      dataa_Month3=data.frame(x=dataa_Month2$x, y=dataa_Month2$y, z=dataa_Month2$pred)
+      dataa_Month4 = rasterFromXYZ(dataa_Month3, res = 500)
+      
+      dataa_Month5 = dataa_Month4 %>% 
+        as.data.frame(xy=T)
+      dataa_Month5$z[dataa_Month5$z==0] <- NA
       
       print(Month_name)
       
       plot1 <- ggplot()+
         
-        geom_point(data = dataa_Month, 
-                   mapping = aes(x=Group.1, y=Group.2, col=pred), size=0.1) +
+        # geom_point(data = dataa_Month, 
+        #            mapping = aes(x=X, y=Y, col=pred, size=0.00000001) 
+        #            ) +
         
-        scale_color_viridis(name = "Number of \nbat passes/night",
+        geom_raster(data = dataa_Month5, aes(x = x, y = y, fill = z)) +
+        
+        scale_fill_viridis(name = "Number of \nbat passes/night",
                             limits = ScaleLimit, 
                             #trans = "pseudo_log",
                             oob = scales::squish,
-                            option = "A") +
+                            option = "A",
+                            na.value = alpha("lightgrey", 0)) +
         
-        geom_sf(data= france_f, size=0.1, fill=alpha("lightgrey", 0), colour = "black") +
-        
+        geom_sf(data= france_f, size=0.1, 
+                fill=alpha("lightgrey", 0), colour = "black") +
+
         guides(scale = "none") +
         
         theme(panel.grid.major = element_blank(),

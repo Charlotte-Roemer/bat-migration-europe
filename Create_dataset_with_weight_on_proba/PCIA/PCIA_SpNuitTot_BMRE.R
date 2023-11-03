@@ -10,7 +10,7 @@ if (What == 1){
   EPA="/trinity/home/croemer/scripts_VC/PCIA_extr_PF_ActNuit_BMRE.R" # Script counting number of bat passes/night
 }
 
-PP=c("55","56","57","58","59","5a","5b","5c","5d","5e","5f","60","61") # Groups of participations (prefix)
+PP=c("55","56","57","58","59","5a","5b","5c","5d","5e","5f","60","61","62","63","64") # Groups of participations (prefix)
 
 #PP=c("5b")
 

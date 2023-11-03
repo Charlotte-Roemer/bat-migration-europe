@@ -11,7 +11,7 @@ args="all" #all species = "all", one species = e.g. "Pippip"
 args[2]="C:/Users/croemer01/Documents/Donnees vigie-chiro/GI_SysGrid__3e+05"
 args[3]="2023-03-16" #date of prediction (exactly same writing as the folder name)
 args[5]="weighted"
-args[6]="_Boruta" # Use models from variable selection? yes : "_Boruta", no : ""
+args[6]="" # Use models from variable selection? yes : "_Boruta", no : ""
 args[11]=40 #number of coordinates projections (must be a division of 360)
 ModRF_Dir = "C:/Users/croemer01/Documents/Donnees vigie-chiro/ModPred/"
 ModRF_file=paste0(ModRF_Dir, "VC", args[5], "PG_", args[3], "/ModRFActLog_",args[1],"VC",args[5],"_PG", args[6], ".learner")
@@ -21,7 +21,7 @@ dir.create(Output)
 
 if(args[1]=="all"|args[1]=="All"){
   ModRF_list = list.files(paste0(ModRF_Dir, "VCweightedPG_", args[3]), 
-                          pattern=paste0("*", args[6], ".learner"))
+                          pattern=paste0("*", args[6], ".learner"), full.names = T)
 }else{
   ModRF_list = list(ModRF_file)
 }

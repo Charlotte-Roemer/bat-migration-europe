@@ -90,7 +90,12 @@ Clump_function <- function(Raster_sub)
 }
 
 # Load files
-list_file <- list.files(Directory,recursive=FALSE,pattern="*.csv$")
+if(Species == "All"){
+  list_file <- list.files(Directory,recursive=FALSE,pattern="*.csv$")
+}else{
+  list_file <- list.files(Directory,recursive=FALSE,pattern=paste0("^", Species, ".*.csv$"))
+}
+
 ls2 = paste(paste0(Directory,"/",list_file, sep=""))
 ld <- lapply(ls2, function(x) read_csv(x))
 ld <- mapply(cbind, ld, "Species"=tstrsplit(list_file,split="_")[[1]], SIMPLIFY=F) # add column with species name
@@ -102,7 +107,7 @@ file_bind <- do.call("rbind",ld)
 list_species = names(table(sapply(ld, function(x) names(table(x$Species)))))
 
 # Back-transform predictions
-file_bind$pred=10^(file_bind$pred)
+file_bind$pred=10^(file_bind$pred)-1
 
 if(Species != "All"){
   list_species = Species
@@ -236,7 +241,7 @@ for(i in 1:length(list_species)){
     Raster_TRANSITION_wtNA_SPRING = Raster_TRANSITION_SPRING
     Raster_TRANSITION_wtNA_SPRING[is.na(Raster_TRANSITION_wtNA_SPRING)] <- 0 # replace NA by 0 because passage function does not like NA
     land_cost_sub_SPRING <- crop(Raster_TRANSITION_wtNA_SPRING, Raster_extent)
-    #land_cost_sub_SPRING <- geoCorrection(land_cost_sub_SPRING, type = "r") # IMPORTANT POINT : DO WE NEED IT ?
+    land_cost_sub_SPRING <- geoCorrection(land_cost_sub_SPRING, type = "c")
     land_cost_sub_SPRING <- transition(land_cost_sub_SPRING, transitionFunction = mean, 8)
     saveRDS(land_cost_sub_SPRING, paste0("C:/Users/croemer01/Documents/Donnees vigie-chiro/Connectivity_maps/", 
                                          Name, "/", Sp, "_", "Spring_", "Transition", ".rds"))
@@ -245,7 +250,7 @@ for(i in 1:length(list_species)){
     Raster_TRANSITION_wtNA_AUTUMN = Raster_TRANSITION_AUTUMN
     Raster_TRANSITION_wtNA_AUTUMN[is.na(Raster_TRANSITION_wtNA_AUTUMN)] <- 0 # replace NA by 0 because passage function does not like NA
     land_cost_sub_AUTUMN <- crop(Raster_TRANSITION_wtNA_AUTUMN, Raster_extent)
-    #land_cost_sub_AUTUMN <- geoCorrection(land_cost_sub_AUTUMN, type = "r") # IMPORTANT POINT : DO WE NEED IT ?
+    land_cost_sub_AUTUMN <- geoCorrection(land_cost_sub_AUTUMN, type = "c")
     land_cost_sub_AUTUMN <- transition(land_cost_sub_AUTUMN, transitionFunction = mean, 8)
     saveRDS(land_cost_sub_AUTUMN, paste0("C:/Users/croemer01/Documents/Donnees vigie-chiro/Connectivity_maps/", 
                                          Name, "/", Sp, "_", "Autumn_", "Transition", ".rds"))

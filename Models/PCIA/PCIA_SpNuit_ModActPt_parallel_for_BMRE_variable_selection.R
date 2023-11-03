@@ -22,22 +22,28 @@ library(Boruta)
 op <- options(digits.secs=3)
 
 # Sorting threshold (weighted, 0, 50, 90)
-ThresholdSort = "weighted"
+ThresholdSort = "90"
 
 # choose species
-Sp = "all" # choose a species (e.g. "Pippip") or "all"
+Sp = "paper" # choose a species (e.g. "Pippip") or "all" or "paper"
 GroupSel="bat"
 #GroupSel=NA #sorting according to the group column of Specieslist (args[3), NA if no sorting
+ListPaper = c("Nyclei", "Nycnoc", "Eptser", "Pipkuh", "Pipnat", 
+              "Pippip", "Minsch", "Pippyg", "Barbar", "Rhifer")
 
 # Do variable selection?
 DoBoruta = F
+
+# Duplicated dates
+DuplicateDate = F
 
 if(ThresholdSort != "weighted"){
   args=paste0("/mnt/beegfs/ybas/VigieChiro/Raw/SpNuit2_DI_", ThresholdSort, "_DataLP_PF_exportTot") #bat activity table. file without csv extension
 }else{
   args=paste0("/mnt/beegfs/croemer/VigieChiro/Raw/SpNuit2_DI_", ThresholdSort, "_DataLP_PF_exportTot") #bat activity table. file without csv extension 
 }
-args[2]="/mnt/beegfs/ybas/GI/GI_sites_localites" #table with spatial variables (habitat and climate)
+#args[2]="/mnt/beegfs/ybas/GI/GI_sites_localites" #table with spatial variables (habitat and climate)
+args[2]="/mnt/beegfs/croemer/VigieChiro/GI_FR_sites_localites" #table with spatial variables (habitat and climate)
 args[3]="/mnt/beegfs/croemer/VigieChiro/SpeciesList.csv" # Species list to build models
 #args[3]=NA #NA if we want all species without filter (but specify args[5)
 #args[4]="Esp" #name of taxa column (useless if args[3] is specified)
@@ -46,14 +52,15 @@ args[4]="espece" #name of taxa column (useless if args[3] is specified)
 #args[5]="STRTUR" #name of taxa group (useless if args[3] is specified)
 DataLoc=F #TRUE if coordinates are in table args[1
 #CoordinateNames=c("longitude_wgs84","latitude_wgs84") 
-CoordinateNames=c("longitude","latitude") #name of columns with coordinates in the locality table (sites_localites.txt)
+#CoordinateNames=c("longitude","latitude") #name of columns with coordinates in the locality table (sites_localites.txt)
+CoordinateNames=c("X","Y") #name of columns with coordinates in the locality table (sites_localites.txt)
 args[6]="participation" #name of sampling event
 args[7]="localite" #name of locality in CoordSIG (if DataLoc=T)
 args[8]="participation" #name of participation (=sampling event)
 args[9]=T #if date (=day-of-year) is provided or not
 #args[10]="abondance"
 args[10]="nb_contacts_nd" #the name of the parameter which gives the metric to predict
-args[11]=40 #number of coordinates projections (must be a division of 360)
+args[11]=40 #number of coordinates projections (must be a division of 360) : 20, 24, 30, 40, 45, 60, 72, 90
 #args[12]="C:/Users/croemer01/Documents/Donnees vigie-chiro/Tab_sounds_all_50ScriptLea.csv" # table with bat activity (bat passes)
 MinData=1
 DM=T #option if you also want a model to predict minimum time lapse between bat passes and sunset and sunrise
@@ -68,11 +75,17 @@ Fsl="/mnt/beegfs/ybas/VigieChiro/sites_localites.txt"	#the file with the data ab
 ProbThreshold=0 # a filter on the score_max parameter (takes all data superior or equal to this value)
 #min_dist = 200 # geographical distance in meters to create a custom test and train dataset
 #reps_process = 1 # how many trials should be made to sort train/test dataset (see buffer_CR.r)
+YearEffect=T
+MTRY = "npred" # "default" or "npred" ( = length(Predictors_Train) )
+DateLimit = as.Date("2021-12-31") # to use only data before this date; default = Sys.Date() 
 
 dir.create(Output)
 
 # Reads bat activity data
-DataCPL3=fread(paste0(args[1],".csv"))
+DataCPL2  = fread(paste0(args[1],".csv"))
+DataCPL2$Nuit=as.Date(DataCPL2$Nuit)
+DataCPL3= DataCPL2 %>% 
+  dplyr::filter(Nuit < DateLimit)
 
 if (!("score_max" %in% names(DataCPL3))){
   DataCPL3 = DataCPL3 %>% 
@@ -84,6 +97,11 @@ if (!("score_max" %in% names(DataCPL3))){
 #Reads the spatial variables
 Sys.time()
 CoordSIG=fread(paste0(args[2],".csv"))
+print((CoordSIG)[1,])
+CoordSIG = CoordSIG %>% 
+  rename(longitude = CoordinateNames[1], latitude = CoordinateNames[2])
+print((CoordSIG)[1,])
+
 CoordSIG = CoordSIG %>%
   rename_all(~str_replace_all(.,"\\.x",""))
 CoordSIG <- CoordSIG %>% select(-contains(".y"))
@@ -191,6 +209,8 @@ if(!is.na(GroupSel))
 
 if(Sp == "all" | Sp == "All"){
   ListSp = ListSp
+}else if(Sp == "paper") {
+  ListSp = ListPaper
 }else{
   ListSp = Sp
 }
@@ -258,6 +278,26 @@ for (i in 1:length(ListSp))
     DataSaison$SpSDate=0
     print("L225")
   }
+  
+  # # If duplicated date wanted
+  # if(DuplicateDate){
+  #   sel_columns <- c(rep('SpCDate', 100), rep('SpSDate', 100))
+  #   DataSaison = as.data.frame(DataSaison)
+  #   DataSaison = cbind(DataSaison, 
+  #                setNames(DataSaison[sel_columns], paste0(sel_columns, c(1:100))))
+  #   print(dim(DataSaison))
+  #   print(DataSaison[1,])
+  # }
+  
+  # If year effect must be accounted for
+  if(exists("YearEffect"))
+  {
+    if(YearEffect)
+    {
+      DataSaison$SpYear=year(Date1)
+    }
+  }
+  
   #add several rotated coordinates
   CoordDS=as.matrix(cbind(DataSaison$longitude,DataSaison$latitude)) #WGS84
   print("L230")
@@ -273,9 +313,32 @@ for (i in 1:length(ListSp))
   # Add material as predictor
   DataSaison$SpRecorder = DataSaison$detecteur_enregistreur_type
   
+  # Identify predictors
   testPred=(substr(names(DataSaison),1,2)=="Sp")
   Prednames=names(DataSaison)[testPred]
+  print(Prednames)
+  
+  # Do not use species distribution area yet
+  ListSpeciesDistribution = c("SpBarbar",  "SpMinpal", "SpMinsch", "SpMyoalc", "SpMyobec", "SpMyobly", 
+                              "SpMyobra", "SpMyocap", "SpMyodas", "SpMyodau", "SpMyodav", "SpMyoema", 
+                              "SpMyoesc", "SpMyomyo", "SpMyomys", "SpMyonat", "SpMyopun", "SpMyosch", 
+                              "SpNyclas", "SpNyclei", "SpNycnoc", "SpPiphan", "SpPipkuh", "SpPipnat", 
+                              "SpPippip", "SpPippyg", "SpPleaur", "SpPleaus", "SpPlechr", "SpPlekol", 
+                              "SpPlemac", "SpPlesar", "SpRhibla", "SpRhieur", "SpRhifer", "SpRhihip", 
+                              "SpRhimeh", "SpTadten", "SpVesmur", "SpEptana", "SpEptbot", "SpEptisa",
+                              "SpEptnil", "SpEptser", "SpHypsav")
+  Prednames = Prednames[which(!Prednames %in% ListSpeciesDistribution )]
+  
+  # If duplicated date wanted
+  if(DuplicateDate){
+    sel_columns <- c(rep('SpCDate', 99), rep('SpSDate', 99))
+    Prednames = c(Prednames, sel_columns)
+    print(Prednames)
+  }
+  
   Predictors=DataSaison[,..Prednames]
+  
+  print(Predictors[1,])
   
   DataSaison = DataSaison %>%  
     drop_na(all_of(Prednames)) %>% #deletes rows without predictor (outdated GI table)
@@ -289,13 +352,13 @@ for (i in 1:length(ListSp))
   # {
   # DataSPos=subset(DataSaison,DataSaison$nb_contacts>0)
   
-  print("L246")
-  if(effectYear) # if you want to calculate population trends
-  {
-    DataYear=subset(DataSaison,select=varYear)
-    names(DataYear)="year"
-    DataSaison$SpYear=DataYear$year
-  }
+  # print("L246")
+  # if(effectYear) # if you want to calculate population trends
+  # {
+  #   DataYear=subset(DataSaison,select=varYear)
+  #   names(DataYear)="year"
+  #   DataSaison$SpYear=DataYear$year
+  # }
   
   testNA=apply(Predictors,MARGIN=2,FUN=function(x) sum(is.na(x)))
   print(summary(testNA))
@@ -316,7 +379,7 @@ for (i in 1:length(ListSp))
     Dataset.Boruta = data.frame("ActLog10" = DataSaison$ActLog10, DataSaison[,..Prednames])
     ModRFTemp.Boruta <- Boruta(formula("ActLog10 ~."), # Build model
                                data = Dataset.Boruta,
-                               doTrace = 2, ntree = 500)
+                               doTrace = 2, ntree = 500, maxRuns = 100)
     formula.Boruta = try(getConfirmedFormula(ModRFTemp.Boruta)) # retrieve formula of selected variables if at least one was selected (error if none is selected)
     if(inherits(formula.Boruta, "try-error")){
       formula.Boruta = formula("ActLog10 ~.")
@@ -324,6 +387,7 @@ for (i in 1:length(ListSp))
       fwrite(errorlog, paste0(Output,"/", ListSp[i], "_",Tag,"_log.txt"))
     }else{
       formula.Boruta = getConfirmedFormula(ModRFTemp.Boruta)
+      names.Boruta = getSelectedAttributes(ModRFTemp.Boruta)
     }
   }else{
     formula.Boruta = formula("ActLog10 ~.")
@@ -397,12 +461,22 @@ for (i in 1:length(ListSp))
     # 
     #### Random forest model for number of bat passes per night ####
     Dataset.RF = data.frame("ActLog10" = DataSaison_Train$ActLog10, Predictors_Train)
-    ModRFTemp<-randomForest(formula.Boruta, data=Dataset.RF, 
-                            replace=F, 
-                            ntree = 1, 
-                            strata=paste(DataSaison_Train$id_site,DataSaison_Train$localite), 
-                            importance=F)
     
+    if(MTRY=="default"){
+      ModRFTemp<-randomForest(formula.Boruta, data=Dataset.RF, 
+                              replace=F, 
+                              ntree = 1, 
+                              strata=paste(DataSaison_Train$id_site,DataSaison_Train$localite), 
+                              importance=F)
+    }else{
+      ModRFTemp<-randomForest(formula.Boruta, data=Dataset.RF, 
+                              replace=F, 
+                              ntree = 1, 
+                              mtry=length(Predictors_Train),
+                              strata=paste(DataSaison_Train$id_site,DataSaison_Train$localite), 
+                              importance=F)
+    }
+
     sim<-predict(ModRFTemp,newdata=Predictors_Test, type="response")
     obs<-DataSaison_Test$ActLog10
     Test_info=DataSaison_Test %>% 
@@ -457,16 +531,16 @@ for (i in 1:length(ListSp))
   }
   
   fwrite(Dataframe_simobs_Final,paste0(Output,"/ModRFActLog_", ListSp[i], "_",
-                                       Tag,"_evaluation", suffix, ".csv"))
+                                       Tag,"_", DateLimit, "_evaluation", suffix, ".csv"))
   
   fwrite(as.data.frame(NRMSE),paste0(Output,"/ModRFActLog_", ListSp[i], "_",
-                                     Tag,"_NRMSE", suffix, ".csv"))
+                                     Tag,"_", DateLimit,"_NRMSE", suffix, ".csv"))
   
   # varImpPlot(ModRF,cex=0.5,main=paste("Act",ListSp[i]))
   # print(paste("PseudoR2: ",ModRF$rsq[ModRF$ntree]))
   # 
   save (ModRF,file=paste0(Output,"/ModRFActLog_", ListSp[i]
-                          ,Tag
+                          ,Tag,"_", DateLimit
                           ,"_PG", suffix, ".learner"))
   
   
@@ -480,3 +554,8 @@ END-START
 
 print(ListSp[i])
 print(ThresholdSort)
+if(DoBoruta){
+  print(paste0("Variables before selection = ", length(Predictors)))
+  print(paste0("Variables after selection = ", length(names.Boruta)))
+}
+

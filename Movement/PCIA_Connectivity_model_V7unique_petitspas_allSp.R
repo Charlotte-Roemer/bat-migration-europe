@@ -16,13 +16,19 @@ N_paths = 500 # number of pathways to calculate for each time gap
 START=Sys.time()
 
 List_Species = c(
-  #"Barbar", "Eptnil", "Eptser", "Hypsav", "Minsch", "Myoalc", "Myobec", 
-  "Myocap", "Myodau", "Myodas", "Myoema", "Myomys", "Myonat", "Nyclas",
-  "Nyclei", "Nycnoc", "Pipkuh", "Pippip", "Pipnat", "Pippyg", "Pleaur", 
-  "Pleaus", "Plemac", "Rhieur", "Rhifer", "Rhihip", "Tadten", "Vesmur")
-ListTimes = c("0315", "0401", "0415", "0501", "0515", "0601", 
+  #"Barbar", "Eptnil", 
+  "Eptser" 
+  #,"Hypsav", "Minsch", "Myoalc", "Myobec", 
+  #"Myocap", "Myodau", "Myodas", 
+  # "Myoema", "Myomys", "Myonat", "Nyclas",
+  # "Nyclei", "Nycnoc", "Pipkuh", "Pippip", "Pipnat", "Pippyg", "Pleaur", 
+  # "Pleaus", "Plemac", "Rhieur", "Rhifer", "Rhihip", "Tadten", "Vesmur", "MyoGT"
+  )
+ListTimes = c(
+  #"0315", "0401", "0415", "0501", "0515", "0601", 
               #"0615", "0701", "0715",
-              "0801", "0815", "0901", "0915", "1001")
+              #"0801", "0815", 
+              "0901", "0915", "1001")
 
 dir.create(paste0("/mnt/beegfs/croemer/VigieChiro/Connectivity_maps/", Name))
 

@@ -253,6 +253,7 @@ for(i in 1:length(csv.df.list)){ # Check that time columns are not empty
 #### Check coordinates ####
 for (i in 1:length(csv.df.list)){ # Y coordinates should be greater values than X
   Affiliation = csv.df.list[[i]]$Affiliation[1]
+  print(paste0("i = ", i, " ", Affiliation))
   if(csv.df.list[[i]]$Y[1]<csv.df.list[[i]]$X[1]){
     print(paste0("warning: X coord greater than Y coord for ", Affiliation))
     print("thus I am inversing the column values")
@@ -263,7 +264,7 @@ for (i in 1:length(csv.df.list)){ # Y coordinates should be greater values than 
   }
   for(j in 1:nrow(csv.df.list[[i]]))
     if(is.na(csv.df.list[[i]]$Y[j])){
-      print(j)
+      print(paste0("Line ", j))
       print(paste0("warning: missing Y coordinates for ", Affiliation))
     }
   if(is.na(csv.df.list[[i]]$X[j])){
@@ -292,6 +293,7 @@ Europe_sf = st_as_sf( # Make spatial object
 
 for (i in 1:length(csv.df.list)){ # Make spatial object
   Affiliation = csv.df.list[[i]]$Affiliation[1]
+  print(paste0("i = ", i, " ", Affiliation))
   Site_localite_sf = st_as_sf( 
     csv.df.list[[i]], coords = c("X", "Y"), crs=4326, remove=FALSE) %>% 
     st_transform("+proj=merc +lon_0=0 +k=1 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs")
@@ -323,7 +325,9 @@ for (i in 1:length(csv.df.list2)){
   
   Break= FALSE
   for(j in 1:nrow(csv.df.list2[[i]])){
-    if(csv.df.list2[[i]]$TypeStudy[j] > 6 & Break == FALSE) { 
+    if(is.na(csv.df.list2[[i]]$TypeStudy[j])){
+      print(paste0("warning: TypeStudy missing"))
+    }else if(csv.df.list2[[i]]$TypeStudy[j] > 6 & Break == FALSE) { 
       print(paste0("warning: wrong TypeStudy "))
       Break = TRUE
     }
