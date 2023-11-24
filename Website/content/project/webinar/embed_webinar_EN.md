@@ -2,7 +2,7 @@
 background: secondary
 date: "2021-08-16"
 fragment: embed
-media: '<iframe src="https://video.ploud.fr/videos/embed/c11ae6fc-b79e-4527-8887-ecf3555737d0" width="100%" height="800" border="0"></iframe>'
+media: '<iframe title="Lauching webinar of the project Bat migration routes in Europe" width="560" height="315" src="https://tube.spdns.org/videos/embed/cea47c52-dcba-4356-bbf0-f8c971c1ef4d" frameborder="0" allowfullscreen="" sandbox="allow-same-origin allow-scripts allow-popups"></iframe>'
 title: Recording of the international webinar
 weight: 100
 ---
