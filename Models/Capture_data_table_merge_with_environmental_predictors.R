@@ -1,4 +1,6 @@
 
+# We need to merge the capture data with environmental data
+# so that we can make acoustic predictions for each ***date*** of capture !
 
 library(tidyverse)
 library(data.table)
@@ -10,7 +12,7 @@ args = "C:/Users/croemer01/Documents/Post-Doc/CACCHI/Data/Datacapture_MNHN_trait
 args[2]=40 #number of coordinates projections (must be a division of 360)
 args[3] = "C:/Users/croemer01/Documents/Donnees vigie-chiro/SpeciesList.csv" #Species list
 args[4] = "C:/Users/croemer01/Documents/SIG/SIG_Post-Doc_MNHN/ADMIN-EXPRESS-COG/ADMIN-EXPRESS-COG_2-1__SHP__FRA_2020-03-25/ADMIN-EXPRESS-COG/1_DONNEES_LIVRAISON_2020-03-25/ADE-COG_2-1_SHP_WGS84G_FRA/COMMUNE.shp" # Municipal corporations
-args[5]="C:/Users/croemer01/Documents/Donnees vigie-chiro/SysGrid__849906_environ_800m_de_cote" # grid on which predictions are made
+args[5]="C:/Users/croemer01/Documents/Donnees vigie-chiro/GI_FR_sites_localites.csv" # grid on which predictions are made
 args[6] = "C:/Users/croemer01/Documents/Post-Doc/CACCHI/Data/GCLR_EXPORT_2022_n20_Data_biometrie_LR_MNHN_29_07_2022__202207291639.csv" # file with capture data from LR
 args[7] = "C:/Users/croemer01/Documents/SIG/SIG_Post-Doc_MNHN/ADMIN-EXPRESS-COG/ADMIN-EXPRESS-COG_2-1__SHP__FRA_2020-03-25/ADMIN-EXPRESS-COG/1_DONNEES_LIVRAISON_2020-03-25/ADE-COG_2-1_SHP_WGS84G_FRA/ENTITE_RATTACHEE.shp" # Municipal corporations (old)
 
@@ -80,11 +82,14 @@ TableCapture$Sp = SpeciesList$Esp[Match1]
 TableCapture=TableCapture[!is.na(TableCapture$Sp),]
 
 # Remove all Pipistrellus pipistrellus and pygmaeus before 2005 (both considered as same species before 2005)
+# Remove also Miniopterus schreibersii before 2005 to avoid calculating false proportions in this group
 TableCapture = TableCapture %>% 
   filter( !(as.Date(DATE, format = "%d/%m/%Y") < as.Date("2005-01-01") & 
               TAXON=="Pipistrellus pipistrellus") &
             !(as.Date(DATE, format = "%d/%m/%Y") < as.Date("2005-01-01") & 
-                TAXON=="Pipistrellus pygmaeus"))
+                TAXON=="Pipistrellus pygmaeus") &
+            !(as.Date(DATE, format = "%d/%m/%Y") < as.Date("2005-01-01") & 
+                TAXON=="Miniopterus schreibersii"))
 
 # Load delimitation of municipal corporations (recent version)
 Limit_municipal_new = read_sf(args[4]) %>% 
@@ -110,12 +115,12 @@ TEST = TableCapture %>%
 unique(TEST$COMMUNE)
 
 #### Load grid where predictions can be made #### 
-CoordSIG=fread(paste0(args[5],".csv")) # Load table containing habitat variables
+CoordSIG=fread(paste0(args[5])) # Load environmental variables
 CoordSIG=subset(CoordSIG,is.na(CoordSIG$SpAltiS)==F)
 CoordSIG=subset(CoordSIG,is.na(CoordSIG$SpBioC1)==F)
 
 # Add rotated coordinates
-CoordDS=as.matrix(cbind(CoordSIG$Group.1,CoordSIG$Group.2))
+CoordDS=as.matrix(cbind(CoordSIG$X,CoordSIG$Y))
 for (a in 0:(as.numeric(args[2])-1))
 {
   Coordi=Rotation(CoordDS,angle=pi*a/as.numeric(args[2]))
@@ -129,7 +134,7 @@ CoordSIG$SpRecorder = "SM2BAT+"
 # Make spatial feature
 CoordSIG_sf = CoordSIG %>% 
   as.data.frame() %>% 
-  st_as_sf(coords = c("Group.1", "Group.2"), crs=4326, remove=FALSE) 
+  st_as_sf(coords = c("X", "Y"), crs=4326, remove=FALSE) 
 
 # Crop points that are within the municipal corporations
 CoordSIG_capture = st_filter (CoordSIG_sf, Limit_municipal_capture)
@@ -168,8 +173,11 @@ SpFDate=yday(TableCapture_CoordSIG$DATE)
 TableCapture_CoordSIG$SpCDate=cos(SpFDate/365*2*pi) # to create a circular variable for date
 TableCapture_CoordSIG$SpSDate=sin(SpFDate/365*2*pi) # to create a circular variable for date
 
+# Add Year
+TableCapture_CoordSIG$SpYear = lubridate::year(as.Date(TableCapture_CoordSIG$DATE, format = "%d/%m/%Y"))
+
 # Save capture data + environmental variables
-fwrite(TableCapture_CoordSIG,paste0("C:/Users/croemer01/Documents/Post-Doc/CACCHI/Data/Capture_CoordSIG_800m.csv"))
+fwrite(TableCapture_CoordSIG,paste0("C:/Users/croemer01/Documents/Donnees vigie-chiro/Capture_CoordSIG_500m.csv"))
 
 # Save capture data
 fwrite(TableCapture,paste0("C:/Users/croemer01/Documents/Post-Doc/CACCHI/Data/Capture.csv"))

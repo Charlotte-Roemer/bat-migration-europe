@@ -2,24 +2,30 @@ library(data.table)
 library(randomForest)
 library(spdep)
 library(tidyverse)
+# library(itertools)
+# library(foreach)
 
 # Predicts activity using the random forest models
 
+Threshold = "0" #weighted or 0 or 50 or 90
+DateModel = "2023-11-17" #date of modelling (exactly same writing as the folder name)
+
 # List arguments #####
-args="Nyclei" #all species = "all", one species = e.g. "Pippip"
+args="Rhifer" #all species = "all", one species = e.g. "Pippip"
 #args[2]="/mnt/beegfs/ybas/GI/GI_SysGrid__3e+05"
 args[2]="/mnt/beegfs/croemer/VigieChiro/SIG/SysGrid_500m_de_cote_FULL"
 #args[2]="/mnt/beegfs/croemer/VigieChiro/SIG/GI_FR_SysGrid_500m_de_cote_part1"
 #args[3]="2023-03-23" #date of modelling (exactly same writing as the folder name)
-args[3]="2023-10-24_40mtryBoruta" #date of modelling (exactly same writing as the folder name)
-args[4]="VCweightedPG_" # "VCweightedPG_"
-args[5]="weighted" #weighted or 0 or 50 or 90
-args[6]="_Boruta" # Use models from variable selection? yes : "_Boruta", no : ""
-args[11]=90 #number of coordinates projections (must be a division of 360) : 20, 24, 30, 40, 90
+args[3]=DateModel 
+args[4]=paste0("VC", Threshold, "PG_")
+args[5]=Threshold 
+args[6]="" # Use models from variable selection? yes : "_Boruta", no : ""
+args[11]=40 #number of coordinates projections (must be a division of 360) : 20, 24, 30, 40, 90
 #ModRF_Dir = "/mnt/beegfs/croemer/VigieChiro/ModPred/"
 ModRF_Dir = "/mnt/beegfs/croemer/VigieChiro/ModPred/"
 Output=paste0("/mnt/beegfs/croemer/VigieChiro/PredictionsModels/", args[5], "_", args[3], "/") #folder to copy models to 
 YearEffect=T
+SpList = read_delim("/mnt/beegfs/croemer/VigieChiro/SpeciesList.csv", delim = ";")
 
 dir.create(Output)
 
@@ -27,7 +33,8 @@ if(args[1]=="all"|args[1]=="All"){
   ModRF_list = list.files(paste0(ModRF_Dir, args[4], args[3]), 
                           pattern=paste0(".+", "ActLog", ".+", args[6], ".learner"), full.names = T)
 }else{
-  ModRF_file=paste0(ModRF_Dir, "VC", args[5], "PG_", args[3], "/ModRFActLog_",args[1],"VC",args[5],"_PG", args[6], ".learner")
+  ModRF_file=paste0(ModRF_Dir, "VC", args[5], "PG_", args[3], "/ModRFActLog_",
+                    args[1],"VC",args[5], "_2021-12-31_PG", args[6], ".learner")
   ModRF_list = list(ModRF_file)
 }
 
@@ -67,14 +74,7 @@ for (k in 1:length(ModRF_list)){
   
   print(ModRF_list[k])
   
-  if(substr(ModRF_list[k], nchar(ModRF_list[k])-(18+nchar(args[6])+nchar(args[5])), 
-            nchar(ModRF_list[k])-(18+nchar(args[6])+nchar(args[5])))=="_"){
-    Sp = substr(ModRF_list[k], nchar(ModRF_list[k])-(17+nchar(args[6])+nchar(args[5])), 
-                nchar(ModRF_list[k])-(13+nchar(args[6])+nchar(args[5])))
-  }else{
-    Sp = substr(ModRF_list[k], nchar(ModRF_list[k])-(18+nchar(args[6])+nchar(args[5])), 
-                nchar(ModRF_list[k])-(13+nchar(args[6])+nchar(args[5])))
-  }
+  Sp = SpList$Esp[which(str_detect(ModRF_list[k], SpList$Esp))]
   
   print(Sp)
   
@@ -114,14 +114,20 @@ for (k in 1:length(ModRF_list)){
     }
     CoordSIG[is.na(CoordSIG)]=0
     
-    # Make predictions ####
-    print("M61")
-    PredLoc=predict(ModRF,CoordSIG)
-    print("M63")
-    PredAll=predict(ModRF,CoordSIG,predict.all=T)[[2]]
-    print("M65")
-    PredErr=apply(PredAll,MARGIN=1,FUN=sd)
-    print("M67")
+    
+    # foreach(1:50, subCoordSIG=isplitRows(CoordSIG, chunkSize=10), .packages='party') %dopar% 
+    #   {
+        
+        # Make predictions ####
+        print("M61")
+        PredLoc=predict(ModRF,CoordSIG)
+        print("M63")
+        PredAll=predict(ModRF,CoordSIG,predict.all=T)[[2]]
+        print("M65")
+        PredErr=apply(PredAll,MARGIN=1,FUN=sd)
+        print("M67")
+        
+      # }
     
     # Transform as a spatial object and use Group.1 and Group.2 as coordinates
     CoordSIG_sf = CoordSIG

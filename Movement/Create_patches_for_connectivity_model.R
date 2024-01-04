@@ -11,7 +11,7 @@ library(beepr)
 library(terra)
 
 # Load acoustic predictions
-Name =  "0_VC0V_Yves_2023-03" #"weighted_2022-08-15"
+Name =  "weighted_2023-11-17" #"weighted_2022-08-15"
 Directory <- paste0("C:/Users/croemer01/Documents/Donnees vigie-chiro/PredictionsModels/", Name) # repertory with outputs from Predict_act
 Species = "All"  # "Myocap"
 AggregatedPixel = F # if only a map of the highest value per pixel across all year is needed
@@ -39,7 +39,7 @@ Rasterize_function <- function(TableObs)
   dataa_Month_s = TableObs[,1:3]
   colnames(dataa_Month_s) <- c('x', 'y', 'vals')
   e <- extent(dataa_Month_s[,1:2])
-  r <- raster(e, ncol=558, nrow=530, crs=4326)
+  r <- raster::raster(e, ncol=558, nrow=530, crs=4326)
   x <- rasterize(dataa_Month_s[, 1:2], r, dataa_Month_s[,3], fun=mean) 
   
   return(x)
@@ -140,19 +140,24 @@ for(i in 1:length(list_species)){
     dataa_1001=subset(dataa, dataa$Month=="10" & dataa$Day=="01")
     dataa_1015=subset(dataa, dataa$Month=="10" & dataa$Day=="15")
     
+    print("Select highest value")
+    
     # Create transition layer by selecting the highest value of each pixel across the year
     # Sring
+    print("Spring")
     data_highest_value_SPRING = dataa_ALLSPRING %>%                                     
       arrange(desc(pred)) %>% 
-      group_by(Group.1, Group.2) %>%
+      group_by(X, Y) %>%
       slice(1)
     # Autumn
+    print("Autumn")
     data_highest_value_AUTUMN = dataa_ALLAUTUMN %>%                                     
       arrange(desc(pred)) %>% 
-      group_by(Group.1, Group.2) %>%
+      group_by(X, Y) %>%
       slice(1)
     
     # Raster of observations
+    print("Raster of observations")
     Raster_TRANSITION_SPRING = Rasterize_function(data_highest_value_SPRING)
     Raster_TRANSITION_AUTUMN = Rasterize_function(data_highest_value_AUTUMN)
     Raster_0315= Q80_function(Rasterize_function(dataa_0315))
@@ -177,6 +182,7 @@ for(i in 1:length(list_species)){
     # plot(Raster_0315)
     
     # Crop data in box (optional)
+    print("Crop")
     Raster_extent= extent(Raster_0315)
     Raster_0315_sub <- crop(Raster_0315, Raster_extent)
     Raster_0401_sub <- crop(Raster_0401, Raster_extent)
@@ -196,6 +202,7 @@ for(i in 1:length(list_species)){
     
     
     # Clump pixels and remove small patches
+    print("Clump")
     R0315_patches_perimeter = Clump_function(Raster_0315_sub)
     R0401_patches_perimeter = Clump_function(Raster_0401_sub)
     R0415_patches_perimeter = Clump_function(Raster_0415_sub)
@@ -238,34 +245,36 @@ for(i in 1:length(list_species)){
     
     
     # Spring
+    print("Transition Spring")
     Raster_TRANSITION_wtNA_SPRING = Raster_TRANSITION_SPRING
     Raster_TRANSITION_wtNA_SPRING[is.na(Raster_TRANSITION_wtNA_SPRING)] <- 0 # replace NA by 0 because passage function does not like NA
     land_cost_sub_SPRING <- crop(Raster_TRANSITION_wtNA_SPRING, Raster_extent)
-    land_cost_sub_SPRING <- geoCorrection(land_cost_sub_SPRING, type = "c")
     land_cost_sub_SPRING <- transition(land_cost_sub_SPRING, transitionFunction = mean, 8)
+    land_cost_sub_SPRING <- geoCorrection(land_cost_sub_SPRING, type = "r", scl = T)
     saveRDS(land_cost_sub_SPRING, paste0("C:/Users/croemer01/Documents/Donnees vigie-chiro/Connectivity_maps/", 
                                          Name, "/", Sp, "_", "Spring_", "Transition", ".rds"))
     
     # Autumn
+    print("Transition Autumn")
     Raster_TRANSITION_wtNA_AUTUMN = Raster_TRANSITION_AUTUMN
     Raster_TRANSITION_wtNA_AUTUMN[is.na(Raster_TRANSITION_wtNA_AUTUMN)] <- 0 # replace NA by 0 because passage function does not like NA
     land_cost_sub_AUTUMN <- crop(Raster_TRANSITION_wtNA_AUTUMN, Raster_extent)
-    land_cost_sub_AUTUMN <- geoCorrection(land_cost_sub_AUTUMN, type = "c")
     land_cost_sub_AUTUMN <- transition(land_cost_sub_AUTUMN, transitionFunction = mean, 8)
+    land_cost_sub_AUTUMN <- geoCorrection(land_cost_sub_AUTUMN, type = "r", scl = T)
     saveRDS(land_cost_sub_AUTUMN, paste0("C:/Users/croemer01/Documents/Donnees vigie-chiro/Connectivity_maps/", 
                                          Name, "/", Sp, "_", "Autumn_", "Transition", ".rds"))
     
   }
   
   if(AggregatedPixel){
-    
+    print("AggregatedPixel")
     # select the highest value of each pixel across the year (march to october)
     dataaPix = subset(file_bind, file_bind$Species == Sp)
     dataa_ALLYEAR = subset(dataaPix, as.numeric(dataaPix$Month)<11 & as.numeric(dataaPix$Month)>2) 
     
     data_highest_value_YEAR = dataa_ALLYEAR %>%                                     
       arrange(desc(pred)) %>% 
-      group_by(Group.1, Group.2) %>%
+      group_by(X, Y) %>%
       slice(1)
     
     Raster_TRANSITION_YEAR = Rasterize_function(data_highest_value_YEAR)

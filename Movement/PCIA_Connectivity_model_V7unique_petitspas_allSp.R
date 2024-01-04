@@ -7,7 +7,7 @@ library(sf)
 library(gdistance)
 library(geosphere)
 
-Name = "0_VC0V_Yves_2023-03" # "weighted_2022-08-15"
+Name = "weighted_2023-11-17" # "weighted_2022-08-15"
 THETA = 0.1
 Time_gaps = 15 # in days
 N_paths = 500 # number of pathways to calculate for each time gap
@@ -16,21 +16,33 @@ N_paths = 500 # number of pathways to calculate for each time gap
 START=Sys.time()
 
 List_Species = c(
-  #"Barbar", "Eptnil", 
-  "Eptser" 
-  #,"Hypsav", "Minsch", "Myoalc", "Myobec", 
+  "Barbar", 
+  # "Eptnil", 
+  "Eptser" ,
+  #"Hypsav", 
+  "Minsch", 
+  # "Myoalc", "Myobec", 
   #"Myocap", "Myodau", "Myodas", 
   # "Myoema", "Myomys", "Myonat", "Nyclas",
-  # "Nyclei", "Nycnoc", "Pipkuh", "Pippip", "Pipnat", "Pippyg", "Pleaur", 
-  # "Pleaus", "Plemac", "Rhieur", "Rhifer", "Rhihip", "Tadten", "Vesmur", "MyoGT"
+  "Nyclei", "Nycnoc", 
+  "Pipkuh", "Pippip", 
+  "Pipnat",
+  #"Pippyg", "Pleaur", 
+  # "Pleaus", "Plemac", "Rhieur",
+  "Rhifer"
+  #, "Rhihip", "Tadten", "Vesmur", "MyoGT"
   )
+
+LongMigrant = c("Nyclei", "Nycnoc", "Pipnat")
+
 ListTimes = c(
-  #"0315", "0401", "0415", "0501", "0515", "0601", 
-              #"0615", "0701", "0715",
-              #"0801", "0815", 
+  "0315", "0401", "0415", "0501", "0515", "0601", 
+#              "0615", "0701", "0715",
+              "0801", "0815", 
               "0901", "0915", "1001")
 
 dir.create(paste0("/mnt/beegfs/croemer/VigieChiro/Connectivity_maps/", Name))
+#dir.create(paste0("C:/Users/croemer01/Documents/Donnees vigie-chiro/Connectivity_maps", Name))
 
 for (i in 1:length(List_Species)){
   Sp = List_Species[i]
@@ -46,7 +58,7 @@ for (i in 1:length(List_Species)){
     Date = ListTimes[j]
     print(Date)
     
-    if(TRUE %in% str_detect(Date, pattern = c("03", "04", "05", "06"))){
+    if(TRUE %in% str_detect(Date, pattern = c("03", "04", "05", "06", "07"))){
       Season = "Spring"
     }else{
       Season = "Autumn"
@@ -63,13 +75,15 @@ for (i in 1:length(List_Species)){
                         Name, "/", Sp, "_", Date, "_", "Goal", ".csv"))
     # Goal = fread(paste0("C:/Users/croemer01/Documents/Donnees vigie-chiro/Connectivity_maps/",
     #                     Name, "/", Sp, "_", Date, "_", "Goal", ".csv"))
-    
+
     # Read Transition
     land_cond_sub = readRDS(paste0("/mnt/beegfs/croemer/VigieChiro/Connectivity_maps/",
-                                   Name, "/", Sp, "_", Season, "_", "Transition", ".rds"))
+                                   Name, "/", Sp, "_", Season, "_", "Transition_SansGeoCor", ".rds"))
     # land_cond_sub = readRDS(paste0("C:/Users/croemer01/Documents/Donnees vigie-chiro/Connectivity_maps/",
     #                                Name, "/", Sp, "_", Season, "_", "Transition", ".rds"))
-    
+    # land_cond_sub2 = readRDS(paste0("C:/Users/croemer01/Documents/Donnees vigie-chiro/Connectivity_maps/",
+    #                                Name, "/", Sp, "_", Season, "_", "Transition_r", ".rds"))
+
     k=1
     while (k < (N_paths + 1)){
       print(k)
@@ -132,7 +146,7 @@ for (i in 1:length(List_Species)){
           st_cast("POLYGON") %>%
           #st_transform("+proj=merc +lon_0=0 +k=1 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs")
           st_transform(2154)
-        
+
         ggplot(France_sf) +
           geom_sf() +
           geom_sf(data = pt_Origin_sf, col = "blue") +
@@ -143,10 +157,10 @@ for (i in 1:length(List_Species)){
         if(dataT$x == 360){
           dataT$x=0
         }
-        ggplot(dataT, aes(x, y)) +
-          geom_col(aes(x, y), width = 5)  +
-          scale_x_continuous(breaks = seq(0, 359, by = 10), limits = c(-10, 350)) +
-          coord_polar(start = -pi/18, clip = "off")
+        # ggplot(dataT, aes(x, y)) +
+        #   geom_col(aes(x, y), width = 5)  +
+        #   scale_x_continuous(breaks = seq(0, 359, by = 10), limits = c(-10, 350)) +
+        #   coord_polar(start = -pi/18, clip = "off")
         
         Tolerance = 6.6
         
@@ -163,7 +177,7 @@ for (i in 1:length(List_Species)){
           
           if(orientation3>90){ # if wrong direction then stop unless short distance
             AngleDist = log10(orientation2^2*Distance+1)
-            if(AngleDist<Tolerance){
+            if(AngleDist<Tolerance | !(Sp %in% LongMigrant)){
               
               # Calculate paths
               pasT <- passage(land_cond_sub, pt_Origin, pt_Goal, theta=THETA)

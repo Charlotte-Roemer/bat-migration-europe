@@ -11,7 +11,7 @@ library(glmmTMB)
 
 # WARNING THIS WORKS FOR SPECIES GROUPS OF MAX 3 SPECIES #
 
-Date_Mod = "2023-03-16"
+Date_Mod = "2023-11-17"
 ModRF_directory="C:/Users/croemer01/Documents/Donnees vigie-chiro/ModPred/"
 SpeciesGroupName = "Serotules" # Serotules, Pip35, Pip50 or Control
 
@@ -27,7 +27,7 @@ if(SpeciesGroupName == "Serotules") {
 
 #### Load capture data ####
 #TableCapture_CoordSIG = fread("C:/Users/croemer01/Documents/Post-Doc/CACCHI/Data/Capture_CoordSIG_800m.csv")
-TableCapture_CoordSIG = fread("C:/Users/croemer01/Documents/Donnees vigie-chiro/Capture_CoordSIG.csv")
+TableCapture_CoordSIG = fread("C:/Users/croemer01/Documents/Donnees vigie-chiro/Capture_CoordSIG_500m.csv")
 TableCapture = fread("C:/Users/croemer01/Documents/Post-Doc/CACCHI/Data/Capture.csv")
 
 
@@ -254,8 +254,8 @@ colnames(Table_AIC_FINAL) = c(SpeciesGroup, "Type")
 Table_NRMSE = rbind(NRMSE_weighted, NRMSE_0, NRMSE_50, NRMSE_90)
 colnames(Table_NRMSE) = c(SpeciesGroup, "Type")
 
-fwrite(Table_NRMSE,paste0(ModRF_directory, SpeciesGroupName, "_NRMSE_capture_acoustic_800m.csv"))
-fwrite(Table_AIC_FINAL,paste0(ModRF_directory, SpeciesGroupName, "_AIC_capture_acoustic_800m.csv"))
+fwrite(Table_NRMSE,paste0(ModRF_directory, SpeciesGroupName, "_NRMSE_capture_acoustic_500m.csv"))
+fwrite(Table_AIC_FINAL,paste0(ModRF_directory, SpeciesGroupName, "_AIC_capture_acoustic_500m.csv"))
 
 END=Sys.time()
 END-START

@@ -22,7 +22,8 @@ library(Boruta)
 op <- options(digits.secs=3)
 
 # Sorting threshold (weighted, 0, 50, 90)
-ThresholdSort = "90"
+ThresholdSort = "weighted"
+print(ThresholdSort)
 
 # choose species
 Sp = "paper" # choose a species (e.g. "Pippip") or "all" or "paper"
@@ -37,11 +38,11 @@ DoBoruta = F
 # Duplicated dates
 DuplicateDate = F
 
-if(ThresholdSort != "weighted"){
-  args=paste0("/mnt/beegfs/ybas/VigieChiro/Raw/SpNuit2_DI_", ThresholdSort, "_DataLP_PF_exportTot") #bat activity table. file without csv extension
-}else{
-  args=paste0("/mnt/beegfs/croemer/VigieChiro/Raw/SpNuit2_DI_", ThresholdSort, "_DataLP_PF_exportTot") #bat activity table. file without csv extension 
-}
+# if(ThresholdSort != "weighted"){
+#   args=paste0("/mnt/beegfs/ybas/VigieChiro/Raw/SpNuit2_", ThresholdSort, "_DataLP_PF_exportTot") #bat activity table (not DI !! --> need the file where microphone quality is sorted out) . file without csv extension
+# }else{
+  args=paste0("/mnt/beegfs/croemer/VigieChiro/Raw/SpNuit2_", ThresholdSort, "_DataLP_PF_exportTot") #bat activity table (not DI !! --> need the file where microphone quality is sorted out) . file without csv extension
+# }
 #args[2]="/mnt/beegfs/ybas/GI/GI_sites_localites" #table with spatial variables (habitat and climate)
 args[2]="/mnt/beegfs/croemer/VigieChiro/GI_FR_sites_localites" #table with spatial variables (habitat and climate)
 args[3]="/mnt/beegfs/croemer/VigieChiro/SpeciesList.csv" # Species list to build models
@@ -97,10 +98,10 @@ if (!("score_max" %in% names(DataCPL3))){
 #Reads the spatial variables
 Sys.time()
 CoordSIG=fread(paste0(args[2],".csv"))
-print((CoordSIG)[1,])
+#print((CoordSIG)[1,])
 CoordSIG = CoordSIG %>% 
   rename(longitude = CoordinateNames[1], latitude = CoordinateNames[2])
-print((CoordSIG)[1,])
+#print((CoordSIG)[1,])
 
 CoordSIG = CoordSIG %>%
   rename_all(~str_replace_all(.,"\\.x",""))
@@ -316,7 +317,7 @@ for (i in 1:length(ListSp))
   # Identify predictors
   testPred=(substr(names(DataSaison),1,2)=="Sp")
   Prednames=names(DataSaison)[testPred]
-  print(Prednames)
+  #print(Prednames)
   
   # Do not use species distribution area yet
   ListSpeciesDistribution = c("SpBarbar",  "SpMinpal", "SpMinsch", "SpMyoalc", "SpMyobec", "SpMyobly", 
@@ -333,16 +334,25 @@ for (i in 1:length(ListSp))
   if(DuplicateDate){
     sel_columns <- c(rep('SpCDate', 99), rep('SpSDate', 99))
     Prednames = c(Prednames, sel_columns)
-    print(Prednames)
+    #print(Prednames)
   }
   
   Predictors=DataSaison[,..Prednames]
   
-  print(Predictors[1,])
+  #print(Predictors[1,])
   
   DataSaison = DataSaison %>%  
     drop_na(all_of(Prednames)) %>% #deletes rows without predictor (outdated GI table)
     drop_na(nb_contacts) #deletes rows without contacts (people did not upload their data)
+  
+  # Statistics for paper
+  Stat1 = DataSaison %>% 
+         group_by(latitude, longitude, nom) %>% 
+         count()
+  print(paste0("N opportunistic sites = ", length(which(grepl("Z", Stat1$nom))), 
+        " over a total of ", nrow(Stat1), " sites"))
+  print(paste0("N opportunistic nights = ", length(which(grepl("Z", DataSaison$nom))), 
+               " over a total of ", nrow(DataSaison), " nights"))
   
   #seasonal subset
   #  DataSaison=subset(DataSaison,substr(DataSaison$`date part. debut`,4,5) %in% Saison)

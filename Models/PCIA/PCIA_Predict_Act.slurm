@@ -18,7 +18,7 @@
 # Quel type de machine demander (type_1 ou type_2)
 #SBATCH --partition=type_2
  
-#SBATCH --time=2-00:00:00
+#SBATCH --time=5-00:00:00
 
 # Chargement des modules : paquets de packages. si un package manque il faut demander à pcia
 module load userspace/tr17.10

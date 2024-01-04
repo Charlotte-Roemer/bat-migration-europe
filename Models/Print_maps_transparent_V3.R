@@ -10,7 +10,7 @@ library(beepr)
 #ThresholdSort="0_VC0V_Yves"
 ThresholdSort="weighted"
 #DateModel="_2023-03" #date of prediction (exactly same writing as the folder name)
-DateModel="_2023-10-24_40mtryBoruta" #date of prediction (exactly same writing as the folder name)
+DateModel="_2023-11-17" #date of prediction (exactly same writing as the folder name)
 
 arg <- "C:/Users/croemer01/Documents/SIG/Delimitations_pays/REGION.shp" # french contour
 arg[2] <- "C:/Users/croemer01/Documents/Post-Doc/Classificateur/SpeciesListComplete.csv" # species list
@@ -139,127 +139,154 @@ for (i in 1:length(names(table(file_bind$Species)))) { # For each species
       ggsave(plot1, filename = NamePlot1, bg = "transparent", width = 10, height = 8, dpi=300)
     }
   }
-  # 
-  # # Plot difference in prediction value ####
-  # 
-  # dataa_january=subset(dataa, dataa$Month=="01" & dataa$Day=="15")
-  # dataa_april=subset(dataa, dataa$Month=="04" & dataa$Day=="15")
-  # dataa_july=subset(dataa, dataa$Month=="07" & dataa$Day=="15")
-  # dataa_sept=subset(dataa, dataa$Month=="09" & dataa$Day=="15")
-  # 
-  # dataa_diff=data.frame(Group.1=dataa_april$Group.1, Group.2=dataa_april$Group.2,
-  #                       pref_diff_january_july=dataa_july$pred-dataa_january$pred,
-  #                       pred_diff_april_july=dataa_july$pred-dataa_april$pred,
-  #                       pred_diff_july_sept=dataa_sept$pred-dataa_july$pred)
-  # 
-  # # Plot predictions for the difference between April and July
-  # NamePlot2=paste0(arg[4], "/", Sp,"_", "Diff_April_July",".png")
-  # # png(filename=NamePlot2, width = 3000, height = 2500, res=300)
-  # 
-  # mid <- mean(dataa_diff$pred_diff_april_july)
-  # 
-  # plot2 <- ggplot()+
-  #   
-  #   geom_point(data = dataa_diff, 
-  #              mapping = aes(x=Group.1, y=Group.2, col=pred_diff_april_july)) +
-  #   
-  #   scale_color_gradientn(colors = c("darkred", "red", "white", "blue", "darkblue"),
-  #                         name = "Difference in \nnumber of \nbat passes/night",
-  #                         values = scales::rescale(c(min(dataa_diff$pred_diff_april_july),mid-2,mid,mid+2, max(dataa_diff$pred_diff_april_july)))
-  #   ) +
-  #   
-  #   geom_sf(data= france_f, size=0.1, fill=alpha("lightgrey", 0), colour = "black") +
-  #   
-  #   guides(scale = "none", alpha = "none") +
-  #   
-  #   theme(panel.grid.major = element_blank(),
-  #         panel.grid.minor = element_blank(),
-  #         panel.background = element_blank(),
-  #         axis.line = element_line(colour = "black"),
-  #         plot.subtitle = element_text(size=12)) +
-  #   
-  #   labs(title = paste0(full_latin_name, "\n", "Difference between April and July"),
-  #        subtitle = "red = left from, blue = arrived to") +
-  #   ylab("") +
-  #   xlab("") 
-  # 
-  # # print(plot2)
-  # # dev.off()
-  # ggsave(plot2, filename = NamePlot2, bg = "transparent", width = 10, height = 8, dpi=300)
-  # 
-  # # Plot predictions for the difference between July and September
-  # NamePlot3=paste0(arg[4], "/", Sp,"_", "Diff_July_Sept",".png")
-  # # png(filename=NamePlot3, width = 3000, height = 2500, res=300)
-  # 
-  # mid <- mean(dataa_diff$pred_diff_july_sept)
-  # 
-  # plot3 <- ggplot()+
-  #   
-  #   geom_point(data = dataa_diff, 
-  #              mapping = aes(x=Group.1, y=Group.2, col=pred_diff_july_sept)) +
-  #   
-  #   scale_color_gradientn(colors = c("darkred", "red", "white", "blue", "darkblue"),
-  #                         name = "Difference in \nnumber of \nbat passes/night",
-  #                         values = scales::rescale(c(min(dataa_diff$pred_diff_july_sept),mid-2,mid,mid+2, max(dataa_diff$pred_diff_july_sept)))
-  #   ) +
-  #   
-  #   geom_sf(data= france_f, size=0.1, fill=alpha("lightgrey", 0), colour = "black") +
-  #   
-  #   #    geom_sf(data= WT_FR, colour = "black") +
-  #   
-  #   guides(scale = "none") +
-  #   
-  #   theme(panel.grid.major = element_blank(),
-  #         panel.grid.minor = element_blank(),
-  #         panel.background = element_blank(),
-  #         axis.line = element_line(colour = "black"),
-  #         plot.subtitle = element_text(size=12)) +
-  #   
-  #   labs(title = paste0(full_latin_name, "\n", "Difference between July and September"),
-  #        subtitle = "red = left from, blue = arrived to") +
-  #   ylab("") +
-  #   xlab("") 
-  # 
-  # # print(plot)
-  # # dev.off()
-  # ggsave(plot3, filename = NamePlot3, bg = "transparent", width = 10, height = 8, dpi=300)
-  # 
-  # # Plot predictions for the difference between January and July
-  # NamePlot4=paste0(arg[4], "/", Sp,"_", "Diff_January_July",".png")
-  # #png(filename=NamePlot4, width = 3000, height = 2500, res=300)
-  # 
-  # mid <- mean(dataa_diff$pref_diff_january_july)
-  # 
-  # plot4 <- ggplot()+
-  #   
-  #   geom_point(data = dataa_diff, 
-  #              mapping = aes(x=Group.1, y=Group.2, col=pref_diff_january_july)) +
-  #   
-  #   scale_color_gradientn(colors = c("darkred", "red", "white", "blue", "darkblue"),
-  #                         name = "Difference in \nnumber of \nbat passes/night",
-  #                         values = scales::rescale(c(min(dataa_diff$pref_diff_january_july),mid-2,mid,mid+2, max(dataa_diff$pref_diff_january_july)))
-  #   ) +
-  #   
-  #   geom_sf(data= france_f, size=0.1, fill=alpha("lightgrey", 0), colour = "black") +
-  #   
-  #   guides(scale = "none", alpha = "non") +
-  #   
-  #   theme(panel.grid.major = element_blank(),
-  #         panel.grid.minor = element_blank(),
-  #         panel.background = element_blank(),
-  #         axis.line = element_line(colour = "black"),
-  #         plot.subtitle = element_text(size=12)) +
-  #   
-  #   labs(title = paste0(full_latin_name, "\n", "Difference between January and July"),
-  #        subtitle = "red = left from, blue = arrived to") +
-  #   ylab("") +
-  #   xlab("") 
-  # 
-  # # print(plot)
-  # # dev.off()
-  # ggsave(plot4, filename = NamePlot4, bg = "transparent", width = 10, height = 8, dpi=300)
-  # 
+
+  # Plot difference in prediction value ####
+
+  dataa_january=subset(dataa, dataa$Month=="01" & dataa$Day=="15")
+  dataa_march=subset(dataa, dataa$Month=="03" & dataa$Day=="15")
+  dataa_july=subset(dataa, dataa$Month=="07" & dataa$Day=="15")
+  dataa_oct=subset(dataa, dataa$Month=="10" & dataa$Day=="15")
+
+  dataa_diff=data.frame(X=dataa_march$X, Y=dataa_march$Y,
+                        #pref_diff_january_july=dataa_july$pred-dataa_january$pred,
+                        pred_diff_march_july=dataa_july$pred-dataa_march$pred,
+                        pred_diff_july_oct=dataa_oct$pred-dataa_july$pred)
+
+  # Plot predictions for the difference between April and July
+  NamePlot2=paste0(arg[4], "/", Sp,"_", "Diff_March_July",".png")
+  # png(filename=NamePlot2, width = 3000, height = 2500, res=300)
+
+  dataa_diff2 = dataa_diff %>% 
+    st_as_sf(coords=c("X", "Y"), crs=4326) %>% 
+    st_transform(2154) %>% 
+    mutate(x = st_coordinates(.)[,1],
+           y = st_coordinates(.)[,2]) %>% 
+    as.data.frame()
   
+  dataa_diff3=data.frame(x=dataa_diff2$x, y=dataa_diff2$y, z=dataa_diff2$pred_diff_march_july)
+  #dataa_diff3=data.frame(x=dataa_diff2$x, y=dataa_diff2$y, a=dataa_diff2$pred_diff_july_sept)
+  dataa_diff4 = rasterFromXYZ(dataa_diff3, res = 500)
+  
+  dataa_diff5 = dataa_diff4 %>% 
+    as.data.frame(xy=T)
+  dataa_diff5$z[dataa_diff5$z==0] <- NA
+  #dataa_diff5$z[dataa_diff5$a==0] <- NA
+  
+  mid <- mean(dataa_diff6$z, na.rm=T)
+  
+  dataa_diff6 = subset(dataa_diff5, !is.na(dataa_diff5$z))
+  
+  plot2 <- ggplot()+
+    geom_raster(data = dataa_diff6, aes(x=x, y=y, fill = z)) +
+    #geom_point(), size=0.0001) +    # geom_point(data = dataa_diff,
+    #            mapping = aes(x=X, y=Y, col=pred_diff_april_july)) +
+
+    scale_fill_gradientn(colors = c("darkred", "red", "white", "blue", "darkblue"),
+                          name = "Difference in \nnumber of \nbat passes/night",
+                          values = scales::rescale(c(min(dataa_diff6$z, na.rm=T),
+                                                     mid-2,mid,mid+2, 
+                                                     max(dataa_diff6$z, na.rm=T))) ) +
+
+    geom_sf(data= france_f, size=0.1, fill=alpha("lightgrey", 0), colour = "black") +
+
+    guides(scale = "none", alpha = "none") +
+
+    theme(panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank(),
+          panel.background = element_blank(),
+          axis.line = element_line(colour = "black"),
+          plot.subtitle = element_text(size=12)) +
+
+    labs(title = paste0(full_latin_name, "\n", "Difference between March and July"),
+         subtitle = "red = left from, blue = arrived to") +
+    ylab("") +
+    xlab("")
+
+  # print(plot2)
+  # dev.off()
+  ggsave(plot2, filename = NamePlot2, bg = "transparent", width = 10, height = 8, dpi=300)
+
+  # Plot predictions for the difference between July and September
+  NamePlot3=paste0(arg[4], "/", Sp,"_", "Diff_July_Oct",".png")
+  # png(filename=NamePlot3, width = 3000, height = 2500, res=300)
+
+  dataa_diff7=data.frame(x=dataa_diff2$x, y=dataa_diff2$y, z=dataa_diff2$pred_diff_july_oct)
+  dataa_diff8 = rasterFromXYZ(dataa_diff7, res = 500)
+  
+  dataa_diff9 = dataa_diff8 %>% 
+    as.data.frame(xy=T)
+  dataa_diff9$z[dataa_diff9$z==0] <- NA
+  
+  mid <- mean(dataa_diff9$z, na.rm=T)
+  
+  dataa_diff10 = subset(dataa_diff9, !is.na(dataa_diff9$z))
+
+  plot3 <- ggplot()+
+    geom_raster(data = dataa_diff10, aes(x=x, y=y, fill = z)) +
+    #geom_point(), size=0.0001) +    # geom_point(data = dataa_diff,
+    #            mapping = aes(x=X, y=Y, col=pred_diff_april_july)) +
+    
+    scale_fill_gradientn(colors = c("darkred", "red", "white", "blue", "darkblue"),
+                         name = "Difference in \nnumber of \nbat passes/night",
+                         values = scales::rescale(c(min(dataa_diff10$z, na.rm=T),
+                                                    mid-2,mid,mid+2, 
+                                                    max(dataa_diff10$z, na.rm=T))) ) +
+    
+    geom_sf(data= france_f, size=0.1, fill=alpha("lightgrey", 0), colour = "black") +
+    
+    guides(scale = "none", alpha = "none") +
+    
+    theme(panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank(),
+          panel.background = element_blank(),
+          axis.line = element_line(colour = "black"),
+          plot.subtitle = element_text(size=12)) +
+    
+    labs(title = paste0(full_latin_name, "\n", "Difference between July and October"),
+         subtitle = "red = left from, blue = arrived to") +
+    ylab("") +
+    xlab("")
+
+  # print(plot)
+  # dev.off()
+  ggsave(plot3, filename = NamePlot3, bg = "transparent", width = 10, height = 8, dpi=300)
+# 
+#   # Plot predictions for the difference between January and July
+#   NamePlot4=paste0(arg[4], "/", Sp,"_", "Diff_January_July",".png")
+#   #png(filename=NamePlot4, width = 3000, height = 2500, res=300)
+# 
+#   mid <- mean(dataa_diff$pref_diff_january_july)
+# 
+#   plot4 <- ggplot()+
+# 
+#     geom_point(data = dataa_diff,
+#                mapping = aes(x=Group.1, y=Group.2, col=pref_diff_january_july)) +
+# 
+#     scale_color_gradientn(colors = c("darkred", "red", "white", "blue", "darkblue"),
+#                           name = "Difference in \nnumber of \nbat passes/night",
+#                           values = scales::rescale(c(min(dataa_diff$pref_diff_january_july),mid-2,mid,mid+2, max(dataa_diff$pref_diff_january_july)))
+#     ) +
+# 
+#     geom_sf(data= france_f, size=0.1, fill=alpha("lightgrey", 0), colour = "black") +
+# 
+#     guides(scale = "none", alpha = "non") +
+# 
+#     theme(panel.grid.major = element_blank(),
+#           panel.grid.minor = element_blank(),
+#           panel.background = element_blank(),
+#           axis.line = element_line(colour = "black"),
+#           plot.subtitle = element_text(size=12)) +
+# 
+#     labs(title = paste0(full_latin_name, "\n", "Difference between January and July"),
+#          subtitle = "red = left from, blue = arrived to") +
+#     ylab("") +
+#     xlab("")
+# 
+#   # print(plot)
+#   # dev.off()
+#   ggsave(plot4, filename = NamePlot4, bg = "transparent", width = 10, height = 8, dpi=300)
+# 
+
   
   
 }
