@@ -7,6 +7,6 @@ weight: 105
 
 <center>  
 
-If the video is not working, please [click here](https://tube.spdns.org/w/rvZwko19bwmVyFLzihuk76).
+If the video is not working, please [click here](https://www.youtube.com/watch?v=32Vm5gg3X3Y).
 
 </center>  
