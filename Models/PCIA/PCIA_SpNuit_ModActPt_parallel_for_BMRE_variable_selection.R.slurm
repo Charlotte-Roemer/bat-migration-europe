@@ -13,7 +13,7 @@
 #SBATCH --job-name=TrainRF_SDM
 
 # Quantité de RAM par noeud
-#SBATCH --mem=20G
+#SBATCH --mem=40G
 
 # Quel type de machine demander (type_1 ou type_2)
 #SBATCH --partition=type_2

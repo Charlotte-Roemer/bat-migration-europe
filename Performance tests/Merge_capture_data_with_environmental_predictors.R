@@ -12,8 +12,8 @@ args = "C:/Users/croemer01/Documents/Post-Doc/CACCHI/Data/Datacapture_MNHN_trait
 args[2]=40 #number of coordinates projections (must be a division of 360)
 args[3] = "C:/Users/croemer01/Documents/Donnees vigie-chiro/SpeciesList.csv" #Species list
 args[4] = "C:/Users/croemer01/Documents/SIG/SIG_Post-Doc_MNHN/ADMIN-EXPRESS-COG/ADMIN-EXPRESS-COG_2-1__SHP__FRA_2020-03-25/ADMIN-EXPRESS-COG/1_DONNEES_LIVRAISON_2020-03-25/ADE-COG_2-1_SHP_WGS84G_FRA/COMMUNE.shp" # Municipal corporations
-args[5]="C:/Users/croemer01/Documents/Donnees vigie-chiro/GI_FR_sites_localites.csv" # grid on which predictions are made
-args[6] = "C:/Users/croemer01/Documents/Post-Doc/CACCHI/Data/GCLR_EXPORT_2022_n20_Data_biometrie_LR_MNHN_29_07_2022__202207291639.csv" # file with capture data from LR
+args[5]="C:/Users/croemer01/Documents/Donnees vigie-chiro/SysGrid_500m_de_cote_FULL.csv" # grid on which predictions are made
+args[6] = "C:/Users/croemer01/Documents/Post-Doc/CACCHI/Data/GCLR_EXPORT_Data_captures_202401311622.csv" # file with capture data from LR
 args[7] = "C:/Users/croemer01/Documents/SIG/SIG_Post-Doc_MNHN/ADMIN-EXPRESS-COG/ADMIN-EXPRESS-COG_2-1__SHP__FRA_2020-03-25/ADMIN-EXPRESS-COG/1_DONNEES_LIVRAISON_2020-03-25/ADE-COG_2-1_SHP_WGS84G_FRA/ENTITE_RATTACHEE.shp" # Municipal corporations (old)
 
 
@@ -28,20 +28,20 @@ TableCapture0$Y_CENTROID_COMMUNE=TableCapture0$Y_CENTROID_COMMUNE*100 # to obtai
 TableCapture0$INSEE_COM = ifelse(nchar(TableCapture0$INSEE_COM) == 4, # the first 0 is sometimes missing
                                  paste0("0", TableCapture0$INSEE_COM), 
                                  TableCapture0$INSEE_COM)
-TableCaptureSummaryGiteMinsch=TableCapture0 %>% 
-  filter(TAXON=="Miniopterus schreibersii") %>% 
-  count(DATE) %>% 
-  mutate(SpGite = ifelse(n>20, 1, 0)) %>% # if more than 20 Minsch captured by night, site is probably a roost
-  mutate(n=NULL)
-
-TableCapture0 = left_join(TableCapture0, TableCaptureSummaryGiteMinsch)
+# TableCaptureSummaryGiteMinsch=TableCapture0 %>% 
+#   filter(TAXON=="Miniopterus schreibersii") %>% 
+#   count(DATE) %>% 
+#   mutate(SpGite = ifelse(n>20, 1, 0)) %>% # if more than 20 Minsch captured by night, site is probably a roost
+#   mutate(n=NULL)
+# 
+# TableCapture0 = left_join(TableCapture0, TableCaptureSummaryGiteMinsch)
 
 # Load LR capture data and merge
 TableCaptureLR= as.data.frame(read_delim(args[6], delim=","))
 TableCaptureLR = TableCaptureLR %>% 
   select("date_obs", "code_insee", "nom_vern", "gîte")
 
-# /!\ I removed all Rhino + Pleco + Myotis species here
+# Clean names
 TableCaptureLR$nom_vern[TableCaptureLR$nom_vern == "Eptesicus serotinus "| TableCaptureLR$nom_vern =="Sérotine commune"| TableCaptureLR$nom_vern =="Eptesicus serotinus Schreber 1774"| TableCaptureLR$nom_vern =="EPTSER"| TableCaptureLR$nom_vern =="Eptser"| TableCaptureLR$nom_vern =="Serotine commune"]<- "Eptesicus serotinus"
 TableCaptureLR$nom_vern[TableCaptureLR$nom_vern == "Eptesicus nilssoni Keyserling  Blasius 1839"| TableCaptureLR$nom_vern =="Eptesicus nilssonii "| TableCaptureLR$nom_vern =="Eptesicus nilssonii Keyserling  Blasius 1839"| TableCaptureLR$nom_vern =="EPTNIL"]<- "Eptesicus nilssonii"
 TableCaptureLR$nom_vern[TableCaptureLR$nom_vern == "NLAS"| TableCaptureLR$nom_vern =="NYCLAS"| TableCaptureLR$nom_vern =="Grande Noctule"]<- "Nyctalus lasiopterus"
@@ -61,6 +61,8 @@ TableCaptureLR$nom_vern[TableCaptureLR$nom_vern == "Tadarida teniotis Rafinesque
 TableCaptureLR$nom_vern[TableCaptureLR$nom_vern == "RAS"| TableCaptureLR$nom_vern =="Chiropteres : Aucune observation"| TableCaptureLR$nom_vern =="Aucune espèce"| TableCaptureLR$nom_vern =="Aucune chauve-souris"]<- "BREDOUILLE"
 TableCaptureLR$nom_vern[TableCaptureLR$nom_vern == "NYCIND"]<- "Nyctalus sp"
 TableCaptureLR$nom_vern[TableCaptureLR$nom_vern == "Minioptère de Schreibers"]<- "Miniopterus schreibersii"
+TableCaptureLR$nom_vern[TableCaptureLR$nom_vern == "Barbastelle d'Europe, Barbastelle"]<- "Barbastella barbastellus"
+TableCaptureLR$nom_vern[TableCaptureLR$nom_vern == "Grand rhinolophe"]<- "Rhinolophus ferrumequinum"
 
 names(TableCaptureLR)[names(TableCaptureLR) == "nom_vern"] = "TAXON"
 names(TableCaptureLR)[names(TableCaptureLR) == "date_obs"] = "DATE"
@@ -82,7 +84,6 @@ TableCapture$Sp = SpeciesList$Esp[Match1]
 TableCapture=TableCapture[!is.na(TableCapture$Sp),]
 
 # Remove all Pipistrellus pipistrellus and pygmaeus before 2005 (both considered as same species before 2005)
-# Remove also Miniopterus schreibersii before 2005 to avoid calculating false proportions in this group
 TableCapture = TableCapture %>% 
   filter( !(as.Date(DATE, format = "%d/%m/%Y") < as.Date("2005-01-01") & 
               TAXON=="Pipistrellus pipistrellus") &
@@ -90,6 +91,12 @@ TableCapture = TableCapture %>%
                 TAXON=="Pipistrellus pygmaeus") &
             !(as.Date(DATE, format = "%d/%m/%Y") < as.Date("2005-01-01") & 
                 TAXON=="Miniopterus schreibersii"))
+
+# Remove all data before 2014 because no acoustic data before
+# Remove all declared roosts
+TableCapture = TableCapture %>% 
+  filter(as.Date(DATE, format = "%d/%m/%Y")  > as.Date("2014-01-01")) %>% 
+  filter(SpGite ==0 | is.na(SpGite))
 
 # Load delimitation of municipal corporations (recent version)
 Limit_municipal_new = read_sf(args[4]) %>% 
@@ -139,24 +146,39 @@ CoordSIG_sf = CoordSIG %>%
 # Crop points that are within the municipal corporations
 CoordSIG_capture = st_filter (CoordSIG_sf, Limit_municipal_capture)
 
+
+# TEST = subset(Limit_municipal_capture, Limit_municipal_capture$NOM_COM=="Estivareilles")
+# TEST2 = st_filter (CoordSIG_sf, TEST)
+# 
+# TEST3 = subset(Limit_municipal_capture, Limit_municipal_capture$NOM_COM=="Arboras")  
+# TEST4 = st_filter (CoordSIG_sf, TEST3)
+# 
+# SP1buff = st_buffer(TEST, 500)
+# CoordSIG_sf_cropped <- st_crop(CoordSIG_sf, SP1buff)
+# ggplot() + 
+#   geom_sf(data=TEST) + 
+#   geom_sf(data=CoordSIG_sf_cropped)
+
+
 # Cleans coordinates
 CoordSIG_capture = CoordSIG_capture %>%
   rename_all(~str_replace_all(.,"\\.x","")) %>% 
   select(-contains(".y"))
 
-# Add date of capture and taxon to municipal corporations limit
+# Add date of capture to municipal corporations limit
 TableCapture_sf = merge(Limit_municipal_capture, TableCapture) %>% 
-  select(INSEE_COM, NOM_COM, DATE, SpGite)
+  select(INSEE_COM, NOM_COM, DATE, SpGite) %>% 
+  unique()
 
 # /!\ /!\ /!\ THIS INFO SHOULD BE MADE AVAILABLE /!\ /!\ /!\ 
-TableCapture_sf$SpGite=ifelse(is.na(TableCapture_sf$SpGite), 0, TableCapture_sf$SpGite)
+#TableCapture_sf$SpGite=ifelse(is.na(TableCapture_sf$SpGite), 0, TableCapture_sf$SpGite)
 
 # Merge environmental variables with date of capture
-TableCapture_CoordSIG_sf = CoordSIG_capture %>% 
+TableCapture_CoordSIG_sf = CoordSIG_capture %>%
   st_join(TableCapture_sf, left=T)
 
 TableCapture_CoordSIG = as.data.frame(TableCapture_CoordSIG_sf)
-# 
+
 # png(filename=paste("C:/Users/croemer01/Documents/Post-Doc/CACCHI/CACCHI_sampling.png",
 #                    sep="_"),width=1000,height=1000,res=300)
 # 
@@ -169,7 +191,7 @@ TableCapture_CoordSIG = as.data.frame(TableCapture_CoordSIG_sf)
 # dev.off()
 
 # Circular date
-SpFDate=yday(TableCapture_CoordSIG$DATE)
+SpFDate=yday(as.Date(TableCapture_CoordSIG$DATE, format = "%d/%m/%Y"))
 TableCapture_CoordSIG$SpCDate=cos(SpFDate/365*2*pi) # to create a circular variable for date
 TableCapture_CoordSIG$SpSDate=sin(SpFDate/365*2*pi) # to create a circular variable for date
 
@@ -178,6 +200,7 @@ TableCapture_CoordSIG$SpYear = lubridate::year(as.Date(TableCapture_CoordSIG$DAT
 
 # Save capture data + environmental variables
 fwrite(TableCapture_CoordSIG,paste0("C:/Users/croemer01/Documents/Donnees vigie-chiro/Capture_CoordSIG_500m.csv"))
+#fwrite(CoordSIG_capture,paste0("C:/Users/croemer01/Documents/Donnees vigie-chiro/Capture_CoordSIG_500m.csv"))
 
 # Save capture data
 fwrite(TableCapture,paste0("C:/Users/croemer01/Documents/Post-Doc/CACCHI/Data/Capture.csv"))

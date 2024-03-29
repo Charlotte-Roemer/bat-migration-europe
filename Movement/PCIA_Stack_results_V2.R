@@ -11,17 +11,15 @@ NamePre = "weighted_2023-11-17"
 START = Sys.time()
 
 
-List_Species = c(#"Barbar", "Eptnil", 
-                #"Eptser", 
-                 #"Hypsav", "Minsch", "Myoalc", 
-                 #"Myobec", 
-                 #"Myocap", "Myodau", "Myodas", 
-                  #"Myoema", "Myomys", "Myonat", "Nyclas",
-                  "Nyclei", "Nycnoc", 
-                  #"Pipkuh", "Pippip", 
-                  "Pipnat" 
-                  #,"Pippyg", "Pleaur", 
-                  #"Pleaus", "Plemac", "Rhieur", "Rhifer", "Rhihip", "Tadten", "Vesmur"
+List_Species = c(#"Barbar", "Eptser", "Minsch", "Pipkuh", "Pippip", "Pippyg", "Rhifer",
+                 #"Eptnil", 
+                 #"Hypsav", 
+                 #"Myoalc","Myobec","Myocap", "Myodau", "Myodas", "Myoema", "Myomys", "Myonat", 
+                 #"Nyclas",
+                 "Nyclei", "Nycnoc", "Pipnat"
+                 #"Pleaur", 
+                 #"Pleaus", "Plemac", "Rhieur", 
+                 #, "Rhihip", "Tadten", "Vesmur"
 )
 ListTimes = c("0315", "0401", "0415", "0501", "0515", "0601", 
               "0615", "0701", "0715",

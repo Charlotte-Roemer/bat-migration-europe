@@ -10,19 +10,16 @@
 #SBATCH --ntasks-per-node=1
 
 # Nom du job
-#SBATCH --job-name=TEST_Charlotte
+#SBATCH --job-name=Connectivite
 
 # Quantité de RAM par noeud
 #SBATCH --mem=20G
 
 # Quel type de machine demander (type_1 ou type_2)
-#SBATCH --partition=type_2
+#SBATCH --partition=type_1
  
 
 # Chargement des modules : paquets de packages. si un package manque il faut demander à pcia
-module load userspace/tr17.10
-module load biology
-
 module load userspace/tr17.10
 module load biology
 module load gcc/7.2.0        
@@ -36,4 +33,5 @@ module load udunits
 module load R/4.0.5    
 
 # Commandes et scripte à lancer
-Rscript PCIA_Print_maps_transparent_V2.R
+Rscript PCIA_Create_patches_for_connectivity_model.R
+

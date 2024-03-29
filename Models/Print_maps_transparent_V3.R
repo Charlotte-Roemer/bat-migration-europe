@@ -172,7 +172,7 @@ for (i in 1:length(names(table(file_bind$Species)))) { # For each species
   dataa_diff5$z[dataa_diff5$z==0] <- NA
   #dataa_diff5$z[dataa_diff5$a==0] <- NA
   
-  mid <- mean(dataa_diff6$z, na.rm=T)
+  mid <- mean(dataa_diff5$z, na.rm=T)
   
   dataa_diff6 = subset(dataa_diff5, !is.na(dataa_diff5$z))
   

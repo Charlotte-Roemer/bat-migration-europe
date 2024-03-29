@@ -7,7 +7,7 @@ library(sf)
 library(gdistance)
 library(geosphere)
 
-Name = "weighted_2023-11-17" # "weighted_2022-08-15"
+Name = "weighted_2024-03-19" # "weighted_2022-08-15"
 THETA = 0.1
 Time_gaps = 15 # in days
 N_paths = 500 # number of pathways to calculate for each time gap
@@ -23,7 +23,8 @@ List_Species = c(
   "Minsch", 
   # "Myoalc", "Myobec", 
   #"Myocap", "Myodau", "Myodas", 
-  # "Myoema", "Myomys", "Myonat", "Nyclas",
+  # "Myoema", "Myomys", "Myonat", 
+  "Nyclas",
   "Nyclei", "Nycnoc", 
   "Pipkuh", "Pippip", 
   "Pipnat",
@@ -44,16 +45,18 @@ ListTimes = c(
 dir.create(paste0("/mnt/beegfs/croemer/VigieChiro/Connectivity_maps/", Name))
 #dir.create(paste0("C:/Users/croemer01/Documents/Donnees vigie-chiro/Connectivity_maps", Name))
 
+CommutingTime = 15 #days to travel between roosts
+Table_Dist = data.frame(Species = c("Nycnoc", "Nyclei", "Nyclas", "Pipnat",
+                                    "Minsch", "Rhifer", "Barbar", "Eptser", 
+                                    "Pippip", "Pippyg", "Pipkuh"),
+                        Dist_night_km = c(35, 35, 150, 35,
+                                          100/CommutingTime, 50/CommutingTime, 50/CommutingTime, 50/CommutingTime,
+                                          20/CommutingTime, 20/CommutingTime, 5/CommutingTime))
+
 for (i in 1:length(List_Species)){
   Sp = List_Species[i]
   print(Sp)
-  if(Sp %in% c("Nycnoc", "Nyclei", "Nyclas", "Pipnat", "Tadten", "Minsch", "Vesmur")) {
-    DistanceMaxSp = 35
-  }else if(Sp %in% c("Pipkuh", "Pippip", "Hypsav", "Eptser", "Pippyg", "Eptnil")){
-    DistanceMaxSp = 20
-  }else{
-    DistanceMaxSp = 10
-  }
+  DistanceMaxSp = Table_Dist$Dist_night_km[which(Table_Dist$Species==Sp)]
   for (j in 1:length(ListTimes)){
     Date = ListTimes[j]
     print(Date)

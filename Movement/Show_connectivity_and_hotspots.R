@@ -3,10 +3,11 @@ library(tidyverse)
 library(sf)
 library(raster)
 library(viridis)
+library(beepr)
 
-Sp = "Nyclei"
-DateOrigin = "0901"
-DateGoal = "0915"
+Sp = "Nycnoc"
+DateOrigin = "0301"
+DateGoal = "0315"
 
 # Connectivity
 Connectivity = raster(list.files("C:/Users/croemer01/Documents/Donnees vigie-chiro/Connectivity_maps/Stacked/", 
@@ -16,7 +17,7 @@ Connectivity = raster(list.files("C:/Users/croemer01/Documents/Donnees vigie-chi
 
 # Hotspots Origin
 Hotspots_Origin = read_sf(paste0("C:/Users/croemer01/Documents/Donnees vigie-chiro/Connectivity_maps/weighted_2023-11-17/", 
-                                 Sp, "_", DateOrigin, "_Origin.csv"))
+                                 Sp, "_", DateGoal, "_Origin.csv"))
 Hotspots_Goal = read_sf(paste0("C:/Users/croemer01/Documents/Donnees vigie-chiro/Connectivity_maps/weighted_2023-11-17/", 
                                Sp, "_", DateGoal, "_Goal.csv"))
 

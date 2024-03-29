@@ -2,21 +2,23 @@
 # To create random forest models (.learner files) of bat activity
 
 library(data.table)
-library(raster)
-library(rgdal)
-library(rgeos)
-library(latticeExtra)
+#library(raster)
+#library(rgdal)
+#library(rgeos)
+#library(latticeExtra)
 library(randomForest)
 library(gdata)
 library(spdep) # for Rotation function
 library(tidyverse)
 library(pgirmess)
 library(sp)
+library(sf)
 library(hydroGOF)
 library(rsample)
 library(foreach)
 library(doParallel)
-library(Boruta)
+library(pracma)
+#library(Boruta)
 
 #to show milliseconds
 op <- options(digits.secs=3)
@@ -26,7 +28,7 @@ ThresholdSort = "weighted"
 print(ThresholdSort)
 
 # choose species
-Sp = "paper" # choose a species (e.g. "Pippip") or "all" or "paper"
+Sp = "all" # choose a species (e.g. "Pippip") or "all" or "paper"
 GroupSel="bat"
 #GroupSel=NA #sorting according to the group column of Specieslist (args[3), NA if no sorting
 ListPaper = c("Nyclei", "Nycnoc", "Eptser", "Pipkuh", "Pipnat", 
@@ -38,10 +40,13 @@ DoBoruta = F
 # Duplicated dates
 DuplicateDate = F
 
+# Types of coordinates? # "polar" or "rotated"
+CoordType = "rotated"
+
 # if(ThresholdSort != "weighted"){
 #   args=paste0("/mnt/beegfs/ybas/VigieChiro/Raw/SpNuit2_", ThresholdSort, "_DataLP_PF_exportTot") #bat activity table (not DI !! --> need the file where microphone quality is sorted out) . file without csv extension
 # }else{
-  args=paste0("/mnt/beegfs/croemer/VigieChiro/Raw/SpNuit2_", ThresholdSort, "_DataLP_PF_exportTot") #bat activity table (not DI !! --> need the file where microphone quality is sorted out) . file without csv extension
+args=paste0("/mnt/beegfs/croemer/VigieChiro/Raw/SpNuit2_", ThresholdSort, "_DataLP_PF_exportTot") #bat activity table (not DI !! --> need the file where microphone quality is sorted out) . file without csv extension
 # }
 #args[2]="/mnt/beegfs/ybas/GI/GI_sites_localites" #table with spatial variables (habitat and climate)
 args[2]="/mnt/beegfs/croemer/VigieChiro/GI_FR_sites_localites" #table with spatial variables (habitat and climate)
@@ -78,7 +83,7 @@ ProbThreshold=0 # a filter on the score_max parameter (takes all data superior o
 #reps_process = 1 # how many trials should be made to sort train/test dataset (see buffer_CR.r)
 YearEffect=T
 MTRY = "npred" # "default" or "npred" ( = length(Predictors_Train) )
-DateLimit = as.Date("2021-12-31") # to use only data before this date; default = Sys.Date() 
+DateLimit = Sys.Date()  # e.g.as.Date("2021-12-31") to use only data before this date; default = Sys.Date()
 
 dir.create(Output)
 
@@ -88,7 +93,7 @@ DataCPL2$Nuit=as.Date(DataCPL2$Nuit)
 DataCPL3= DataCPL2 %>% 
   dplyr::filter(Nuit < DateLimit)
 
-if (!("score_max" %in% names(DataCPL3))){
+if (!("score_max" %in% names(DataCPL3))){ # not very useful
   DataCPL3 = DataCPL3 %>% 
     group_by(participation, Nuit, num_micro) %>% 
     mutate(score_max = max(as.numeric(nb_contacts))) %>% 
@@ -299,17 +304,42 @@ for (i in 1:length(ListSp))
     }
   }
   
-  #add several rotated coordinates
-  CoordDS=as.matrix(cbind(DataSaison$longitude,DataSaison$latitude)) #WGS84
-  print("L230")
-  
-  for (a in 0:(as.numeric(args[11])-1))
-  {
-    Coordi=Rotation(CoordDS,angle=pi*a/as.numeric(args[11]))
+  if(CoordType == "rotated"){
+    #add several rotated coordinates
+    CoordDS=as.matrix(cbind(DataSaison$longitude,DataSaison$latitude)) #WGS84
+    print("L230")
     
-    DataSaison=cbind(DataSaison,Coordi[,1])
-    names(DataSaison)[ncol(DataSaison)]=paste0("SpCoord",a)
+    for (a in 0:(as.numeric(args[11])-1))
+    {
+      Coordi=Rotation(CoordDS,angle=pi*a/as.numeric(args[11]))
+      
+      DataSaison=cbind(DataSaison,Coordi[,1])
+      names(DataSaison)[ncol(DataSaison)]=paste0("SpCoord",a)
+    }
+  }else if(CoordType == "polar"){
+    #add polar coordinates
+    print(CoordType)
+    CoordDS=as.data.frame(cbind("longitude" = DataSaison$longitude, 
+                                "latitude" = DataSaison$latitude)) #WGS84
+    CoordDSL93=CoordDS %>% 
+      st_as_sf(coords=c("longitude", "latitude"), crs=4326) %>% 
+      st_transform(2154) %>%
+      mutate(x = st_coordinates(.)[,1],
+             y = st_coordinates(.)[,2]) %>%
+      as.data.frame %>%
+      select(x, y) %>%
+      as.matrix()
+    print("L230")
+    
+    CoordDS_polar = cart2pol(CoordDSL93) %>% 
+      as.data.frame()
+    
+    SpCoordAngle = CoordDS_polar$phi
+    SpCoordDistance = CoordDS_polar$r
+      
+    DataSaison=cbind(DataSaison, SpCoordAngle, SpCoordDistance)
   }
+  
   
   # Add material as predictor
   DataSaison$SpRecorder = DataSaison$detecteur_enregistreur_type
@@ -347,10 +377,10 @@ for (i in 1:length(ListSp))
   
   # Statistics for paper
   Stat1 = DataSaison %>% 
-         group_by(latitude, longitude, nom) %>% 
-         count()
+    group_by(latitude, longitude, nom) %>% 
+    count()
   print(paste0("N opportunistic sites = ", length(which(grepl("Z", Stat1$nom))), 
-        " over a total of ", nrow(Stat1), " sites"))
+               " over a total of ", nrow(Stat1), " sites"))
   print(paste0("N opportunistic nights = ", length(which(grepl("Z", DataSaison$nom))), 
                " over a total of ", nrow(DataSaison), " nights"))
   
@@ -424,7 +454,7 @@ for (i in 1:length(ListSp))
   cl <- makeCluster(cores[1]-1) #not to overload your computer
   registerDoParallel(cl)
   
-  
+  print("L427")
   
   obsFinal=NULL
   simFinal=NULL
@@ -445,6 +475,8 @@ for (i in 1:length(ListSp))
     TIMEDIFF
     #This script is quite long
     
+    print("A")
+    
     # WARNING : if lot of NA in Predictors : many sites are lacking in CoordGIS. Need to update the table.
     
     DataSaison_Train= DataSaison %>%
@@ -462,6 +494,8 @@ for (i in 1:length(ListSp))
     
     Predictors_Test=DataSaison_Test %>%
       select(all_of(Prednames))
+    
+    print("B")
     
     # # Check that the dataset is fine
     # ggplot(DataSaison_Train,
@@ -486,18 +520,29 @@ for (i in 1:length(ListSp))
                               strata=paste(DataSaison_Train$id_site,DataSaison_Train$localite), 
                               importance=F)
     }
-
+    
+    print("C")
+    
     sim<-predict(ModRFTemp,newdata=Predictors_Test, type="response")
     obs<-DataSaison_Test$ActLog10
-    Test_info=DataSaison_Test %>% 
+    Test_info=DataSaison_Test %>%
       select(participation, Nuit, num_micro, longitude, latitude)
     
+    print("D")
+    
     result <- multiResultClass()
+    print("E")
     result$simFinal <- sim
     result$obsFinal <- obs
     result$Test_infoFinal <- Test_info
     result$ModRF <- ModRFTemp
     result$N_tree <- rep(j, length(obs))
+    
+    # print("F")
+    # result1 = data.frame(a=c(1,2), b=c(3,4))
+    # write.table(result1, file=paste(Output, "/RF_ntree_",j,".txt", sep=""),
+    #             sep="\t", row.names=F)
+    
     return(result)
     
   }
@@ -505,6 +550,8 @@ for (i in 1:length(ListSp))
   END=Sys.time()
   
   stopCluster(cl)
+  
+  print("L521")
   
   rm(ModRF)
   rm(Dataframe_simobs_Final)
@@ -535,9 +582,9 @@ for (i in 1:length(ListSp))
   
   
   if(DoBoruta == T){
-    suffix="_Boruta"
+    suffix=paste0("_Boruta_", CoordType)
   }else{
-    suffix=""
+    suffix=CoordType
   }
   
   fwrite(Dataframe_simobs_Final,paste0(Output,"/ModRFActLog_", ListSp[i], "_",
