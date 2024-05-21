@@ -7,13 +7,13 @@
 #SBATCH --nodes=1
 
 # Nombre de processeur par noeud. si on a un script qui parallelise alors on peut augmenter le nombre de noeuds
-#SBATCH --ntasks-per-node=1
+#SBATCH --ntasks-per-node=10
 
 # Nom du job
 #SBATCH --job-name=TrainRF_SDM
 
 # Quantité de RAM par noeud
-#SBATCH --mem=40G
+#SBATCH --mem=100G
 
 # Quel type de machine demander (type_1 ou type_2)
 #SBATCH --partition=type_2

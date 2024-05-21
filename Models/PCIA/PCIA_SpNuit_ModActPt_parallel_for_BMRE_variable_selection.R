@@ -2,10 +2,6 @@
 # To create random forest models (.learner files) of bat activity
 
 library(data.table)
-#library(raster)
-#library(rgdal)
-#library(rgeos)
-#library(latticeExtra)
 library(randomForest)
 library(gdata)
 library(spdep) # for Rotation function
@@ -28,7 +24,7 @@ ThresholdSort = "weighted"
 print(ThresholdSort)
 
 # choose species
-Sp = "all" # choose a species (e.g. "Pippip") or "all" or "paper"
+Sp = "paper" # choose a species (e.g. "Pippip") or "all" or "paper"
 GroupSel="bat"
 #GroupSel=NA #sorting according to the group column of Specieslist (args[3), NA if no sorting
 ListPaper = c("Nyclei", "Nycnoc", "Eptser", "Pipkuh", "Pipnat", 
@@ -38,10 +34,15 @@ ListPaper = c("Nyclei", "Nycnoc", "Eptser", "Pipkuh", "Pipnat",
 DoBoruta = F
 
 # Duplicated dates
-DuplicateDate = F
+DuplicateDate = T
+nDates = 200
 
-# Types of coordinates? # "polar" or "rotated"
-CoordType = "rotated"
+# Types of coordinates? # "polar" or "rotated" or "noCoord" = remove coordinates
+CoordType = "polar"
+
+# Buffer type? "normal" = train dataset built with 200 m distance from test data
+# "LOCAL" = train dataset selected in a local buffer of 100 km
+BufferType = "normal"
 
 # if(ThresholdSort != "weighted"){
 #   args=paste0("/mnt/beegfs/ybas/VigieChiro/Raw/SpNuit2_", ThresholdSort, "_DataLP_PF_exportTot") #bat activity table (not DI !! --> need the file where microphone quality is sorted out) . file without csv extension
@@ -82,8 +83,9 @@ ProbThreshold=0 # a filter on the score_max parameter (takes all data superior o
 #min_dist = 200 # geographical distance in meters to create a custom test and train dataset
 #reps_process = 1 # how many trials should be made to sort train/test dataset (see buffer_CR.r)
 YearEffect=T
-MTRY = "npred" # "default" or "npred" ( = length(Predictors_Train) )
 DateLimit = Sys.Date()  # e.g.as.Date("2021-12-31") to use only data before this date; default = Sys.Date()
+MTRY = "2-3"  # "default" or "npred" or "2-3" for 2/3 of npred
+NTREE = 500
 
 dir.create(Output)
 
@@ -285,15 +287,15 @@ for (i in 1:length(ListSp))
     print("L225")
   }
   
-  # # If duplicated date wanted
-  # if(DuplicateDate){
-  #   sel_columns <- c(rep('SpCDate', 100), rep('SpSDate', 100))
-  #   DataSaison = as.data.frame(DataSaison)
-  #   DataSaison = cbind(DataSaison, 
-  #                setNames(DataSaison[sel_columns], paste0(sel_columns, c(1:100))))
-  #   print(dim(DataSaison))
-  #   print(DataSaison[1,])
-  # }
+  # If duplicated date wanted
+  if(DuplicateDate){
+    sel_columns <- c(rep('SpCDate', nDates), rep('SpSDate', nDates))
+    DataSaison = as.data.frame(DataSaison)
+    DataSaison = cbind(DataSaison,
+                       setNames(DataSaison[sel_columns], paste0(sel_columns, c(1:nDates))))
+    print(dim(DataSaison))
+    print(DataSaison[1,])
+  }
   
   # If year effect must be accounted for
   if(exists("YearEffect"))
@@ -304,6 +306,7 @@ for (i in 1:length(ListSp))
     }
   }
   
+  print(CoordType)
   if(CoordType == "rotated"){
     #add several rotated coordinates
     CoordDS=as.matrix(cbind(DataSaison$longitude,DataSaison$latitude)) #WGS84
@@ -316,30 +319,7 @@ for (i in 1:length(ListSp))
       DataSaison=cbind(DataSaison,Coordi[,1])
       names(DataSaison)[ncol(DataSaison)]=paste0("SpCoord",a)
     }
-  }else if(CoordType == "polar"){
-    #add polar coordinates
-    print(CoordType)
-    CoordDS=as.data.frame(cbind("longitude" = DataSaison$longitude, 
-                                "latitude" = DataSaison$latitude)) #WGS84
-    CoordDSL93=CoordDS %>% 
-      st_as_sf(coords=c("longitude", "latitude"), crs=4326) %>% 
-      st_transform(2154) %>%
-      mutate(x = st_coordinates(.)[,1],
-             y = st_coordinates(.)[,2]) %>%
-      as.data.frame %>%
-      select(x, y) %>%
-      as.matrix()
-    print("L230")
-    
-    CoordDS_polar = cart2pol(CoordDSL93) %>% 
-      as.data.frame()
-    
-    SpCoordAngle = CoordDS_polar$phi
-    SpCoordDistance = CoordDS_polar$r
-      
-    DataSaison=cbind(DataSaison, SpCoordAngle, SpCoordDistance)
   }
-  
   
   # Add material as predictor
   DataSaison$SpRecorder = DataSaison$detecteur_enregistreur_type
@@ -360,11 +340,9 @@ for (i in 1:length(ListSp))
                               "SpEptnil", "SpEptser", "SpHypsav")
   Prednames = Prednames[which(!Prednames %in% ListSpeciesDistribution )]
   
-  # If duplicated date wanted
-  if(DuplicateDate){
-    sel_columns <- c(rep('SpCDate', 99), rep('SpSDate', 99))
-    Prednames = c(Prednames, sel_columns)
-    #print(Prednames)
+  # If option = noCoord, then remove coordinates
+  if(CoordType == "noCoord"){
+    Prednames = Prednames[which(! grepl( "SpCoord", Prednames, fixed = TRUE)  )]
   }
   
   Predictors=DataSaison[,..Prednames]
@@ -383,6 +361,12 @@ for (i in 1:length(ListSp))
                " over a total of ", nrow(Stat1), " sites"))
   print(paste0("N opportunistic nights = ", length(which(grepl("Z", DataSaison$nom))), 
                " over a total of ", nrow(DataSaison), " nights"))
+  
+  PrednamesWTdate = Prednames[which(! grepl("Date", Prednames)  )]
+  print(paste0(length(PrednamesWTdate)+2, " predictors"))
+  if(DuplicateDate){
+    print(paste0("Date duplicated ", nDates, " times"))
+  }
   
   #seasonal subset
   #  DataSaison=subset(DataSaison,substr(DataSaison$`date part. debut`,4,5) %in% Saison)
@@ -461,7 +445,7 @@ for (i in 1:length(ListSp))
   Test_infoFinal=NULL
   rm(ModRF)
   START=Sys.time()
-  oper <- foreach (j =1:500) %dopar% {
+  oper <- foreach (j =1:NTREE) %dopar% {
     
     library(randomForest)
     
@@ -469,7 +453,12 @@ for (i in 1:length(ListSp))
     
     # create train/test datasets here
     START=Sys.time()
-    source(paste("/trinity/home/croemer/scripts_VC/","PCIA_use_buffer_to_create_train_and_test_datasets.R",sep=""), local = TRUE)
+    
+    if(BufferType=="LOCAL"){
+      source(paste("/trinity/home/croemer/scripts_VC/","PCIA_use_buffer_to_create_train_and_test_datasets_LOCAL.R",sep=""), local = TRUE)
+    }else{
+      source(paste("/trinity/home/croemer/scripts_VC/","PCIA_use_buffer_to_create_train_and_test_datasets.R",sep=""), local = TRUE)
+    }
     END=Sys.time()
     TIMEDIFF=END-START
     TIMEDIFF
@@ -478,6 +467,32 @@ for (i in 1:length(ListSp))
     print("A")
     
     # WARNING : if lot of NA in Predictors : many sites are lacking in CoordGIS. Need to update the table.
+    
+    #add polar coordinates
+    if(CoordType == "polar"){
+      CoordDS=as.data.frame(cbind("longitude" = DataSaison$longitude, 
+                                  "latitude" = DataSaison$latitude)) #WGS84
+
+      CoordDSL93=CoordDS %>%
+        st_as_sf(coords=c("longitude", "latitude"), crs=4326) %>%
+        st_transform(2154) %>%
+        mutate(x = st_coordinates(.)[,1],
+               y = st_coordinates(.)[,2]) %>%
+        as.data.frame %>%
+        select(x, y) %>%
+        as.matrix()
+      print("L230")
+      
+      Origin = sample(nrow(CoordDSL93), 1)
+      CoordDSL93_to_Origin = sweep(CoordDSL93, 2, CoordDSL93[Origin, ])
+      
+      CoordDS_polar = cart2pol(CoordDSL93_to_Origin) %>%
+        as.data.frame()
+      SpCoordAngle = CoordDS_polar$phi
+      SpCoordDistance = CoordDS_polar$r
+      
+      DataSaison=cbind(DataSaison, SpCoordAngle, SpCoordDistance)
+    }
     
     DataSaison_Train= DataSaison %>%
       left_join(xy93.3, by = c("longitude", "latitude")) %>%
@@ -513,12 +528,18 @@ for (i in 1:length(ListSp))
                               strata=paste(DataSaison_Train$id_site,DataSaison_Train$localite), 
                               importance=F)
     }else{
+      if(MTRY == "npred"){
+        MTRY2 = length(Predictors_Train)
+      }else{
+        MTRY2 = length(Predictors_Train)*2/3
+      }
       ModRFTemp<-randomForest(formula.Boruta, data=Dataset.RF, 
                               replace=F, 
                               ntree = 1, 
-                              mtry=length(Predictors_Train),
+                              mtry=MTRY2,
                               strata=paste(DataSaison_Train$id_site,DataSaison_Train$localite), 
                               importance=F)
+      
     }
     
     print("C")
@@ -582,9 +603,9 @@ for (i in 1:length(ListSp))
   
   
   if(DoBoruta == T){
-    suffix=paste0("_Boruta_", CoordType)
+    suffix=paste0("_Boruta_", CoordType, "_", NTREE, "_", MTRY)
   }else{
-    suffix=CoordType
+    suffix=paste0(CoordType, "_", NTREE, "_", MTRY)
   }
   
   fwrite(Dataframe_simobs_Final,paste0(Output,"/ModRFActLog_", ListSp[i], "_",

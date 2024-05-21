@@ -2,20 +2,20 @@ library(data.table)
 library(randomForest)
 library(spdep)
 library(tidyverse)
+# library(itertools)
+# library(foreach)
 library(pracma)
 
 # Predicts activity using the random forest models
 
 Threshold = "weighted" #weighted or 0 or 50 or 90
-DateModel = "2024-05-06" #date of modelling (exactly same writing as the folder name)
-CoordType = "noCoord" # Types of coordinates? # "polar" or "rotated" or "noCoord" or "" if old model
-MTRY = "default" # "default" or "npred" or "2-3" for 2/3 of npred
-NTREE = 500
+DateModel = "2024-03-29" #date of modelling (exactly same writing as the folder name)
+CoordType = "rotated" # Types of coordinates? # "polar" or "rotated" or "" if old model
 
 # List arguments #####
-args="all" #all species = "all", one species = e.g. "Pippip"
+args="Barbar" #all species = "all", one species = e.g. "Pippip"
 #args[2]="/mnt/beegfs/ybas/GI/GI_SysGrid__3e+05"
-args[2]="/mnt/beegfs/croemer/VigieChiro/SIG/SysGrid_500m_de_cote_FULL"
+args[2]="C:/Users/croemer01/Documents/Donnees vigie-chiro/SysGrid_500m_de_cote_FULL"
 #args[2]="/mnt/beegfs/croemer/VigieChiro/SIG/GI_FR_SysGrid_500m_de_cote_part1"
 #args[3]="2023-03-23" #date of modelling (exactly same writing as the folder name)
 args[3]=DateModel 
@@ -24,26 +24,20 @@ args[5]=Threshold
 args[6]="" # Use models from variable selection? yes : "_Boruta", no : ""
 args[11]=40 #number of coordinates projections (must be a division of 360) : 20, 24, 30, 40, 90
 #ModRF_Dir = "/mnt/beegfs/croemer/VigieChiro/ModPred/"
-ModRF_Dir = "/mnt/beegfs/croemer/VigieChiro/ModPred/"
-Output=paste0("/mnt/beegfs/croemer/VigieChiro/PredictionsModels/", args[5], "_", args[3], "/") #folder to copy models to 
+ModRF_Dir = "C:/Users/croemer01/Documents/Donnees vigie-chiro/ModPred/"
+Output=paste0("C:/Users/croemer01/Documents/Donnees vigie-chiro/PredictionsModels/", args[5], "_", args[3], "/") #folder to copy models to 
 YearEffect=T
-SpList = read_delim("/mnt/beegfs/croemer/VigieChiro/SpeciesList.csv", delim = ";")
-
-if(args[6] == "_Boruta"){
-  suffix=paste0("_Boruta_", CoordType, "_", NTREE, "_", MTRY)
-}else{
-  suffix=paste0(CoordType, "_", NTREE, "_", MTRY)
-}
+SpList = read_delim("C:/Users/croemer01/Documents/Donnees vigie-chiro/SpeciesList.csv", delim = ";")
 
 dir.create(Output)
 
 if(args[1]=="all"|args[1]=="All"){
   ModRF_list = list.files(paste0(ModRF_Dir, args[4], args[3]), 
-                          pattern=paste0(".+", "ActLog", ".+", args[6], suffix, ".learner"), full.names = T)
+                          pattern=paste0(".+", "ActLog", ".+", args[6], CoordType, ".learner"), full.names = T)
 }else{
   ModRF_file=paste0(ModRF_Dir, "VC", args[5], "PG_", args[3], "/ModRFActLog_",
-                    args[1],"VC",args[5], "_", DateModel, "_PG", args[6], suffix, ".learner")
-  #args[1],"VC",args[5], "_", "2021-12-31", "_PG", args[6], CoordType, ".learner")
+                    args[1],"VC",args[5], "_", DateModel, "_PG", args[6], CoordType, ".learner")
+                    #args[1],"VC",args[5], "_", "2021-12-31", "_PG", args[6], CoordType, ".learner")
   ModRF_list = list(ModRF_file)
 }
 
@@ -166,13 +160,10 @@ for (k in 1:length(ModRF_list)){
     
     # Make predictions ####
     print("M61")
-    #print(memory.size())
     PredLoc=predict(ModRF,CoordSIG)
     print("M63")
-    #print(memory.size())
     PredAll=predict(ModRF,CoordSIG,predict.all=T)[[2]]
     print("M65")
-    #print(memory.size())
     PredErr=apply(PredAll,MARGIN=1,FUN=sd)
     print("M67")
     
@@ -187,10 +178,6 @@ for (k in 1:length(ModRF_list)){
     CoordSIG_sf$pred=PredLoc
     CoordSIG_sf$err=PredErr
     
-    rm(PredLoc)
-    rm(PredAll)
-    rm(PredErr)
-    
     #spplot(CoordSIG,zcol="pred",main=args[1])
     #spplot(CoordSIG,zcol="err")
     
@@ -198,6 +185,12 @@ for (k in 1:length(ModRF_list)){
     Coord=subset(Coord,select=c("X","Y","pred","err"))
     #Coord=subset(Coord,select=c("Group.1","Group.2","pred","err"))
     print("M76")
+    
+    if(args[6] == "_Boruta"){
+      suffix=paste0("_Boruta_", CoordType)
+    }else{
+      suffix=CoordType
+    }
     
     # Save
     FilName=paste0(Output

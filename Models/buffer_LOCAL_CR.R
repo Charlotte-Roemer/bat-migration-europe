@@ -1,5 +1,8 @@
-# Selects points randomly in the dataset and puts them in the new dataset A or B
-# To do this, it checks whether the selected point is close to points already put in A or B
+# Selects points randomly in the dataset and puts them in the new dataset A (test) or B (train)
+# To do this, it checks whether the selected point is in a buffer of max_dist from B
+# If yes it puts it in B, else in A
+
+# It then checks whether the selected point is close to points already put in A or B
 # And puts it in the dataset where it is closer to
 # Some points are close to A and to B and will not be put in A nor in B
 # The process is repeated "reps" times and then the biggest dataset (A+B) is chosen
@@ -8,10 +11,10 @@
 # buffer = distance threshold between points (use the same unit as the coordinates)
 # reps = repetitions of process x times to choose biggest dataset among x trials
 
-buffer.f <- function(foo, buffer, reps){
+buffer.f <- function(foo, buffer, max_dist, reps){
   
   print(paste0 ("Sampling random points to create train and test datasets:"))
-                
+  
   # Make list of suitable tables
   suitable = list()
   for (k in 1:reps){
@@ -39,35 +42,25 @@ buffer.f <- function(foo, buffer, reps){
       
       # TEST=rbind (TEST, outpoint)
       
-      if(nrow(A) >0){
-        if(nrow(B)>0){
-          # If point is close to A points but far from B points, then goes to A
-          if(TRUE %in%  (sqrt((A$x-outcoord$x)^2 + (A$y-outcoord$y)^2)<buffer) &
-             !TRUE %in%  (sqrt((B$x-outcoord$x)^2 + (B$y-outcoord$y)^2)<buffer)){
-            A = rbind(A,foo[which(rownames(foo)==outpoint),])
-            # If point is close to B points but far from A points, then goes to B
-          }else if(TRUE %in%  (sqrt((B$x-outcoord$x)^2 + (B$y-outcoord$y)^2)<buffer) &
-                   !TRUE %in%  (sqrt((A$x-outcoord$x)^2 + (A$y-outcoord$y)^2)<buffer)){
+      if(nrow(B) >0){
+        if(nrow(A)>0){
+          # If point is close to B points then goes to B
+          if(TRUE %in%  (sqrt((Origin$x-outcoord$x)^2 + (Origin$y-outcoord$y)^2)<max_dist)){
             B = rbind(B,foo[which(rownames(foo)==outpoint),])
-            # If point is far to A and B points ...
-          }else if (!TRUE %in%  (sqrt((A$x-outcoord$x)^2 + (A$y-outcoord$y)^2)<buffer) &
-                    !TRUE %in%  (sqrt((B$x-outcoord$x)^2 + (B$y-outcoord$y)^2)<buffer)){
-            if(i %in% seq(1, nrow(foo), 3)){ # ... goes to A once every three cases to have approximately 33% A /66% B
-              A = rbind(A,foo[which(rownames(foo)==outpoint),])
-            }else{
-              B = rbind(B,foo[which(rownames(foo)==outpoint),])
-            }
+            # If point is close to B points but far from A points, then goes to B
+          }else{
+            A = rbind(A,foo[which(rownames(foo)==outpoint),])
           }
         }else{
-          B = rbind(B,foo[which(rownames(foo)==outpoint),])
+          A = rbind(A,foo[which(rownames(foo)==outpoint),])
         }
       }else{
-        A = rbind(A,foo[which(rownames(foo)==outpoint),])
+        B = rbind(B,foo[which(rownames(foo)==outpoint),])
+        Origin = rbind(B,foo[which(rownames(foo)==outpoint),])
       }
-      
     }
     
-    # Bind A and B
+     # Bind A and B
     A$type ="test"
     B$type ="train"
     outdata = rbind(A,B)

@@ -10,7 +10,7 @@
 #SBATCH --ntasks-per-node=1
 
 # Nom du job
-#SBATCH --job-name=Connectivite
+#SBATCH --job-name=empty_grid
 
 # Quantité de RAM par noeud
 #SBATCH --mem=20G

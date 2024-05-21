@@ -10,7 +10,10 @@ library(beepr)
 #ThresholdSort="0_VC0V_Yves"
 ThresholdSort="weighted"
 #DateModel="_2023-03" #date of prediction (exactly same writing as the folder name)
-DateModel="_2023-11-17" #date of prediction (exactly same writing as the folder name)
+DateModel="_2024-05-06" #date of prediction (exactly same writing as the folder name)
+CoordType = "noCoord" # Types of coordinates? # "polar" or "rotated" or "noCoord" or "" if old model
+MTRY = "default" # "default" or "npred" or "2-3" for 2/3 of npred
+NTREE = 500
 
 arg <- "C:/Users/croemer01/Documents/SIG/Delimitations_pays/REGION.shp" # french contour
 arg[2] <- "C:/Users/croemer01/Documents/Post-Doc/Classificateur/SpeciesListComplete.csv" # species list
@@ -35,7 +38,8 @@ france_f <- france %>%
 sp_list <- fread(arg[2])
 
 # Load predictions
-list_file <- list.files(arg[3],recursive=FALSE,pattern="*.csv$")
+PATTERN = paste0(NTREE, "_", MTRY)
+list_file <- list.files(arg[3],recursive=FALSE,pattern=paste0("*.", PATTERN))
 ls2 = paste(paste0(arg[3],"/",list_file, sep=""))
 ld <- lapply(ls2, function(x) read_csv(x, show_col_types = F))
 ld <- mapply(cbind, ld, "Species"=tstrsplit(list_file,split="_")[[1]], SIMPLIFY=F) # add column with species name
@@ -45,7 +49,7 @@ ld <- mapply(cbind, ld, "Day"=tstrsplit(tstrsplit(list_file,split="_")[[3]], spl
 file_bind <- do.call("rbind",ld)
 
 file_bind2 = subset(file_bind,file_bind$Species=="Nyclei")
-Sample=file_bind[sample(c(1:nrow(file_bind2)),100000),]
+Sample=file_bind2[sample(c(1:nrow(file_bind2)),100000),]
 boxplot(Sample$pred~Sample$Month)
 
 # Back-transform predictions
@@ -66,13 +70,16 @@ for (i in 1:length(names(table(file_bind$Species)))) { # For each species
   PourMaxScale=subset(dataa, (as.numeric(dataa$Month)<11 & as.numeric(dataa$Month)>6)) 
   MaxScale=quantile(subset(PourMaxScale$pred,PourMaxScale$pred>2),0.98)
   #MaxScale=max(PourMaxScale$pred)
+  #MaxScale=max(dataa$pred)
   if(is.na(MaxScale)){MaxScale=0.1}
   ScaleLimit=c(0, MaxScale)
   
   # Plot predictions for each month ####
   for (j in 1:length(names(table(dataa$Month)))){
-    for (k in 1:2){
-      NamePlot1=paste0(arg[4], "/", Sp,"_", names(table(dataa$Month))[j],"_",names(table(dataa$Day))[k],".png")
+    for (k in 1:2)
+      {
+      NamePlot1=paste0(arg[4], "/", Sp,"_", names(table(dataa$Month))[j],"_",
+                       names(table(dataa$Day))[k], "_", PATTERN, ".png")
       # png(filename=NamePlot1, width = 3000, height = 2500, res=300)
       
       dataa_Month=subset(dataa, dataa$Month==names(table(dataa$Month))[j] & dataa$Day==names(table(dataa$Day))[k])

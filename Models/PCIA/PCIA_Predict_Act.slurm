@@ -10,15 +10,18 @@
 #SBATCH --ntasks-per-node=1
 
 # Nom du job
-#SBATCH --job-name=TEST_Charlotte
+#SBATCH --job-name=Predict_Act
 
 # Quantité de RAM par noeud
-#SBATCH --mem=20G
+#SBATCH --mem=150G
 
-# Quel type de machine demander (type_1 ou type_2)
-#SBATCH --partition=type_2
+# Quantité de RAM par CPU
+#SBATCH --mem-per-cpu=150G
+
+# Quel type de machine demander (type_1 ou type_2 ou high_mem)
+#SBATCH --partition=high_mem
  
-#SBATCH --time=5-00:00:00
+#SBATCH --time=6-00:00:00
 
 # Chargement des modules : paquets de packages. si un package manque il faut demander à pcia
 module load userspace/tr17.10
