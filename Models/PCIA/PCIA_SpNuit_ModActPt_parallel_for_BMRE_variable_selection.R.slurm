@@ -6,6 +6,9 @@
 # Nombre de Noeud
 #SBATCH --nodes=1
 
+# Nom du Noeud
+--nodelist=node-06
+
 # Nombre de processeur par noeud. si on a un script qui parallelise alors on peut augmenter le nombre de noeuds
 #SBATCH --ntasks-per-node=10
 

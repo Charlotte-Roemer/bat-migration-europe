@@ -9,10 +9,10 @@ library(corrplot)
 library(sf)
 library(grid)
 
-DateModel="2023-11-17" #date of prediction (exactly same writing as the folder name)
+DateModel="2023-06-24" #date of prediction (exactly same writing as the folder name)
 
 SpList <- "C:/Users/croemer01/Documents/Post-Doc/Classificateur/SpeciesListComplete.csv" # species list
-PredDir <- "C:/Users/croemer01/Documents/Donnees vigie-chiro/PredictionsModels" # repertory with outputs from Predict_act
+PredDir <- "C:/Users/croemer01/Documents/Donnees vigie-chiro/PredictionsModels/testALAN" # repertory with outputs from Predict_act
 
 olaps <- function(sp1, sp2, sp3, sp4){
   ## Calculate Schoener's D, Warren's I, and Spearman
@@ -106,9 +106,9 @@ file_bind <- do.call("rbind",ld)
 file_bind$pred=(10^(file_bind$pred))-1
 
 #ListSpdata = names(table(file_bind$Species))
-ListSpdata = c("Barbar", "Pipnat")
+ListSpdata = c("Myodau")
 #ListMonthdata = names(table(file_bind$Month))
-ListMonthdata = c("04", "08", "10")
+ListMonthdata = c("03", "07", "10")
 
 list_diff_names = c("dataa_diff_0_50", "dataa_diff_0_90", "dataa_diff_0_Weighted",
                     "dataa_diff_50_90", "dataa_diff_50_Weighted", "dataa_diff_90_Weighted")

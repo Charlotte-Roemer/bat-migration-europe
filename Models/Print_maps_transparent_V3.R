@@ -10,8 +10,8 @@ library(beepr)
 #ThresholdSort="0_VC0V_Yves"
 ThresholdSort="weighted"
 #DateModel="_2023-03" #date of prediction (exactly same writing as the folder name)
-DateModel="_2024-05-06" #date of prediction (exactly same writing as the folder name)
-CoordType = "noCoord" # Types of coordinates? # "polar" or "rotated" or "noCoord" or "" if old model
+DateModel="_2024-06-24" #date of prediction (exactly same writing as the folder name)
+CoordType = "rotated" # Types of coordinates? # "polar" or "rotated" or "noCoord" or "" if old model
 MTRY = "default" # "default" or "npred" or "2-3" for 2/3 of npred
 NTREE = 500
 
@@ -48,9 +48,9 @@ ld <- mapply(cbind, ld, "Day"=tstrsplit(tstrsplit(list_file,split="_")[[3]], spl
 
 file_bind <- do.call("rbind",ld)
 
-file_bind2 = subset(file_bind,file_bind$Species=="Nyclei")
-Sample=file_bind2[sample(c(1:nrow(file_bind2)),100000),]
-boxplot(Sample$pred~Sample$Month)
+# file_bind2 = subset(file_bind,file_bind$Species=="Nyclei")
+# Sample=file_bind2[sample(c(1:nrow(file_bind2)),100000),]
+# boxplot(Sample$pred~Sample$Month)
 
 # Back-transform predictions
 file_bind$pred=(10^(file_bind$pred))-1
