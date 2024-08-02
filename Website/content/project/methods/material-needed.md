@@ -15,7 +15,7 @@ For this project, acoustic recordings from anywhere in geographical Europe are w
 
 Data
 - Full-night and full-spectrum recordings
-- .wav files OR acoustic parameters provided by the TADARIDA software (.ta files)
+- WAW or RAW files OR acoustic parameters provided by the TADARIDA software (.ta files)
 
 Metadata required
 - Detector type and settings

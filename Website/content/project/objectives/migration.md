@@ -19,7 +19,7 @@ Bats can cover distances superior to 2,000 km. Several long-distance migrating s
 - *Nyctalus leisleri*
 - *Pipistrellus nathusii*
 - *Vespertilio murinus*
-- *Nyctalus lasiopterus* (?)
+- *Nyctalus lasiopterus*
 
 When migrating, bats are particularly present at:
 

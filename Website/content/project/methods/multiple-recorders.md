@@ -12,7 +12,7 @@ weight: 130
         <img src="/images/material.png" alt="" width="580px" style="padding-right:50px" align="left"/>
     </td>
     <td style='text-align:left;'>
-- This project opens the opportunity to review of the most common uses of settings and machines in Europe.
+- This project opens the opportunity to review the most common uses of settings and machines in Europe.
 
 - This review will allow to define which possibilities exist to work on a common dataset, using for example:
     * Field tests to define which settings/machines give similar results

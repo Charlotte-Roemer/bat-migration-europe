@@ -15,7 +15,7 @@ weight: 110
     <td style="width:500px">
 
 Recordings of bat echolocation calls are easy to collect
-- Material is cheaper and cheaper
+- Material has become relatively cheap
 - Setting up a passive recorder in the field is quick and easy
 - Data process can be automated
 - The process is not intrusive (no need to capture or disturb bats)
