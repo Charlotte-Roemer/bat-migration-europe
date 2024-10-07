@@ -30,7 +30,7 @@ for (i in 1:length(Grid.list)){
 
 print(columnnamesTot)
 write_delim(columnnamesTot,  paste0(DirName, "/", "columnnamesTot.csv"), delim = ";")
-write_delim(GridTot,  paste0(DirName, "/", "SysGrid_500m_de_cote_FULL.csv"), delim = ";")
+write_delim(GridTot,  paste0(DirName, "/", "SysGrid_500m_de_cote_FULL_with_habitat.csv"), delim = ";")
 
 
 

@@ -54,8 +54,10 @@ prepare_data <- function(ARGS, FPAR, FSL){
   numPar=subset(c(1:length(testPar)),testPar)
   CoordPS$participation=as.data.frame(CoordPS)[,numPar[1]]
   
-  return(CoordPS) # environmental variables
-  return(DataCPL3) # bat activity (without absence data)
-  return(SelParSL) # list of sampling sessions to know when to add absence data
+  return(list(
+  CoordPS, # environmental variables
+  DataCPL3, # bat activity (without absence data)
+  SelParSL # list of sampling sessions to know when to add absence data
+  ))
   
 }

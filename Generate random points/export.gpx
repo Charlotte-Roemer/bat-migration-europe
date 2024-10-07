@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<gpx xmlns="http://www.topografix.com/GPX/1/1" version="1.1" creator="https://mapy.cz/">
+	<wpt lat="50.786323" lon="14.032357">
+		<ele>588.511841</ele>
+		<name>Nový bod</name>
+	</wpt>
+	<wpt lat="50.706379" lon="13.730920">
+		<ele>855.801880</ele>
+		<name>Nový bod</name>
+	</wpt>
+	<wpt lat="50.592310" lon="13.442529">
+		<ele>726.829285</ele>
+		<name>Nový bod</name>
+	</wpt>
+	<wpt lat="50.450865" lon="13.366311">
+		<ele>384.694946</ele>
+		<name>Nový bod</name>
+	</wpt>
+	<wpt lat="50.323903" lon="13.564752">
+		<ele>261.386322</ele>
+		<name>Nový bod</name>
+	</wpt>
+	<wpt lat="50.357208" lon="13.875802">
+		<ele>188.414749</ele>
+		<name>Nový bod</name>
+	</wpt>
+	<wpt lat="50.411937" lon="14.206765">
+		<ele>219.387238</ele>
+		<name>Nový bod</name>
+	</wpt>
+	<wpt lat="50.413687" lon="14.366754">
+		<ele>213.851929</ele>
+		<name>Nový bod</name>
+	</wpt>
+	<wpt lat="50.491945" lon="14.483483">
+		<ele>224.447830</ele>
+		<name>Nový bod</name>
+	</wpt>
+	<wpt lat="50.660698" lon="14.351647">
+		<ele>521.018982</ele>
+		<name>Nový bod</name>
+	</wpt>
+	<wpt lat="50.801948" lon="14.243158">
+		<ele>308.092438</ele>
+		<name>Nový bod</name>
+	</wpt>
+	<wpt lat="50.798477" lon="14.069436">
+		<ele>549.565735</ele>
+		<name>Nový bod</name>
+	</wpt>
+</gpx>
+

@@ -10,9 +10,9 @@ library(beepr)
 #ThresholdSort="0_VC0V_Yves"
 ThresholdSort="weighted"
 #DateModel="_2023-03" #date of prediction (exactly same writing as the folder name)
-DateModel="_2024-06-24" #date of prediction (exactly same writing as the folder name)
-CoordType = "rotated" # Types of coordinates? # "polar" or "rotated" or "noCoord" or "" if old model
-MTRY = "default" # "default" or "npred" or "2-3" for 2/3 of npred
+DateModel="_2024-09-17" #date of prediction (exactly same writing as the folder name)
+CoordType = "EDF" # Spatial proxies in predictors: "LongLat" = X + Y ; "EDF" = X + Y + Euclidian Distance Fields ;  "noCoord" = no coordinates
+#MTRY = "default" # "default" or "npred" or "2-3" for 2/3 of npred
 NTREE = 500
 
 arg <- "C:/Users/croemer01/Documents/SIG/Delimitations_pays/REGION.shp" # french contour
@@ -38,7 +38,7 @@ france_f <- france %>%
 sp_list <- fread(arg[2])
 
 # Load predictions
-PATTERN = paste0(NTREE, "_", MTRY)
+PATTERN = "SysGrid_500m_de_cote_FULL.csv"
 list_file <- list.files(arg[3],recursive=FALSE,pattern=paste0("*.", PATTERN))
 ls2 = paste(paste0(arg[3],"/",list_file, sep=""))
 ld <- lapply(ls2, function(x) read_csv(x, show_col_types = F))
@@ -71,8 +71,6 @@ for (i in 1:length(names(table(file_bind$Species)))) { # For each species
   MaxScale=quantile(subset(PourMaxScale$pred,PourMaxScale$pred>2),0.98)
   #MaxScale=max(PourMaxScale$pred)
   #MaxScale=max(dataa$pred)
-  if(is.na(MaxScale)){MaxScale=0.1}
-  ScaleLimit=c(0, MaxScale)
   
   # Plot predictions for each month ####
   for (j in 1:length(names(table(dataa$Month)))){
@@ -101,6 +99,9 @@ for (i in 1:length(names(table(file_bind$Species)))) { # For each species
       dataa_Month5$z[dataa_Month5$z==0] <- NA
       
       print(Month_name)
+      
+      if(is.na(MaxScale)){MaxScale=max(dataa_Month$pred)}
+      ScaleLimit=c(0, MaxScale)
       
       plot1 <- ggplot()+
         

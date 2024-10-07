@@ -26,9 +26,6 @@
 # Chargement des modules : paquets de packages. si un package manque il faut demander à pcia
 module load userspace/tr17.10
 module load biology
-
-module load userspace/tr17.10
-module load biology
 module load gcc/7.2.0        
 module load lapack/3.7.1
 module load blas/gcc72/3.7.1
