@@ -9,6 +9,20 @@ weight: 100
 
 ___
 
+_20 of December 2024_  
+
+The map of participations was updated [here]({{< ref "/project/participations" >}} "Participations"). 
+
+This end of the year we were lucky to welcome Thomas Sévère in the team. Thomas helps finishing the publication about the species distribution and connectivity models. 
+
+The collection of sounds continues and we now collected 8,782 sites (40,506) thanks to 62 partners. You can find the poster that we presented at the European Bat Research Symposium in Tarragona (Spain) in September [here](https://b2drop.eudat.eu/s/RS2TNHpiTBznjzz). 
+
+The poster also presents some preliminary results from our trainee Alexandre Grave, who compared results produced with different bat recorders and investigated one way to account for the variability of the results due to the material. Next summer we plan to have two other trainees investigate another way of accounting for this variability. These results will be useful to handle the dataset collected at the European scale.
+
+There are still a few Audiomoths left, so don’t hesitate to spread the word to colleagues from eligible countries! More information [here]({{< ref "/project/audiomoth-donation" >}}.
+
+___
+
 _16 of May 2023_  
 
 The map of participations was updated [here]({{< ref "/project/participations" >}} "Participations"). 
