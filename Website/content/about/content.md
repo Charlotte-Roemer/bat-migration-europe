@@ -39,7 +39,8 @@ ___
 <br />
 
 All of the members of the coordination team are part of the CESCO lab.
-Charlotte Roemer coordinates the project and is in charge of collecting the data and analysing them under the supervision of Christian Kerbiriou.
+Charlotte Roemer coordinates the project and is in charge of collecting the data and analysing them under the supervision of Christian Kerbiriou. Thomas Sévère is assisting for the
+development of species distribution models.
 Yves Bas provides counselling for data management and analysis.
 
 To find more about the coordination team, please visit the [Team Chiro's website](https://croemer3.wixsite.com/teamchiro/team).
