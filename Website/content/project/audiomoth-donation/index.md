@@ -1,9 +1,11 @@
 ---
 background: light
 fragment: content
-title: Audiomoths donation
+title: Audiomoths donation (closed)
 weight: 140
 ---
+
+This donation programme is now closed.
 
 <figure align="center">
 
