@@ -12,18 +12,16 @@ These bat recorders were donated in exchange for sounds in WAV format, that cont
 
 30 selected applicants received at least one Audiomoth (up to 10) and a micro SD card of 32 Go. This map represents the number of Audiomoths distributed by country:
 
-<br>
-</br>
+
 <center> 
 
 <img src="/images/Map_Audiomoths.png" alt="" width="600px"/>
 
-<br>
-</br>
-<center> 
+[<img src="/images/EUROBATS_logo.png" alt="" width="100px"/>](https://www.eurobats.org/activities/project_initiative)
+[<img src="/images/Naturalia_logo.png" alt="" width="200px"/>](https://www.naturalia-environnement.fr/)
+[EUROBATS](https://www.eurobats.org/activities/project_initiative)  and [Naturalia Environnement](https://www.naturalia-environnement.fr/) funded this Audiomoth donation.
 
 [<img src="/images/logo_labmaker.png" alt="" width="200px"/>](https://www.labmaker.org/)
-
-[LabMaker](https://www.labmaker.org/) was our sponsor for this Audiomoth donation.
+[LabMaker](https://www.labmaker.org/) was our sponsor.
 
 </center> 
