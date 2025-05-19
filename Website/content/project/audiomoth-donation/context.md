@@ -12,6 +12,8 @@ These bat recorders were donated in exchange for sounds in WAV format, that cont
 
 30 selected applicants received at least one Audiomoth (up to 10) and a micro SD card of 32 Go. This map represents the number of Audiomoths distributed by country:
 
+<img src="/images/Map_Audiomoths.png" alt="" width="600px"/>
+
 <br>
 </br>
 <center> 
