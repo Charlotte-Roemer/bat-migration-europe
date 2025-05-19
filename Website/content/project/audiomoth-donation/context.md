@@ -18,10 +18,11 @@ These bat recorders were donated in exchange for sounds in WAV format, that cont
 <img src="/images/Map_Audiomoths.png" alt="" width="600px"/>
 
 [<img src="/images/EUROBATS_logo.png" alt="" width="100px"/>](https://www.eurobats.org/activities/project_initiative)
+and
 [<img src="/images/Naturalia_logo.png" alt="" width="200px"/>](https://www.naturalia-environnement.fr/)
-[EUROBATS](https://www.eurobats.org/activities/project_initiative)  and [Naturalia Environnement](https://www.naturalia-environnement.fr/) funded this Audiomoth donation.
+funded this Audiomoth donation.
 
 [<img src="/images/logo_labmaker.png" alt="" width="200px"/>](https://www.labmaker.org/)
-[LabMaker](https://www.labmaker.org/) was our sponsor.
+was our sponsor.
 
 </center> 
