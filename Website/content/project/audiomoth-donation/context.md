@@ -18,6 +18,6 @@ These bat recorders were donated in exchange for sounds in WAV format, that cont
 
 [<img src="/images/logo_labmaker.png" alt="" width="200px"/>](https://www.labmaker.org/)
 
-[LabMaker](https://www.labmaker.org/) is our sponsor for this Audiomoth donation.
+[LabMaker](https://www.labmaker.org/) was our sponsor for this Audiomoth donation.
 
 </center> 
