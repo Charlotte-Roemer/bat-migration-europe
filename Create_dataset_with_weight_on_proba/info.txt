@@ -1,3 +1,28 @@
+# extr_PF_DataLP
+This script launches either extr_PF_DataLP or extr_PF_ActNuit_BMRE.
+- Choose which script you want to run 
+- Adapt the paths to your computer
+- Check that the prefixes are complete
+- 
+
+# extr_PF_DataLP
+Must be run before to add metadata associated with the participation (location, etc.). Merges tables to create DataLP.
+This scripts loads csv tables starting with "export_" and ending with a number. 
+It creates tables csv tables starting with "DataLP_PF_export_" and ending with a number. 
+So if DataLP_PF_export_ already exist in your repertory you don't have to run PCIA_extr_PF_DataLP.
+
+# extr_PF_ActNuit_BMRE 
+Can be run after PCIA_extr_PF_DataLP to summarise bat activity counts per night.
+This scripts loads csv tables starting with "DataLP_PF_export_" and ending with a number. 
+So if DataLP_PF_export_ already exist in your repertory you can run this script directly.
+
+
+
+
+
+
+######################################
+
 Yves :
 Comme convenu, ci-joint le script extr_PF_ActNuit qui comptabilise les contacts par nuit et d'autres métriques
 Je t'ai mis aussi le script qui intervient **en amont** "extr_PF_DataLP" qui ajoute les variables de localisation et de participation

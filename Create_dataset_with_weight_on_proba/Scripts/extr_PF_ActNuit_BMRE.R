@@ -1,11 +1,18 @@
+
+# Summary of bat activity per night
+
 library(data.table)
 library(StreamMetabolism)
 
 WDF=T
 if(!exists("FRaw"))
 {
+  Threshold="0" #score threshold
+  RandomResample=T # should raw files be resampled with weight on probability?
+  RandomResample = ifelse(Threshold != 0, F, RandomResample)
+  Threshold = ifelse(RandomResample==T, 0, Threshold)
+  
   args=""
-  args[3]=50 #score threshold
   args[4]="C:/Users/croemer01/Documents/Donnees vigie-chiro/export/export_5ff.csv" # if you want to run just for this one
   args[10]="/mnt/beegfs/croemer/VigieChiro/" #output dir
   args[14]=""
@@ -19,7 +26,7 @@ if(!exists("FRaw"))
 }
 
 # Read species list
-SpeciesList=fread("/mnt/beegfs/croemer/VigieChiro/SpeciesList.csv")
+SpeciesList=fread("/home/charlotte/Documents/Donnees vigie-chiro/SpeciesList.csv")
 
 Filter=args[14]
 TimeFilterH=args[12]
@@ -97,6 +104,7 @@ if(as.logical(args[15])) #sort out doubtful data (mic sensitivity problem)
 }else{
   PrefDoubt="DI"
 }
+rm(DataPip)
 
 if(nrow(DataLP)>0)
 {
@@ -148,6 +156,9 @@ if(nrow(DataLP)>0)
   Sys.time()
   DataLPS[,PropH:=Prop]
   Sys.time()
+  rm(Prop1)
+  rm(Prop2)
+  rm(Prop)
   
   
   if(Filter=="sunrise")
@@ -188,9 +199,9 @@ if(nrow(DataLP)>0)
       rm(DataLPS)
       
       
-      #ColS=match(args[3],colnames(DataLPSG))
+      #ColS=match(Threshold,colnames(DataLPSG))
       Sys.time()
-      ColSeuil=match(args[3],names(DataLPSG))
+      ColSeuil=match(Threshold,names(DataLPSG))
       Fiable=(DataLPSG$probabilite>DataLPSG[,..ColSeuil])
       Sys.time()
       table(Fiable,DataLPSG$espece)
@@ -205,9 +216,9 @@ if(nrow(DataLP)>0)
                             ,groupe=GroupList$Group)
       DataLPSG=merge(DataLPS,GroupSimpl,by="espece")
       
-      DataFiable=subset(DataLPSG,DataLPSG$probabilite>=(as.numeric(args[3])/100)) # 10 sec 
-      
-      # if(as.numeric(args[3])>=50){
+      DataFiable=subset(DataLPSG,DataLPSG$probabilite>=(as.numeric(Threshold)/100)) # 10 sec 
+      rm(DataLPSG)
+      # if(as.numeric(Threshold)>=50){
       #    DataFiable=subset(DataFiable,!as.logical(DataFiable$doubtful))
       # }
       
@@ -218,12 +229,14 @@ if(nrow(DataLP)>0)
       DataLPSG=merge(DataLPS,GroupSimpl,by="espece")
       index<-sample(1:nrow(DataLPSG), nrow(DataLPSG), prob = DataLPSG$probabilite, replace = T)
       DataFiable = DataLPSG[index,]
+      rm(DataLPSG)
     }
     
     if(WDF)
     {
       if(RandomResample){
         fwrite(DataFiable,paste0(args[18],"/weighted_",basename(args[4])))
+        
       }else{
         #fwrite(DataFiable,paste0(args[10],basename(args[4])))
       }
@@ -431,6 +444,7 @@ if(nrow(DataLP)>0)
                                   ,DataFiable$DateNuit
                                   ,DataFiable$DataMicFinal)
                          ,FUN=max)
+    rm(DataFiable)
     Sys.time()
     DataDecPNM=cbind(DataDMinSr,DataDMaxSr$x,DataDMinSt$x,DataDMaxSt$x)
     colnames(DataDecPNM)=c("participation","Nuit","num_micro"
@@ -471,7 +485,7 @@ if(nrow(DataLP)>0)
       DataPF_SpNuit2[is.na(DataPF_SpNuit2)]=""
       
       NameFile=paste0(args[18],"/SpNuit2Valid_",PrefDoubt,Filter,TimeFilterL,"_"
-                      ,TimeFilterH,"_",args[3],"_",basename(args[4]))
+                      ,TimeFilterH,"_",Threshold,"_",basename(args[4]))
       
     }else{
       if(RandomResample){
@@ -479,7 +493,7 @@ if(nrow(DataLP)>0)
                         ,TimeFilterH,"_","weighted_", basename(args[4]))
       }else{
         NameFile=paste0(args[18],"/SpNuit2_",PrefDoubt,Filter,TimeFilterL,"_"
-                        ,TimeFilterH,"_",args[3],"_",basename(args[4]))
+                        ,TimeFilterH,"_",Threshold,"_",basename(args[4]))
       }
       
       

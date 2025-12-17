@@ -1,3 +1,7 @@
+
+# Adds metadata associated with the participation (location, ...)
+# Merges tables to create DataLP
+
 library(data.table)
 library(StreamMetabolism)
 #library(dplyr)
@@ -8,22 +12,22 @@ if(length(args)<2){
   args="PrefPart"
   args[4]="C:/Users/croemer01/Documents/Donnees vigie-chiro/export/export_5ff.csv"
   #args[4]="test.csv"
-  args[10]="C:/Users/croemer01/Documents/Donnees vigie-chiro/export/"
+  args[10]="/mnt/beegfs/ybas/VigieChiro/Raw"
   #ETAPE 0 - IMPORT DES TABLES
   #bien renommer les chemins en fonction de l'ordi utilise
   #et verifier les versions (date, import complet ou non)
-  DataDir="C:/Users/croemer01/Documents/Donnees vigie-chiro/"
-  args[3]="0"
+  DataDir="/mnt/beegfs/ybas/VigieChiro/"
+  #args[3]="0"
   args[12]=""
   args[13]=""
   args[14]=""
   args[15]=F #sort out doubtful data (probable hardware problems)
   args[16]="mnt/VigieChiro/export_validtot210408.txt"
   args[17]=F #correct for validation or not
-  
+  args[18] = "/mnt/beegfs/croemer/VigieChiro/Raw"
   
 }else{
-  DataDir="C:/Users/croemer01/Documents/Donnees vigie-chiro/"
+  DataDir="/home/charlotte/Documents/Donnees vigie-chiro/"
 }
 
 #table "donnees"
@@ -55,7 +59,7 @@ if(nrow(DataPF)>0)
   print(dim(Particip))
   #table "localit�s"
   SiteLoc=fread(paste0(DataDir,"/sites_localites.txt")
-                ,sep="\t")
+                ,sep=";")
   print("dim SiteLoc :")
   print(dim(SiteLoc))
   
@@ -225,7 +229,7 @@ if(nrow(DataPF)>0)
   test=subset(DataSel2,is.na(TempsEnregistrement2))
   #print(summary(test))
   Partbug=levels(as.factor(test$participation))
-  fwrite(as.data.frame(Partbug),paste0(DataDir,"Partbug_PF_LP_",basename(args[4])))
+  fwrite(as.data.frame(Partbug),paste0(args[18],"Partbug_PF_LP_",basename(args[4])))
   Sys.time()
   pourDateNuit=TempsEnregistrement2-12*3600 #bricolage-d�calage de 12 heures pour ramener � la date du d�but de nuit
   Sys.time()
@@ -335,7 +339,7 @@ if(nrow(DataPF)>0)
   #       ,ylim=c(0,10000))
   #boxplot(DataLPM$probabilite~DataLPM$doubtful)
   Sys.time()
-  fwrite(DataLPM,paste0(args[10],"/DataLP_PF_",basename(args[4])),row.names=F) # 1 min
+  fwrite(DataLPM,paste0(args[18],"/DataLP_PF_",basename(args[4])),row.names=F) # 1 min
   Sys.time()
   
   test=("606e250b8de067001092583e" %in% DataLPM$participation)
