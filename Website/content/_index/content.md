@@ -7,6 +7,25 @@ weight: 100
 
 <center>  
 
+
+___
+
+_19 of December 2025_  
+
+The map of participations was updated [here]({{< ref "/project/participations" >}} "Participations"). 
+
+All Audiomoths have been donated. The detailed report of the operation can be downloaded on the [EUROBATS Projects Initiative page](https://www.eurobats.org/node/45634#overview).
+
+We conducted field tests to compare the sensitivity of the four most popular recorders in our project: SM4BAT, Audiomoth, Batcorder and Batlogger.
+The recorders were programmed with different trigger sensitivities to model the sensitivity curves of the different recorders, 
+and to calculate correction factors to normalise the results. We will conduct additional field tests this spring to complete the dataset.
+
+We have collected 8,880 sites (42,681 nights) on our server thanks to 65 partners of the project. Many thanks to all of them! 
+For partners who did not send their sounds yet or would like to send additional sounds, you can still do it.
+
+We are finally finished with the development of the pipeline! It is functional at least for Audiomoths, SMBAT, Batcorders, Batloggers and Avisoft. 
+The sounds of five partners have been processed and we will continue during the upcoming months.
+
 ___
 
 _20 of December 2024_  
