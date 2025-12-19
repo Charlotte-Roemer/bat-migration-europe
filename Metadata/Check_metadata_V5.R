@@ -7,10 +7,10 @@ library(StreamMetabolism)
 library(lutz)
 
 
-setwd("C:/Users/croemer01/Documents/Post-Doc/MIGRATION/Metadonnees/Return_from_partners_FINAL")
+setwd("/home/charlotte/Documents/Post-Doc/MIGRATION/Metadonnees/Return_from_partners_FINAL")
 
 # List and load metadata files ####
-csv.list <- list.files("C:/Users/croemer01/Documents/Post-Doc/MIGRATION/Metadonnees/Return_from_partners_FINAL",
+csv.list <- list.files("/home/charlotte/Documents/Post-Doc/MIGRATION/Metadonnees/Return_from_partners_FINAL",
                        pattern='*Metadata_table.csv', recursive = TRUE, full.names = T)
 
 csv.df.list <- lapply(csv.list, fread, na.strings=c("-","NA", "N/A", "NULL","","/")) 
@@ -2103,12 +2103,12 @@ csv.df = bind_rows(csv.df.list)
 if(rowSums(as.data.frame(lapply(csv.df.list, nrow))) != nrow(csv.df)){
   print_and_stocked("warning: rbind did not succeed")
 }
-write.csv(csv.df, "C:/Users/croemer01/Documents/Post-Doc/MIGRATION/Metadonnees/Return_from_partners_FINAL/Metadata_complet.csv")
+write.csv(csv.df, "/home/charlotte/Documents/Post-Doc/MIGRATION/Metadonnees/Return_from_partners_FINAL/Metadata_complet.csv")
 
 # save summary missing data ####
 
 print(missing_info)
-write.csv(missing_info, "C:/Users/croemer01/Documents/Post-Doc/MIGRATION/Metadonnees/Return_from_partners_FINAL/summary_missing_info.csv")
+write.csv(missing_info, "/home/charlotte/Documents/Post-Doc/MIGRATION/Metadonnees/Return_from_partners_FINAL/summary_missing_info.csv")
 
 # Outliers #### 
 #>>> Utiliser geom_jitter
