@@ -1,7 +1,7 @@
 [build]
 base = "Website"
 command = "hugo"
-publish = "Website/public"
+publish = "public"
 [build.environment]
 HUGO_VERSION = "0.83.1"
 
