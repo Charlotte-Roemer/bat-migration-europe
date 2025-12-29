@@ -1,5 +1,5 @@
 [build]
-bas = "Website"
+base = "Website"
 command = "hugo"
 publish = "Website/public"
 [build.environment]
