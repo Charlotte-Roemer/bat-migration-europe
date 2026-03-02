@@ -26,7 +26,7 @@ if(!exists("FRaw"))
 }
 
 # Read species list
-SpeciesList=fread("/home/charlotte/Documents/Donnees vigie-chiro/SpeciesList.csv")
+SpeciesList=fread("/sps/mnhn/vigiechiro/vigiechiro-prod-datastore/TempBMRE/VIGIE-CHIRO/SpeciesList.csv")
 
 Filter=args[14]
 TimeFilterH=args[12]
@@ -34,7 +34,7 @@ TimeFilterL=args[13]
 ConfOrder=c("POSSIBLE","PROBABLE","SUR")
 ConfProba=c(0.5,0.9,0.99)
 
-memory.limit(3210241024*1024)
+#memory.limit(3210241024*1024)
 
 #STEP 0 - IMPORT TABLES
 #do not forget to rename paths according to your computer

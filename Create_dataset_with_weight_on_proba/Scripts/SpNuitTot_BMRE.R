@@ -3,36 +3,38 @@
 # extr_PF_DataLP adds metadata associated with the participation (location, ...). Merges tables to create DataLP.
 # extr_PF_ActNuit summarises bat activity per night
 
+.libPaths(libpathR)
 library(data.table)
 
 # Which tables do you want to process?
 What = "Count" # "Merge" to merge export tables with other variables, or "Count" to count bat passes/night
 
 if (What == "Count"){
-  EPA="/home/charlotte/Documents/R/bat-migration-europe/bat-migration-europe/Create_dataset_with_weight_on_proba/Scripts/extr_PF_ActNuit_BMRE.R" # Script using DataLP to count number of bat passes/night
+  EPA="/pbs/home/c/croemer/Scripts/extr_PF_ActNuit_BMRE.R" # Script using DataLP to count number of bat passes/night
 }
 if (What == "Merge"){
-  EPA="/home/charlotte/Documents/R/bat-migration-europe/bat-migration-europe/Create_dataset_with_weight_on_proba/Scripts/extr_PF_DataLP.R" # Script merging tables to create DataLP
+  EPA="/pbs/home/c/croemer/Scripts/extr_PF_DataLP.R" # Script merging tables to create DataLP
 }
 
 PP=c("55","56","57","58","59","5a","5b","5c","5d","5e","5f","60","61","62","63","64","65","66","67") # Groups of participations (prefix)
-#PP=c("5b")
+#PP=c("60","61","62","63","64","65","66","67")
 
 Threshold="0" #score threshold
-RandomResample=T # should raw files be resampled with weight on probability?
+RandomResample=T # should raw files be resampled with weight on probability? (will be done during "Count")
 if(RandomResample==T & Threshold != 0){
   stop("Incoherent choices for RandomResample")
 }
 
 args=""
-args[10]="/media/charlotte/BMRE3/Raw" # where raw files are stored
+args[10]="/sps/mnhn/vigiechiro/vigiechiro-prod-datastore/TempBMRE/VIGIE-CHIRO/Raw" # where raw files are stored
 args[12]=""
 args[13]=""
 args[14]=""
 args[15]=T #sort out doubtful data (probable hardware problems)
 args[16]="mnt/VigieChiro/export_validtot210408.txt" # not useful here
 args[17]=F #correct for validation or not
-args[18] = "/media/charlotte/BMRE3/Raw" # Where should results be written?
+args[18] = "/sps/mnhn/vigiechiro/vigiechiro-prod-datastore/TempBMRE/VIGIE-CHIRO/Raw" # Where should results be written?
+#args[18] = paste0("/sps/mnhn/vigiechiro/vigiechiro-prod-datastore/TempBMRE/VIGIE-CHIRO/SpNuit2_", Threshold) # Where should results be written?
 FRaw="none"
 
 for (i in 1:length(PP)) # Process for each group of participations
@@ -51,15 +53,13 @@ for (i in 1:length(PP)) # Process for each group of participations
     }
     if(file.exists(args[4])) 
     {
-      # Count number of bat passes/night
+      # Launch script to Merge or to Count
       source(EPA) # 1e6 donnees/min 
       Sys.time()
     }
   }
 }
 
-library(beepr)
-beep(2)
 #PrefDoubt=ifelse(args[15]==T, "", "DI")
 
 # Bind all results in one table
@@ -76,9 +76,9 @@ if (RandomResample){
   ActTot=rbindlist(my.data)
   fwrite(ActTot, paste0(args[18], "/SpNuit2_", PrefDoubt,"__", "weighted_DataLP_PF_exportTot.csv"))
 }else{
-  Pattern=basename(paste0(args[10], "/SpNuit2_", PrefDoubt,"__", Threshold, "_DataLP_PF_export"))
+  Pattern=basename(paste0(args[18], "/SpNuit2_", PrefDoubt,"__", Threshold, "_DataLP_PF_export"))
   
-  SpToAgg=list.files(args[10], pattern=Pattern, full.names=T)
+  SpToAgg=list.files(args[18], pattern=Pattern, full.names=T)
   
   my.data=list()
   for (k in 1:length(SpToAgg))

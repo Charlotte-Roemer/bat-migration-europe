@@ -27,7 +27,7 @@ if(length(args)<2){
   args[18] = "/mnt/beegfs/croemer/VigieChiro/Raw"
   
 }else{
-  DataDir="/home/charlotte/Documents/Donnees vigie-chiro/"
+  DataDir="/sps/mnhn/vigiechiro/vigiechiro-prod-datastore/TempBMRE/VIGIE-CHIRO/"
 }
 
 #table "donnees"
@@ -50,7 +50,7 @@ if(nrow(DataPF)>0)
   rm(DataE)
   
   #table "participations"
-  Particip=fread(paste0(DataDir,"/p_export_forLinux.csv")) 
+  Particip=fread(paste0(DataDir,"p_export_forLinux.csv")) 
   test=("606e250b8de067001092583e" %in% Particip$participation)
   print(paste("test 43",test))
   
@@ -58,7 +58,7 @@ if(nrow(DataPF)>0)
   print("dim Particip :")
   print(dim(Particip))
   #table "localit�s"
-  SiteLoc=fread(paste0(DataDir,"/sites_localites.txt")
+  SiteLoc=fread(paste0(DataDir,"sites_localites.txt")
                 ,sep=";")
   print("dim SiteLoc :")
   print(dim(SiteLoc))

@@ -19,6 +19,12 @@ So if DataLP_PF_export_ already exist in your repertory you can run this script 
 
 
 
+######################################
+
+Pour lancer les scripts sur l'IN2P3 :
+conda init
+conda activate r-spatial
+sbatch SpNuitTot_BMRE.sh
 
 
 ######################################
